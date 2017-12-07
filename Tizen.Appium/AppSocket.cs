@@ -1,21 +1,33 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using ElmSharp;
-using System.Runtime.InteropServices;
-using T = Tizen;
 
 namespace Tizen.Appium
 {
+    public class ReceivedEventArgs
+    {
+        public Socket Socket { get; private set; }
+        public string Data { get; private set; }
+
+        public ReceivedEventArgs(Socket s, string data)
+        {
+            Socket = s;
+            Data = data;
+        }
+    }
+
     public class AppSocket
     {
         Socket socket;
         int port = 9090;
-        string LogTag = "Appium";
         StateObject state;
+
+        public event EventHandler Accepted;
+
+        public event EventHandler<ReceivedEventArgs> Received;
+
+        public event EventHandler SendCompleted;
 
         public AppSocket()
         {
@@ -24,39 +36,61 @@ namespace Tizen.Appium
 
         public void StartListening()
         {
-            T.Log.Debug(LogTag, "Enter");
+            Console.WriteLine("#### StartListening");
             var ep = new IPEndPoint(IPAddress.Any, port);
             socket.Bind(ep);
             socket.Listen(1);
-            socket.BeginAccept(new AsyncCallback(AcceptCallback), socket);
+            socket.BeginAccept(new AsyncCallback(AceeptedCallback), socket);
         }
 
         public void StopListening()
         {
+            Console.WriteLine("#### StopListening");
             Close();
         }
 
-        void AcceptCallback(IAsyncResult ar)
+        public void Send(String message)
         {
-            T.Log.Debug(LogTag, "Enter ");
+            Console.WriteLine("#### Send: {0}", message);
+
+            if (state.workSocket == null)
+            {
+                Console.WriteLine("#### socket is not created yet!!");
+                return;
+            }
+
+            var handler = state.workSocket;
+            // Convert the string data to byte data using ASCII encoding.
+            byte[] byteData = Encoding.UTF8.GetBytes(message);
+
+            // Begin sending the data to the remote device.
+            handler.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);
+        }
+
+        void AceeptedCallback(IAsyncResult ar)
+        {
+            Console.WriteLine("#### AceeptedCallback");
             Socket listener = (Socket)ar.AsyncState;
             Socket handler = listener.EndAccept(ar);
 
             state = new StateObject();
             state.workSocket = handler;
 
-            handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
+            Accepted?.Invoke(this, EventArgs.Empty);
+
+            handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceivedCallback), state);
         }
 
-        void ReadCallback(IAsyncResult ar)
+        void ReceivedCallback(IAsyncResult ar)
         {
-            T.Log.Debug(LogTag, "Enter");
-            string content = string.Empty;
-
+            Console.WriteLine("#### ReceivedCallback");
             StateObject state = (StateObject)ar.AsyncState;
             Socket handler = state.workSocket;
 
+            handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceivedCallback), state);
+
             int bytesRead = handler.EndReceive(ar);
+            string content = String.Empty;
 
             if (bytesRead > 0)
             {
@@ -64,52 +98,15 @@ namespace Tizen.Appium
                 state.sb.Append(Encoding.UTF8.GetString(state.buffer, 0, bytesRead));
 
                 content = state.sb.ToString();
-                T.Log.Debug(LogTag, "Message : " + content);
-                char[] delimiter = { '/' };
-                string[] msg = content.Split(delimiter);
-
-                if (msg[0].Equals("GetPosition"))
-                {
-                    string autoId = msg[1];
-                    T.Log.Debug(LogTag, "autoId : " + autoId);
-
-                    Send(handler, "300/400");
-
-                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
-                }
-                else if (msg[0].Equals("SetCommand"))
-                {
-                    string reqNum = msg[1];
-                    string autoId = msg[2];
-                    string action = msg[3];
-
-                    T.Log.Debug(LogTag, "reqNum : " + reqNum);
-                    T.Log.Debug(LogTag, "autoId : " + autoId);
-                    T.Log.Debug(LogTag, "action : " + action);  // element:click
-
-                    Send(handler, "True");
-                    //BroadcastSignal();
-                }
             }
-        }
 
-        void Send(Socket handler, String data)
-        {
-            T.Log.Debug(LogTag, "Enter : " + data);
-            // Convert the string data to byte data using ASCII encoding.
-            byte[] byteData = Encoding.UTF8.GetBytes(data);
-
-            // Begin sending the data to the remote device.
-            handler.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);
-        }
-
-        void BroadcastSignal()
-        {
-            Send(state.workSocket, "Broadcast Signal"); 
+            var arg = new ReceivedEventArgs(handler, content);
+            Received?.Invoke(this, arg);
         }
 
         void SendCallback(IAsyncResult ar)
         {
+            Console.WriteLine("#### SendCallback");
             try
             {
                 // Retrieve the socket from the state object.
@@ -117,7 +114,9 @@ namespace Tizen.Appium
 
                 // Complete sending the data to the remote device.
                 int bytesSent = handler.EndSend(ar);
-                T.Log.Debug(LogTag, "Sent bytes to client." + bytesSent);
+                Console.WriteLine("Sent bytes to client." + bytesSent);
+
+                SendCompleted?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception e)
             {
@@ -127,6 +126,7 @@ namespace Tizen.Appium
 
         public void Close()
         {
+            Console.WriteLine("#### Close");
             socket.Shutdown(SocketShutdown.Both);
             socket.Close();
         }

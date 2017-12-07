@@ -1,16 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TargetFramework>tizen40</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <None Include="dbus\Interop.Edbus.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NDesk.DBus" Version="0.15.0" />
     <PackageReference Include="Tizen.NET" Version="4.0.0" />
+    <PackageReference Include="Xamarin.Forms" Version="2.5.0.77107" />
+    <PackageReference Include="Xamarin.Forms.Platform.Tizen" Version="2.5.0.77107" />
   </ItemGroup>
 
 </Project>
