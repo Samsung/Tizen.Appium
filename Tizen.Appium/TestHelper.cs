@@ -13,7 +13,7 @@ namespace Tizen.Appium
             Console.WriteLine("################## _testObjects.ContainsKey?{0}, _testObjects.Count={1}", _testObjects.ContainsKey(id), _testObjects.Count);
             WeakReference value;
             _testObjects.TryGetValue(id, out value);
-            if (value.IsAlive)
+            if (value != null && value.IsAlive)
             {
                 return value.Target as Element;
             }

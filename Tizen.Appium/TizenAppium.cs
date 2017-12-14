@@ -1,4 +1,5 @@
 using System;
+using Tizen.Appium.DBus;
 using Xamarin.Forms;
 
 namespace Tizen.Appium
@@ -9,7 +10,6 @@ namespace Tizen.Appium
 
         public static AppSocket _socket;
         public static TestRunner _testRunner;
-
         public static DbusConnection _dbusConn;
 
         public static void Init()
@@ -35,10 +35,8 @@ namespace Tizen.Appium
             IsInitialized = true;
 
             //TEST
-            //Console.WriteLine("@@@@@@@@@@@@@@@@@@@@@@@@1111");
-            ////_bus = new TestDbus();
+            Console.WriteLine("@@@@@@@@@@@@@@@@@@@ Dbus TEST");
             //_dbusConn = new DbusConnection();
-            //Console.WriteLine("@@@@@@@@@@@@@@@@@@@@@@@@22222");
         }
 
         static void StopService()
@@ -63,41 +61,51 @@ namespace Tizen.Appium
             Console.WriteLine("### SocketAccepted : {0}", arg.Data);
             char[] delimiter = { '/' };
             string[] msg = arg.Data.Split(delimiter);
+            var request = msg[0];
 
-            if (msg[0].Equals("GetPosition"))
+            if (request.Equals("GetPosition"))
             {
-                string autoId = msg[1];
-                Console.WriteLine("### GetPosition: automationId={0}", autoId);
+                var reqInfo = new RequestInfo(automationId: msg[1], command: TestCommands.GetPositionCommand);
+                Console.WriteLine("### GetPosition: reqInfo={0}", reqInfo);
 
-                var ve = TestHelper.GetTestableElement(autoId) as VisualElement;
+                var ret = _testRunner.RunCommand(reqInfo);
                 var message = "";
 
-                int x = (int)(ve.X + (ve.Width / 2));
-                int y = (int)(ve.Y + (ve.Height / 2));
+                if (ret.Result)
+                {
+                    if (ret.Data.ContainsKey(TestResultKeys.X) && ret.Data.ContainsKey(TestResultKeys.Y))
+                    {
+                        message = ret.Data[TestResultKeys.X] + "/" + ret.Data[TestResultKeys.Y];
+                    }
+                    Console.WriteLine("#### [{0}]request successfully processed!!", request);
+                }
+                else
+                {
+                    Console.WriteLine("#### [{0}]request is failed!!", request);
+                    message = "False";
+                }
 
-                if (ve != null)
-                    message += x + "/" + y;
-
+                Console.WriteLine(message);
                 _socket.Send(message);
             }
-            else if (msg[0].Equals("SetCommand"))
+            else if (request.Equals("SetCommand"))
             {
-                string reqId = msg[1];
-                string autoId = msg[2];
-                string command = msg[3];
+                var reqInfo = new RequestInfo(requestId: msg[1], automationId: msg[2], command: msg[3]);
+                Console.WriteLine("### SetCommand: reqInfo={0}", reqInfo);
 
-                Console.WriteLine("### SetCommand: reqId={0}, automation={1}, action={2}", reqId, autoId, command);
-                Console.WriteLine("reqNum : " + reqId);
-                Console.WriteLine("autoId : " + autoId);
-                Console.WriteLine("action : " + command);  // element:click
-
-                var ret = _testRunner.RunCommand(reqId, autoId, command);
+                var ret = _testRunner.RunCommand(reqInfo);
                 var message = "";
 
-                if (ret)
+                if (ret.Result)
+                {
+                    Console.WriteLine("#### [{0}]request successfully processed!!", request);
                     message = "True";
+                }
                 else
+                {
+                    Console.WriteLine("#### [{0}]request is failed!!", request);
                     message = "False";
+                }
 
                 _socket.Send(message);
             }
@@ -106,24 +114,75 @@ namespace Tizen.Appium
         //for testing
         public void test()
         {
+            //getposition TEST
             Console.WriteLine(" ### test ");
-            _testRunner.RunCommand("1", "111", TestCommands.ClickCommand);
+            var reqInfo = new RequestInfo("1", "111", TestCommands.GetPositionCommand);
+            var ret = _testRunner.RunCommand(reqInfo);
 
-            var element = TestHelper.GetTestableElement("111");
-
-            if (element == null)
+            if (ret.Result)
             {
-                Console.WriteLine("@@@@@@@@@@@ element is null");
+                foreach (var p in ret.Data)
+                {
+                    Console.WriteLine("### [data]: key={0}, value={1}", p.Key, p.Value);
+                }
             }
             else
             {
-                var ve = element as VisualElement;
-                Console.WriteLine("autoId={0}, x={1}, y={2}, width={3}, height={4}", ve.AutomationId, ve.X, ve.Y, ve.Width, ve.Height);
+                Console.WriteLine("### request failed!! ");
+            }
 
-                (element as Xamarin.Forms.Button).Clicked += (s, e) =>
+            //TEST for Button
+            //var element = TestHelper.GetTestableElement("111");
+            //var button = element as Xamarin.Forms.Button;
+
+            //button.Clicked += (s, e) =>
+            //{
+            //    var ret2 = _testRunner.RunCommand(reqInfo);
+            //    if (ret2.Result)
+            //    {
+            //        if (ret2.Data.ContainsKey(TestResultKeys.X) && ret2.Data.ContainsKey(TestResultKeys.Y))
+            //        {
+            //            var message = ret2.Data[TestResultKeys.X] + "/" + ret2.Data[TestResultKeys.Y];
+            //            Console.WriteLine("### [message]: {0}", message);
+            //        }
+            //    }
+            //};
+
+            //TEST for Label
+            var ve = TestHelper.GetTestableElement("111") as View;
+            if (ve == null)
+            {
+                Console.WriteLine("### Not Found Element: 111");
+                return;
+            }
+
+            var tap = new TapGestureRecognizer();
+            tap.Tapped += (s, e) =>
+            {
+                var ret2 = _testRunner.RunCommand(reqInfo);
+
+                if (ret2.Result)
                 {
-                    Console.WriteLine("autoId={0}, x={1}, y={2}, width={3}, height={4}", ve.AutomationId, ve.X, ve.Y, ve.Width, ve.Height);
-                };
+                    if (ret2.Data.ContainsKey(TestResultKeys.X) && ret2.Data.ContainsKey(TestResultKeys.Y))
+                    {
+                        var message = ret2.Data[TestResultKeys.X] + "/" + ret2.Data[TestResultKeys.Y];
+                        Console.WriteLine("### [message]: {0}", message);
+                    }
+                }
+            };
+            ve.GestureRecognizers.Add(tap);
+
+            // click TEST
+            var reqInfo2 = new RequestInfo("2", "111", TestCommands.ClickCommand);
+            ret = _testRunner.RunCommand(reqInfo2);
+
+            if (ret.Result)
+            {
+                Console.WriteLine("### command is set successfully!!");
+            }
+            else
+            {
+                Console.WriteLine("#### request failed!! ");
             }
         }
     }

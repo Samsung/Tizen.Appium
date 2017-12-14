@@ -3,6 +3,8 @@ using Xamarin.Forms.Platform.Tizen;
 using Tizen.Appium.Renderer;
 
 [assembly: ExportRenderer(typeof(Button), typeof(TestableButtonRenderer))]
+[assembly: ExportRenderer(typeof(Label), typeof(TestableLabelRenderer))]
+[assembly: ExportRenderer(typeof(Image), typeof(TestableImageRenderer))]
 //[assembly: ExportRenderer(typeof(ScrollView), typeof(ScrollViewRenderer))]
 //[assembly: ExportRenderer(typeof(CarouselPage), typeof(CarouselPageRenderer))]
 //[assembly: ExportRenderer(typeof(Page), typeof(PageRenderer))]
