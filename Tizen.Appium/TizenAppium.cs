@@ -1,6 +1,6 @@
 using System;
-using Tizen.Appium.DBus;
 using Xamarin.Forms;
+using Tizen.Appium.DBus;
 
 namespace Tizen.Appium
 {
@@ -27,22 +27,89 @@ namespace Tizen.Appium
                 return;
 
             _testRunner = new TestRunner();
+
+            // Appsocket
             _socket = new AppSocket();
             _socket.StartListening();
             _socket.Accepted += SocketAccepted;
             _socket.Received += SocketReceived;
 
-            IsInitialized = true;
-
-            //TEST
+            // Dbus
             Console.WriteLine("@@@@@@@@@@@@@@@@@@@ Dbus TEST");
-            //_dbusConn = new DbusConnection();
+            _dbusConn = new DbusConnection();
+
+            _dbusConn.AddMethod(DbusNames.GetPositionMethod, GetPosition);
+            _dbusConn.AddMethod(DbusNames.SetCommandMethod, SetCommand);
+
+            _testRunner.TestCompleted += TestCompletedEventArgs;
+
+            IsInitialized = true;
         }
 
-        static void StopService()
+        public static void StopService()
         {
             Console.WriteLine("### StopService");
+            IsInitialized = false;
             _socket.StopListening();
+            _dbusConn.Close();
+        }
+
+        static void TestCompletedEventArgs(object o, TestCompletedEventArgs e)
+        {
+            Console.WriteLine(" ### TestCompleted");
+            var message = e.RequestId + "/" + e.AutomationId + "/" + e.Command;
+            if (_dbusConn != null)
+            {
+                _dbusConn.BroadcaseSignal(DbusNames.CompleteSignal, message);
+            }
+        }
+
+        static string GetPosition(string message)
+        {
+            var reqInfo = new RequestInfo(automationId: message, command: TestCommands.GetPositionCommand);
+            Console.WriteLine("### GetPosition: reqInfo={0}", reqInfo);
+
+            var ret = _testRunner.RunCommand(reqInfo);
+            var reply = "";
+
+            if (ret.Result)
+            {
+                if (ret.Data.ContainsKey(TestResultKeys.X) && ret.Data.ContainsKey(TestResultKeys.Y))
+                {
+                    reply = ret.Data[TestResultKeys.X] + "/" + ret.Data[TestResultKeys.Y];
+                }
+                Console.WriteLine("#### [{0}]request successfully processed!!", TestCommands.GetPositionCommand);
+            }
+            else
+            {
+                Console.WriteLine("#### [{0}]request is failed!!", TestCommands.GetPositionCommand);
+                reply = "False";
+            }
+
+            return reply;
+        }
+
+        static string SetCommand(string message)
+        {
+            string[] msg = message.Split('/');
+            var reqInfo = new RequestInfo(requestId: msg[0], automationId: msg[1], command: msg[2]);
+
+            Console.WriteLine("### SetCommand: reqInfo={0}", reqInfo);
+
+            var ret = _testRunner.RunCommand(reqInfo);
+            var reply = "";
+
+            if (ret.Result)
+            {
+                Console.WriteLine("#### [{0}]request successfully processed!!", reqInfo.Command);
+                reply = "True";
+            }
+            else
+            {
+                Console.WriteLine("#### [{0}]request is failed!!", reqInfo.Command);
+                reply = "False";
+            }
+            return reply;
         }
 
         static void SocketAccepted(object sender, EventArgs arg)
@@ -52,7 +119,10 @@ namespace Tizen.Appium
             {
                 Console.WriteLine(" ### TestCompleted");
                 var message = e.RequestId + "/" + e.AutomationId + "/" + e.Command;
-                _socket.Send(message);
+                if (_socket != null)
+                {
+                    _socket.Send(message);
+                }
             };
         }
 
@@ -118,7 +188,7 @@ namespace Tizen.Appium
             Console.WriteLine(" ### test ");
             var reqInfo = new RequestInfo("1", "111", TestCommands.GetPositionCommand);
             var ret = _testRunner.RunCommand(reqInfo);
-
+            Console.WriteLine("result : {0}", ret);
             if (ret.Result)
             {
                 foreach (var p in ret.Data)
@@ -160,7 +230,7 @@ namespace Tizen.Appium
             tap.Tapped += (s, e) =>
             {
                 var ret2 = _testRunner.RunCommand(reqInfo);
-
+                Console.WriteLine("result : {0}", ret2);
                 if (ret2.Result)
                 {
                     if (ret2.Data.ContainsKey(TestResultKeys.X) && ret2.Data.ContainsKey(TestResultKeys.Y))
@@ -175,7 +245,7 @@ namespace Tizen.Appium
             // click TEST
             var reqInfo2 = new RequestInfo("2", "111", TestCommands.ClickCommand);
             ret = _testRunner.RunCommand(reqInfo2);
-
+            Console.WriteLine("result : {0}", ret);
             if (ret.Result)
             {
                 Console.WriteLine("### command is set successfully!!");

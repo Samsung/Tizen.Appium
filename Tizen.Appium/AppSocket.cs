@@ -127,7 +127,7 @@ namespace Tizen.Appium
         public void Close()
         {
             Console.WriteLine("#### Close");
-            socket.Shutdown(SocketShutdown.Both);
+            //socket.Shutdown(SocketShutdown.Both);
             socket.Close();
         }
     }

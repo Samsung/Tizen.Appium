@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Tizen;
-using Tizen.Appium.DBus;
-using System.Collections.ObjectModel;
 using ElmSharp;
 
 namespace Tizen.Appium
@@ -24,62 +22,8 @@ namespace Tizen.Appium
         }
     }
 
-    public class TestResult
-    {
-        IDictionary<string, object> _data = null;
-
-        public bool Result { get; private set; }
-
-        public IReadOnlyDictionary<string, object> Data
-        {
-            get
-            {
-                return new ReadOnlyDictionary<string, object>(_data);
-            }
-        }
-
-        public TestResult(bool result = false)
-        {
-            Result = result;
-            _data = new Dictionary<string, object>();
-        }
-
-        public void SetResult(bool val)
-        {
-            Result = val;
-        }
-
-        public void ResetResult()
-        {
-            Result = false;
-            if (_data != null)
-            {
-                _data.Clear();
-                _data = null;
-            }
-        }
-
-        public void SetData(string key, object obj)
-        {
-            if (_data != null)
-            {
-                _data[key] = obj;
-            }
-        }
-
-        public void RemoveData(string key)
-        {
-            if (_data != null)
-            {
-                _data.Remove(key);
-            }
-        }
-    }
-
     public class TestRunner
     {
-        //public delegate TestResult TestFunc(RequestInfo info);
-
         Dictionary<string, Func<RequestInfo, TestResult>> _commands = new Dictionary<string, Func<RequestInfo, TestResult>>();
 
         //{
@@ -94,13 +38,13 @@ namespace Tizen.Appium
         {
             Console.WriteLine("######### TestRunner ");
             _commands[TestCommands.TestCommnad] = RunTestCommand;
-            _commands[TestCommands.GetPositionCommand] = GetPositionCommand;
+            _commands[TestCommands.GetPositionCommand] = RunGetPositionCommand;
             _commands[TestCommands.ClickCommand] = RunClickCommand;
         }
 
         public TestResult RunCommand(RequestInfo req)
         {
-            Console.WriteLine("######### RunCommand: reqId={0}, autoId={1}, command={2}", req.RequestId, req.AutomationId, req.Command);
+            Console.WriteLine("######### RunCommand: {0}", req);
 
             if (_commands.ContainsKey(req.Command))
             {
@@ -116,12 +60,13 @@ namespace Tizen.Appium
 
         TestResult RunTestCommand(RequestInfo req)
         {
-            Console.WriteLine("######### RunTestCommand: automationId={0}, reqId={1}", req.AutomationId, req.RequestId);
+            Console.WriteLine("######### RunTestCommand: {0}", req);
             TestResult result = new TestResult();
 
             var element = TestHelper.GetTestableElement(req.AutomationId);
             if (element == null)
             {
+                Console.WriteLine("### Not Found Element");
                 return result;
             }
             var arg = new TestCompletedEventArgs(req.RequestId, req.AutomationId, TestCommands.TestCommnad);
@@ -131,13 +76,15 @@ namespace Tizen.Appium
             return result;
         }
 
-        TestResult GetPositionCommand(RequestInfo req)
+        TestResult RunGetPositionCommand(RequestInfo req)
         {
+            Console.WriteLine("######### RunGetPositionCommand: {0}", req);
             var result = new TestResult();
 
             var ve = TestHelper.GetTestableElement(req.AutomationId) as VisualElement;
             if (ve == null)
             {
+                Console.WriteLine("### Not Found Element");
                 return result;
             }
 
@@ -156,12 +103,13 @@ namespace Tizen.Appium
 
         TestResult RunClickCommand(RequestInfo req)
         {
-            Console.WriteLine("######### RunTestCommand: automationId={0}, reqId={1}", req.AutomationId, req.RequestId);
+            Console.WriteLine("######### RunClickCommand: {0}", req);
             var result = new TestResult();
 
             var ve = TestHelper.GetTestableElement(req.AutomationId) as VisualElement;
             if (ve == null)
             {
+                Console.WriteLine("### Not Found Element");
                 return result;
             }
 

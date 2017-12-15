@@ -51,14 +51,14 @@ internal static partial class Interop
         IntPtr pad3;
     }
 
-    internal delegate void request_cb(IntPtr data, IntPtr msg, IntPtr error);
-
-    internal delegate IntPtr method_cb(IntPtr obj, IntPtr message);
-
-    internal delegate IntPtr method_return_cb(IntPtr data, IntPtr message, IntPtr error);
-
     internal static class Edbus
     {
+        internal delegate void RequestCallback(IntPtr data, IntPtr msg, IntPtr error);
+
+        internal delegate IntPtr MethodCallback(IntPtr obj, IntPtr message);
+
+        internal delegate IntPtr MethodReturnCallback(IntPtr data, IntPtr message, IntPtr error);
+
         [DllImport(Libraries.Edbus)]
         internal static extern void dbus_threads_init_default();
 
@@ -72,7 +72,7 @@ internal static partial class Interop
         internal static extern IntPtr e_dbus_bus_get(DBusBusType type);
 
         [DllImport(Libraries.Edbus)]
-        internal static extern IntPtr e_dbus_request_name(IntPtr conn, string bus_name, NameFlags flags, request_cb callback, IntPtr date);
+        internal static extern IntPtr e_dbus_request_name(IntPtr conn, string bus_name, NameFlags flags, RequestCallback callback, IntPtr date);
 
         [DllImport(Libraries.Edbus)]
         internal static extern IntPtr e_dbus_object_add(IntPtr conn, string path, IntPtr data);
@@ -84,13 +84,13 @@ internal static partial class Interop
         internal static extern IntPtr e_dbus_object_interface_attach(IntPtr obj, IntPtr iface);
 
         [DllImport(Libraries.Edbus)]
-        internal static extern IntPtr e_dbus_interface_method_add(IntPtr iface, string member, string signature, string reply_signature, method_cb callback);
+        internal static extern IntPtr e_dbus_interface_method_add(IntPtr iface, string member, string signature, string reply_signature, MethodCallback callback);
 
         [DllImport(Libraries.Edbus)]
         internal static extern IntPtr dbus_message_new_signal(string path, string iface, string name);
 
         [DllImport(Libraries.Edbus)]
-        internal static extern IntPtr e_dbus_message_send(IntPtr conn, IntPtr msg, method_return_cb callback, int timeout, IntPtr data);
+        internal static extern IntPtr e_dbus_message_send(IntPtr conn, IntPtr msg, MethodReturnCallback callback, int timeout, IntPtr data);
 
         [DllImport(Libraries.dbus)]
         internal static extern bool dbus_message_iter_init(IntPtr msg, ref DBusMessageIter iter);
@@ -115,5 +115,11 @@ internal static partial class Interop
 
         [DllImport(Libraries.Edbus)]
         internal static extern bool dbus_message_get_args(IntPtr msg, out IntPtr err, int type, out IntPtr data, int quit);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern bool e_dbus_connection_close(IntPtr conn);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern int e_dbus_shutdown();
     }
 }
