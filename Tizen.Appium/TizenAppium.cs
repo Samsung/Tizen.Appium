@@ -8,8 +8,9 @@ namespace Tizen.Appium
     {
         public static bool IsInitialized { get; private set; }
 
-        public static AppSocket _socket;
+        //public static AppSocket _socket;
         public static TestRunner _testRunner;
+
         public static DbusConnection _dbusConn;
 
         public static void Init()
@@ -22,20 +23,11 @@ namespace Tizen.Appium
 
         public static void StartService()
         {
-            Console.WriteLine("### StartService");
+            Console.WriteLine("### StartService : initialize dbus");
             if (IsInitialized)
                 return;
 
             _testRunner = new TestRunner();
-
-            // Appsocket
-            _socket = new AppSocket();
-            _socket.StartListening();
-            _socket.Accepted += SocketAccepted;
-            _socket.Received += SocketReceived;
-
-            // Dbus
-            Console.WriteLine("@@@@@@@@@@@@@@@@@@@ Dbus TEST");
             _dbusConn = new DbusConnection();
 
             _dbusConn.AddMethod(DbusNames.GetPositionMethod, GetPosition);
@@ -49,9 +41,8 @@ namespace Tizen.Appium
         public static void StopService()
         {
             Console.WriteLine("### StopService");
-            IsInitialized = false;
-            _socket.StopListening();
             _dbusConn.Close();
+            IsInitialized = false;
         }
 
         static void TestCompletedEventArgs(object o, TestCompletedEventArgs e)
@@ -110,75 +101,6 @@ namespace Tizen.Appium
                 reply = "False";
             }
             return reply;
-        }
-
-        static void SocketAccepted(object sender, EventArgs arg)
-        {
-            Console.WriteLine("### SocketAccepted");
-            _testRunner.TestCompleted += (s, e) =>
-            {
-                Console.WriteLine(" ### TestCompleted");
-                var message = e.RequestId + "/" + e.AutomationId + "/" + e.Command;
-                if (_socket != null)
-                {
-                    _socket.Send(message);
-                }
-            };
-        }
-
-        static void SocketReceived(object sender, ReceivedEventArgs arg)
-        {
-            Console.WriteLine("### SocketAccepted : {0}", arg.Data);
-            char[] delimiter = { '/' };
-            string[] msg = arg.Data.Split(delimiter);
-            var request = msg[0];
-
-            if (request.Equals("GetPosition"))
-            {
-                var reqInfo = new RequestInfo(automationId: msg[1], command: TestCommands.GetPositionCommand);
-                Console.WriteLine("### GetPosition: reqInfo={0}", reqInfo);
-
-                var ret = _testRunner.RunCommand(reqInfo);
-                var message = "";
-
-                if (ret.Result)
-                {
-                    if (ret.Data.ContainsKey(TestResultKeys.X) && ret.Data.ContainsKey(TestResultKeys.Y))
-                    {
-                        message = ret.Data[TestResultKeys.X] + "/" + ret.Data[TestResultKeys.Y];
-                    }
-                    Console.WriteLine("#### [{0}]request successfully processed!!", request);
-                }
-                else
-                {
-                    Console.WriteLine("#### [{0}]request is failed!!", request);
-                    message = "False";
-                }
-
-                Console.WriteLine(message);
-                _socket.Send(message);
-            }
-            else if (request.Equals("SetCommand"))
-            {
-                var reqInfo = new RequestInfo(requestId: msg[1], automationId: msg[2], command: msg[3]);
-                Console.WriteLine("### SetCommand: reqInfo={0}", reqInfo);
-
-                var ret = _testRunner.RunCommand(reqInfo);
-                var message = "";
-
-                if (ret.Result)
-                {
-                    Console.WriteLine("#### [{0}]request successfully processed!!", request);
-                    message = "True";
-                }
-                else
-                {
-                    Console.WriteLine("#### [{0}]request is failed!!", request);
-                    message = "False";
-                }
-
-                _socket.Send(message);
-            }
         }
 
         //for testing

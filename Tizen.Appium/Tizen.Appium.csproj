@@ -5,11 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="dbus\Interop.Edbus.cs" />
+    <None Include="Dbus\Interop.Edbus.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NDesk.DBus" Version="0.15.0" />
     <PackageReference Include="Tizen.NET" Version="4.0.0" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.77107" />
     <PackageReference Include="Xamarin.Forms.Platform.Tizen" Version="2.5.0.77107" />
