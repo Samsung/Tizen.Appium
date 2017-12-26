@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace Tizen.Appium.DBus
 {
     public class DbusConnection
     {
-        static IntPtr _dbusConn;
-        static IntPtr _name;
+        static IntPtr _conn;
+        static IntPtr _econn;
+
         static IntPtr _object;
         static IntPtr _interface;
 
@@ -15,39 +17,69 @@ namespace Tizen.Appium.DBus
 
         public DbusConnection()
         {
-            Console.WriteLine("@@@ DbusConnection");
-            Interop.Edbus.dbus_threads_init_default();
+            Console.WriteLine(" ################# DbusConnection");
+            InitializeDbusConnection();
+        }
+
+        static void InitializeDbusConnection()
+        {
+            Console.WriteLine("DbusConnection a11111aaaaaaaaaa");
             IntPtr error;
             Interop.Edbus.dbus_error_init(out error);
 
             int ret = Interop.Edbus.e_dbus_init();
+            Tizen.Log.Error("TEST", "connection:" + ret);
             if (ret == 0)
             {
                 Console.WriteLine("Error: Failed to init dbus");
             }
 
-            _dbusConn = Interop.Edbus.e_dbus_bus_get(Interop.DBusBusType.DBUS_BUS_SYSTEM);
-            if (_dbusConn == null)
+            Tizen.Log.Error("TEST", "DbusConnection 111111111");
+            //_conn = Interop.Edbus.e_dbus_bus_get(Interop.DBusBusType.DBUS_BUS_SYSTEM);
+            _conn = Interop.Edbus.dbus_bus_get_private(Interop.DBusBusType.DBUS_BUS_SYSTEM, error);
+            //_conn = Interop.Edbus.dbus_bus_get(Interop.DBusBusType.DBUS_BUS_SYSTEM, error);
+            if (_conn == null)
             {
+                Tizen.Log.Error("TEST", "Failed to get dbus bus");
                 Console.WriteLine("Error: Failed to get dbus bus");
             }
 
-            _name = Interop.Edbus.e_dbus_request_name(_dbusConn, DbusNames.BusName,
-                                                     Interop.NameFlags.ReplaceExisting, BusRequestHandler, IntPtr.Zero);
+            var aaa = Interop.Edbus.dbus_bus_request_name(_conn, DbusNames.BusName, 0, error);
+            Tizen.Log.Error("TEST", "DbusConnection dbus_bus_request_name " + aaa);
 
-            _object = Interop.Edbus.e_dbus_object_add(_dbusConn, DbusNames.ObjectPath, IntPtr.Zero);
+            _econn = Interop.Edbus.e_dbus_connection_setup(_conn);
+            Tizen.Log.Error("TEST", "DbusConnection e_dbus_connection_setup");
+            if (_conn == null)
+            {
+                Tizen.Log.Error("TEST", "Failed to setup connection");
+                Console.WriteLine("Error: Failed to setup connection");
+            }
+
+            Interop.Edbus.e_dbus_connection_ref(_econn);
+            Tizen.Log.Error("TEST", "DbusConnection e_dbus_connection_ref");
+            Tizen.Log.Error("TEST", "DbusConnection 333333333333333 :" + DbusNames.BusName);
+            //_name = Interop.Edbus.e_dbus_request_name(edbus_conn, DbusNames.BusName,
+            //                                         Interop.NameFlags.ReplaceExisting, BusRequestHandler, IntPtr.Zero);
+
+            Tizen.Log.Error("TEST", "DbusConnection 444444444444444444");
+            _object = Interop.Edbus.e_dbus_object_add(_econn, DbusNames.ObjectPath, IntPtr.Zero);
+            Tizen.Log.Error("TEST", "DbusConnection 55555555555555555555555");
             _interface = Interop.Edbus.e_dbus_interface_new(DbusNames.InterfaceName);
+            Tizen.Log.Error("TEST", "DbusConnection 66666666666666666666666");
 
             Interop.Edbus.e_dbus_object_interface_attach(_object, _interface);
 
+            Tizen.Log.Error("TEST", "DbusConnection ddddddddddddd");
             Console.WriteLine("@@@ done!!");
         }
 
         public void Close()
         {
             _methods.Clear();
+            Interop.Edbus.dbus_connection_close(_conn);
+            Interop.Edbus.dbus_connection_unref(_conn);
+            Interop.Edbus.e_dbus_connection_close(_econn);
             Interop.Edbus.e_dbus_shutdown();
-            Interop.Edbus.e_dbus_connection_close(_dbusConn);
         }
 
         public void AddMethod(string name, Func<string, string> callback)
@@ -89,7 +121,9 @@ namespace Tizen.Appium.DBus
 
         static void BusRequestHandler(IntPtr data, IntPtr msg, IntPtr error)
         {
-            Console.WriteLine("@@@@ Error occurs during request for dbus name");
+            Tizen.Log.Error("TEST", "@@@@ BusRequestHandler error: " + error);
+
+            Console.WriteLine("@@@@ Error occurs during request for dbus name ");
         }
 
         public void BroadcaseSignal(string signalName, string msg)
@@ -103,9 +137,9 @@ namespace Tizen.Appium.DBus
             Console.WriteLine("@@@ signalMessage={0}", Marshal.PtrToStringAnsi(msgPtr));
             Interop.Edbus.dbus_message_iter_append_basic(ref iter, DBusArgsType.String, ref msgPtr);
 
-            if (_dbusConn != null)
+            if (_conn != null)
             {
-                Interop.Edbus.e_dbus_message_send(_dbusConn, signal, SendCallback, -1, IntPtr.Zero);
+                Interop.Edbus.e_dbus_message_send(_conn, signal, SendCallback, -1, IntPtr.Zero);
             }
             else
             {

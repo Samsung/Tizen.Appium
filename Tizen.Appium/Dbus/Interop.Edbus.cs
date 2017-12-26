@@ -72,10 +72,28 @@ internal static partial class Interop
         internal static extern IntPtr e_dbus_bus_get(DBusBusType type);
 
         [DllImport(Libraries.Edbus)]
-        internal static extern IntPtr e_dbus_request_name(IntPtr conn, string bus_name, NameFlags flags, RequestCallback callback, IntPtr date);
+        internal static extern IntPtr dbus_bus_get(DBusBusType type, IntPtr error);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern IntPtr dbus_bus_get_private(DBusBusType type, IntPtr error);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern IntPtr e_dbus_request_name(IntPtr conn, string bus_name, NameFlags flags, RequestCallback callback, IntPtr data);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern IntPtr dbus_bus_set_unique_name(IntPtr conn, string bus_name);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern int dbus_bus_request_name(IntPtr conn, string bus_name, int flags, IntPtr error);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern IntPtr dbus_bus_request_name(IntPtr conn, string bus_name, NameFlags flags, IntPtr error);
 
         [DllImport(Libraries.Edbus)]
         internal static extern IntPtr e_dbus_object_add(IntPtr conn, string path, IntPtr data);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern void e_dbus_connection_ref(IntPtr conn);
 
         [DllImport(Libraries.Edbus)]
         internal static extern IntPtr e_dbus_interface_new(string iface);
@@ -120,6 +138,15 @@ internal static partial class Interop
         internal static extern bool e_dbus_connection_close(IntPtr conn);
 
         [DllImport(Libraries.Edbus)]
+        internal static extern void dbus_connection_close(IntPtr conn);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern void dbus_connection_unref(IntPtr conn);
+
+        [DllImport(Libraries.Edbus)]
         internal static extern int e_dbus_shutdown();
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern IntPtr e_dbus_connection_setup(IntPtr conn);
     }
 }

@@ -23,7 +23,7 @@ namespace Tizen.Appium
 
         public static void StartService()
         {
-            Console.WriteLine("### StartService : initialize dbus");
+            Console.WriteLine("### StartService : initialize dbus 22222");
             if (IsInitialized)
                 return;
 
