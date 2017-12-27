@@ -17,7 +17,7 @@
 #ifndef __LOG_H_
 #define __LOG_H_
 
-#ifdef FEATURE_RESTFUL_DLOG
+#ifdef UIAUTOMATOR_DLOG
 #define LOG_TAG "UIAutomator"
 #include <dlog.h>
 

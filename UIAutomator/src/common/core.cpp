@@ -58,7 +58,7 @@ static int uiautomator_init(int argc, char **argv)
 
 int main (int argc, char **argv)
 {
-    _D("Service Start...");
+    _D("Service Start");
 
     eina_init();
     ecore_init();

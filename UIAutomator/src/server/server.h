@@ -27,7 +27,6 @@
 #include "common/dbus_utils.h"
 #include "request.h"
 
-
 using namespace std;
 
 class Server
@@ -65,6 +64,5 @@ private:
     int RequestCnt;
     int AppSocket;
 };
-
 
 #endif /* __SERVER_H_ */

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef TIZEN_RESTFUL_UTILS_H_
-#define TIZEN_RESTFUL_UTILS_H_
+#ifndef _DBUS_UTILS_H_
+#define _DBUS_UTILS_H_
 
 #include <string>
 #include <vector>
@@ -28,8 +28,7 @@
 using namespace std;
 
 typedef std::function<void(DBusMessage* msg)> signalHandler;
-
-typedef std::function<void(DBusMessage* call, DBusMessage* reply)> RestfulDBusCallback;
+//typedef std::function<void(DBusMessage* call, DBusMessage* reply)> RestfulDBusCallback;
 
 class DBusMessage {
 public:
@@ -66,4 +65,4 @@ private:
   int InitializeConnection();
 };
 
-#endif // TIZEN_RESTFUL_UTILS_H_
+#endif // _DBUS_UTILS_H_

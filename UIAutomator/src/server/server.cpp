@@ -105,7 +105,7 @@ string Server::GetElementId(char* data)
     Json::Value root;
     Json::Reader reader;
     
-    bool ret = reader.parse(buf, root);
+    reader.parse(buf, root);
     string id = root["params"]["elementId"].asString();
     return id;
 }
@@ -184,7 +184,7 @@ string Server::GetAutomationId(char* data)
     string buf = data;
     Json::Value root;
     Json::Reader reader;
-    bool ret = reader.parse(buf, root);
+    reader.parse(buf, root);
     string selector = root["params"]["selector"].asString();    
     return selector;
 }
@@ -195,7 +195,7 @@ string Server::GetCommand(char* data)
     Json::Value root;
     Json::Reader reader;
     
-    bool ret = reader.parse(buf, root);
+    reader.parse(buf, root);
     string command = root.get("cmd","").asString();
     return command;
 }
@@ -206,7 +206,7 @@ string Server::GetAction(char* data)
     Json::Value root;
     Json::Reader reader;
     
-    bool ret = reader.parse(buf, root);
+    reader.parse(buf, root);
     string command = root.get("cmd","").asString();
     string action = root.get("action","").asString();
     string id = root["params"]["elementId"].asString();
@@ -336,7 +336,7 @@ void Server::SignalHandler(DBusMessage* msg)
 
 void Server::init()
 {
-    _D("Enter");
+    _D("Init *** --- ***");
 
     DBusSignal::getInstance()->RegisterSignal(InterfaceName, CompleteSignal,
                                 std::bind(&Server::SignalHandler, this, std::placeholders::_1));
@@ -360,4 +360,3 @@ void Server::exit()
 {
     _D("End");
 }
-

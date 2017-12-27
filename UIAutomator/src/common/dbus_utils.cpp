@@ -42,7 +42,6 @@ DBusMessage* DBusMessage::getInstance() {
   return &instance;
 }
 
-
 DBusMessage::DBusMessage() : destination_("org.tizen.appium"), connection_(nullptr) 
 {
     s_objects_.insert(this);
@@ -83,9 +82,8 @@ void DBusMessage::CheckConnection()
     }
 }
 
-char* DBusMessage::SendSyncMessage(const std::string& dPath,
-                      const std::string& dInterface, const std::string& dMethod,
-                      char* arguements) 
+char* DBusMessage::SendSyncMessage(const std::string& dPath, const std::string& dInterface, 
+                                    const std::string& dMethod, char* arguements) 
 {
 
     CheckConnection();
@@ -197,12 +195,9 @@ int DBusSignal::InitializeConnection()
 
 }
 
-DBusHandlerResult DBusSignal::DBusSignalHandler(DBusConnection* conn,
-                                    DBusMessage* msg, void* user_data)
+DBusHandlerResult DBusSignal::DBusSignalHandler(DBusConnection* conn, DBusMessage* msg, void* user_data)
 {
-
     _D("Enter");
-
     if (NULL == msg) {
         _D("Message Null");
         return DBUS_HANDLER_RESULT_HANDLED ;
@@ -217,22 +212,19 @@ DBusHandlerResult DBusSignal::DBusSignalHandler(DBusConnection* conn,
         string _interface = *tokenIter;
         tokenIter++;
         string _method = *tokenIter;
-        //_D("[%s : %s]",_interface.c_str(), _method.c_str());
 
         if (dbus_message_is_signal(msg, _interface.c_str(), _method.c_str())) {
             iter.second(msg);
             break;
         }
-
     }
 
     _D("End");
     return DBUS_HANDLER_RESULT_HANDLED ;
 }
 
-int DBusSignal::RegisterSignal(const std::string& dInterface,
-        const std::string& dMethod, signalHandler callback) {
-
+int DBusSignal::RegisterSignal(const std::string& dInterface, const std::string& dMethod, signalHandler callback) 
+{
     _D("Enter");
     DBusError err;
     signalHandler _handler;
