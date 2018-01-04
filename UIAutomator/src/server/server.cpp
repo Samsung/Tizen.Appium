@@ -132,7 +132,7 @@ int Server::GetY(char* data)
     int idx = origin.find(split);
     char temp[5];
     int i=0;
-    for( ; i+idx+1 < strlen(data) ; i++ )
+    for( ; i+idx+1 < (int)strlen(data) ; i++ )
     {
         temp[i] = data[i+idx+1];
     }
@@ -245,8 +245,8 @@ Ecore_Con_Client* _client;
 Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore_Con_Event_Client_Data *ev)
 {
    char buf[255];
-   memset(buf, '\0', 255);
-   sprintf(buf, "%s", ev->data);
+   memset(buf, 0, 255);
+   sprintf(buf, "%s", (char*)ev->data);
    _D("Received :%s", buf);
    string reply;
 
@@ -336,7 +336,7 @@ void Server::SignalHandler(DBusMessage* msg)
 
 void Server::init()
 {
-    _D("Init *** --- ***");
+    _D("Init *** --- *** ---");
 
     DBusSignal::getInstance()->RegisterSignal(InterfaceName, CompleteSignal,
                                 std::bind(&Server::SignalHandler, this, std::placeholders::_1));

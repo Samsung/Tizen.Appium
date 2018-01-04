@@ -1,4 +1,3 @@
-#sbs-git:slp/apps/m/memo memo 0.1.5 27cb9ac9efc61361edf86770614768505e688a17
 Name:       uiautomator
 Summary:    UIAutomator Service
 Version:    0.1.10
@@ -6,7 +5,6 @@ Release:    1
 Group:      Framework/system
 License:    Apache
 Source0:    %{name}-%{version}.tar.gz
-#Source1001: uiautomator.manifest
 
 BuildRequires:  pkgconfig(elementary)
 BuildRequires:  pkgconfig(ecore)
@@ -39,14 +37,11 @@ export LDFLAGS+="-Wl,--rpath=%{PREFIX} -Wl,--as-needed"
 
 cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} UIAutomator 
 
-#cp %{SOURCE1001} .
-
 make %{?jobs:-j%jobs}
 
 %install
 rm -rf %{buildroot}
 %make_install
-
 
 mkdir -p %{buildroot}%{_libdir}/systemd/system/graphical.target.wants/
 ln -s ../uiautomator.service %{buildroot}%{_libdir}/systemd/system/graphical.target.wants/ 
@@ -67,7 +62,6 @@ fi
 %postun
 systemctl daemon-reload
 
-
 %files -n uiautomator
 %{_bindir}/uiautomator
 %{_libdir}/systemd/system/uiautomator.service
@@ -79,5 +73,3 @@ systemctl daemon-reload
 %manifest uiautomator.manifest
 #%defattr(-,root,root,-)
 #%{_bindir}/uiautomator
-
-
