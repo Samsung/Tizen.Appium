@@ -20,6 +20,7 @@
 #include "common/dbus_utils.h"
 #include "common/type.h"
 #include "input_generator.h"
+#include "json_utils.h"
 #include "request.h"
 
 #include <chrono>
@@ -36,20 +37,19 @@
 #include <string.h>
 #include <pthread.h>
 #include <json/json.h>
-
 #include <glib.h>
 #include <gio/gio.h>
-
 #include <Ecore.h>
 #include <Ecore_Con.h>
 
 using namespace std;
 
+const int SERVER_TIMEOUT = 300;
+
 Server::Server()
 {
-    _D("Enter");
+    _D("Enter ### ### ###");
     RequestCnt = 1;
-    AppSocket = -1;
 }
 
 Server::~Server()
@@ -99,17 +99,6 @@ int Server::GetRequestId()
     return RequestCnt++;
 }
 
-string Server::GetElementId(char* data)
-{
-    string buf = data;
-    Json::Value root;
-    Json::Reader reader;
-    
-    reader.parse(buf, root);
-    string id = root["params"]["elementId"].asString();
-    return id;
-}
-
 int Server::GetX(char* data)
 {
     string split = "/";
@@ -141,87 +130,9 @@ int Server::GetY(char* data)
     return Y;
 }
 
-string Server::ActionReply(string value)
+void Server::SetAppSocket(Ecore_Con_Client* socket)
 {
-    Json::Value root;
-    root["status"] = 0;
-    root["value"] = value;
-    Json::StyledWriter writer;
-    std::string ret = writer.write(root);
-    _D("%s", ret.c_str());
-
-    return ret;
-}
-
-string Server::ActionReply(bool result)
-{
-    Json::Value root;
-    root["status"] = 0;
-    root["value"] = result;
-    Json::StyledWriter writer;
-    std::string ret = writer.write(root);
-    _D("%s", ret.c_str());
-
-    return ret;
-}
-
-string Server::FindReply(string elementId)
-{
-    Json::Value root;
-    root["status"] = 0;
-    Json::Value list;
-    list["ELEMENT"] = elementId;
-    root["value"] = list;
-    Json::StyledWriter writer;
-    std::string ret = writer.write(root);
-    _D("%s", ret.c_str());
-
-    return ret;
-}
-
-string Server::GetAutomationId(char* data)
-{
-    string buf = data;
-    Json::Value root;
-    Json::Reader reader;
-    reader.parse(buf, root);
-    string selector = root["params"]["selector"].asString();    
-    return selector;
-}
-
-string Server::GetCommand(char* data)
-{
-    string buf = data;
-    Json::Value root;
-    Json::Reader reader;
-    
-    reader.parse(buf, root);
-    string command = root.get("cmd","").asString();
-    return command;
-}
-
-string Server::GetAction(char* data)
-{
-    string buf = data;
-    Json::Value root;
-    Json::Reader reader;
-    
-    reader.parse(buf, root);
-    string command = root.get("cmd","").asString();
-    string action = root.get("action","").asString();
-    string id = root["params"]["elementId"].asString();
-
-    return action;
-}
-
-int Server::GetAppSocket()
-{
-    return AppSocket;
-}
-
-void Server::SetAppSocket(int socket)
-{
-    AppSocket = socket;
+    Appium = socket;
 }
 
 Eina_Bool ClientAddCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore_Con_Event_Client_Add *ev)
@@ -240,8 +151,6 @@ Eina_Bool ClientDeleteCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Eco
    return ECORE_CALLBACK_RENEW;
 }
 
-Ecore_Con_Client* _client;
-
 Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore_Con_Event_Client_Data *ev)
 {
    char buf[255];
@@ -250,11 +159,11 @@ Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore
    _D("Received :%s", buf);
    string reply;
 
-   string cmd = Server::getInstance().GetCommand(buf);
+   string cmd = JsonUtils::GetCommand(buf);
    if(!cmd.compare(COMMAND_SHUTDOWN))
    {
         _D("Shutdown");
-        reply = Server::getInstance().ActionReply("Shutdown");
+        reply = JsonUtils::ActionReply("Shutdown");
         
         ecore_con_client_send(ev->client, reply.c_str(), strlen(reply.c_str()));
         ecore_con_client_flush(ev->client);
@@ -263,13 +172,13 @@ Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore
    }
    else if (!cmd.compare(COMMAND_ACTION))
    {
-        string action = Server::getInstance().GetAction(buf);
+        string action = JsonUtils::GetAction(buf);
         if(!action.compare(ACTION_FIND))
         {
             _D("Element Find");
             Request request;
             request.RequestId = Server::getInstance().GetRequestId();
-            request.AutomationId = Server::getInstance().GetAutomationId(buf);
+            request.AutomationId = JsonUtils::GetAutomationId(buf);
             request.Command = action;
 
             char* args = strdup(request.AutomationId.c_str());
@@ -283,7 +192,7 @@ Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore
 
             Server::getInstance().AddRequest(request);  
 
-            reply = Server::getInstance().FindReply(to_string(request.RequestId));
+            reply = JsonUtils::FindReply(to_string(request.RequestId));
             ecore_con_client_send(ev->client, reply.c_str(), strlen(reply.c_str()));
             ecore_con_client_flush(ev->client);
         }
@@ -291,7 +200,7 @@ Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore
         {
             _D("Action : Click");
 
-            string reqId = Server::getInstance().GetElementId(buf);
+            string reqId = JsonUtils::GetElementId(buf);
             Server::getInstance().UpdateAction(atoi(reqId.c_str()), action);
             Request request = Server::getInstance().GetRequest(atoi(reqId.c_str()));
                     
@@ -303,7 +212,8 @@ Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore
                     
             InputGenerator::getInstance().SendUinputEventForTouchMouse(1, request.X, request.Y);
 
-            _client = ev->client;
+            Server::getInstance().SetAppSocket(ev->client);
+            //_client = ev->client;
         }
    }
    return ECORE_CALLBACK_RENEW;
@@ -311,7 +221,7 @@ Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore
 
 void Server::SignalHandler(DBusMessage* msg)
 {
-   _D("Enter");
+    _D("Enter");
     DBusMessageIter args;
     char* data = NULL;
 
@@ -325,9 +235,9 @@ void Server::SignalHandler(DBusMessage* msg)
 
             _D("%s %s %s", requestId, autoId, command);
 
-            string reply = Server::getInstance().ActionReply(true);
-            ecore_con_client_send(_client, reply.c_str(), strlen(reply.c_str()));
-            ecore_con_client_flush(_client);
+            string reply = JsonUtils::ActionReply(true);
+            ecore_con_client_send(Appium, reply.c_str(), strlen(reply.c_str()));
+            ecore_con_client_flush(Appium);
         }
         dbus_message_iter_next(&args);
     }
@@ -336,7 +246,7 @@ void Server::SignalHandler(DBusMessage* msg)
 
 void Server::init()
 {
-    _D("Init *** --- *** ---");
+    _D("Init");
 
     DBusSignal::getInstance()->RegisterSignal(InterfaceName, CompleteSignal,
                                 std::bind(&Server::SignalHandler, this, std::placeholders::_1));
@@ -352,7 +262,7 @@ void Server::init()
    ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_DEL, (Ecore_Event_Handler_Cb)ClientDeleteCallback, NULL);
    ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_DATA, (Ecore_Event_Handler_Cb)ClientDataCallback, NULL);
 
-   ecore_con_server_timeout_set(Server, 120);
+   ecore_con_server_timeout_set(Server, SERVER_TIMEOUT);
    ecore_con_server_client_limit_set(Server, 3, 0);
 }
 

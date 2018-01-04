@@ -18,6 +18,7 @@ SET(SRCS ${SRCS}
     UIAutomator/src/server/server.cpp
     UIAutomator/src/server/request.cpp
     UIAutomator/src/server/input_generator.cpp
+    UIAutomator/src/server/json_utils.cpp
 )
 
 # -----------------------------------------------------------------------------

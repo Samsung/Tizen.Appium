@@ -28,7 +28,6 @@
 using namespace std;
 
 typedef std::function<void(DBusMessage* msg)> signalHandler;
-//typedef std::function<void(DBusMessage* call, DBusMessage* reply)> RestfulDBusCallback;
 
 class DBusMessage {
 public:

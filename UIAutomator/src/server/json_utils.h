@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __SERVER_H_
-#define __SERVER_H_
+#ifndef __JSON_UTILS_H_
+#define __JSON_UTILS_H_
 
 #include <string>
 #include <vector>
@@ -25,35 +25,25 @@
 #include <condition_variable>
 #include <Ecore_Con.h>
 
-#include "common/dbus_utils.h"
-#include "request.h"
+//#include "common/dbus_utils.h"
+//#include "request.h"
 
 using namespace std;
 
-class Server
+class JsonUtils
 {
 public:
-    Server();
-    ~Server();
-    void exit();
-    void init();
+    JsonUtils();
+    ~JsonUtils();
 
-    static Server& getInstance();
-
-    int GetX(char* data);
-    int GetY(char* data);
-    int GetRequestId();
-    void SignalHandler(DBusMessage* msg);
-
-    void AddRequest(Request req);
-    void UpdateAction(int requestId, string action);
-    Request GetRequest(int requestId);
-    void SetPosition(int requestId, int X, int Y);
-    void SetAppSocket(Ecore_Con_Client* socket);
+    static string GetAutomationId(char* data);
+    static string GetCommand(char* data);
+    static string GetAction(char* data);
+    static string GetElementId(char* data);
+    static string FindReply(string elementId);
+    static string ActionReply(bool result);
+    static string ActionReply(string value);
 private:
-    map<int, Request> RequestMap;
-    int RequestCnt;
-    Ecore_Con_Client* Appium;
 };
 
-#endif /* __SERVER_H_ */
+#endif /* __JSON_UTILS_H_ */
