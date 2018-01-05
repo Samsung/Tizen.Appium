@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace Tizen.Appium
 {
-    class TestHelper
+    public class TestHelper
     {
         static IDictionary<string, WeakReference> _testObjects = new Dictionary<string, WeakReference>();
 
