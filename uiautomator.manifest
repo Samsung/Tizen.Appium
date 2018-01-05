@@ -1,0 +1,5 @@
+<manifest>
+    <define>
+        <domain name="uiautomator"/>
+    </define>
+</manifest>
