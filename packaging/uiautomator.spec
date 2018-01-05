@@ -1,6 +1,6 @@
 Name:       uiautomator
 Summary:    UIAutomator Service
-Version:    0.1.10
+Version:    0.1.1
 Release:    1
 Group:      Framework/system
 License:    Apache

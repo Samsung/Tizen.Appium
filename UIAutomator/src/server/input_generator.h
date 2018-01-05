@@ -45,7 +45,13 @@
 
 #define TRACKING_ID_MAX 65535
 
-class InputGenerator{
+#define DEVICE_TOUCH 1
+
+const int ABS_X_MID = 359;
+const int ABS_Y_MID = 639;
+
+class InputGenerator
+{
 public:
     InputGenerator();
     ~InputGenerator();
@@ -55,6 +61,7 @@ public:
 
 	int OpenFile(const char *file_name);
 	bool InitUinput();
+	int GetCurrentTrackingId();
 	void SendUinputEvent(int device, __u16 type, __u16 code, __s32 value);
 	void SendUinputEventForKey(int device, __u16 code);
 	void SendUinputEventForTouchMouse(int device, __s32 value_x, __s32 value_y);
@@ -66,6 +73,5 @@ private:
 	int fd_uinput_mouse;
 	int id;
 };
-
 
 #endif /* __INPUT_GENERATOR_H_ */

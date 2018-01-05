@@ -210,10 +210,9 @@ Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore
                                                 ObjectPath, InterfaceName, SetCommandMethod, args);
             _D("%s", data);
                     
-            InputGenerator::getInstance().SendUinputEventForTouchMouse(1, request.X, request.Y);
+            InputGenerator::getInstance().SendUinputEventForTouchMouse(DEVICE_TOUCH, request.X, request.Y);
 
             Server::getInstance().SetAppSocket(ev->client);
-            //_client = ev->client;
         }
    }
    return ECORE_CALLBACK_RENEW;

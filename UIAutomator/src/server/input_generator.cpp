@@ -208,23 +208,22 @@ void InputGenerator::SendUinputEventForKey(int device, __u16 code)
     SendUinputEvent (device, EV_SYN, SYN_REPORT, 0);
 }
 
-void InputGenerator::SendUinputEventForTouchMouse(int device, __s32 value_x, __s32 value_y)
+int InputGenerator::GetCurrentTrackingId()
 {
-    struct timespec sleeptime = {0, 8000}; //speed (low value: fast, high value: slow)
-    //__s32 x = value_x;
-    //__s32 y = value_y;
-
-    //int _x = rand() % 719;
-    //int _y = rand() % 1279;
-
-    _D("X = %d,  Y = %d", value_x, value_y);
-
     id++;
     if(id >= TRACKING_ID_MAX){
         id = 1;
     }
+    return id;
+}
 
-    SendUinputEvent (device, EV_ABS, ABS_MT_TRACKING_ID, id);
+void InputGenerator::SendUinputEventForTouchMouse(int device, __s32 value_x, __s32 value_y)
+{
+    struct timespec sleeptime = {0, 8000}; //speed (low value: fast, high value: slow)
+    _D("X = %d,  Y = %d", value_x, value_y);
+
+    int nowId = GetCurrentTrackingId();
+    SendUinputEvent (device, EV_ABS, ABS_MT_TRACKING_ID, nowId);
     SendUinputEvent (device, EV_KEY, BTN_TOUCH, 1);
     SendUinputEvent (device, EV_ABS, ABS_MT_POSITION_X, value_x);
     SendUinputEvent (device, EV_ABS, ABS_MT_POSITION_Y, value_y);

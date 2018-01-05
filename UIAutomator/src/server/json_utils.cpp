@@ -133,9 +133,6 @@ string JsonUtils::GetAction(char* data)
     Json::Reader reader;
     
     reader.parse(buf, root);
-    string command = root.get("cmd","").asString();
     string action = root.get("action","").asString();
-    string id = root["params"]["elementId"].asString();
-
     return action;
 }
