@@ -252,7 +252,51 @@ void InputGenerator::SendUinputEventForWheel(int device, __s32 value_y)
     nanosleep(&sleeptime, NULL);
 }
 
-void InputGenerator::Simulator(int x, int y)
+void InputGenerator::SendUinputEventForFlick(int device, int xSpeed, int ySpeed)
 {
-	SendUinputEventForTouchMouse(1, x, y);
+    struct timespec sleeptime = {0, 8000}; //speed (low value: fast, high value: slow)
+    _D("xSpped %d, ySpeed %d", xSpeed, ySpeed);
+
+    double ratio = (double) xSpeed / ySpeed;
+    int yDiff = 0;
+    int xDiff = 0;
+    int xCurrent = ABS_X_MID;
+    int yCurrent = ABS_Y_MID;
+
+    if(ratio < 1)
+    {
+        yDiff = ABS_X_MID / (4 * 6);
+        xDiff = ABS_X_MID / (4 * 6) * ratio;
+    }
+    else
+    {
+        yDiff = ABS_X_MID / (4 * 6) * ratio;
+        xDiff = ABS_X_MID / (4 * 6);
+    }
+
+    int nowId = GetCurrentTrackingId();
+    SendUinputEvent (device, EV_ABS, ABS_MT_TRACKING_ID, nowId);
+    SendUinputEvent (device, EV_KEY, BTN_TOUCH, 1);
+    SendUinputEvent (device, EV_ABS, ABS_MT_POSITION_X, xCurrent);
+    SendUinputEvent (device, EV_ABS, ABS_MT_POSITION_Y, yCurrent);
+    SendUinputEvent (device, EV_ABS, ABS_MT_TOUCH_MAJOR, 4);
+    SendUinputEvent (device, EV_SYN, SYN_REPORT, 0);
+    nanosleep(&sleeptime, NULL);
+
+    for(int i=1 ; i<=6 ; i++)
+    {
+        xCurrent = xCurrent - xDiff;
+        yCurrent = yCurrent - yDiff;
+        SendUinputEvent (device, EV_ABS, ABS_MT_POSITION_X, xCurrent);
+        SendUinputEvent (device, EV_ABS, ABS_MT_POSITION_Y, yCurrent);
+        SendUinputEvent (device, EV_ABS, ABS_MT_TOUCH_MAJOR, 3);
+        SendUinputEvent (device, EV_SYN, SYN_REPORT, 0);
+        //_D("X %d, Y %d", xCurrent, yCurrent);
+        nanosleep(&sleeptime, NULL);
+    }
+    
+    SendUinputEvent (device, EV_ABS, ABS_MT_TRACKING_ID, -1);
+    SendUinputEvent (device, EV_KEY, BTN_TOUCH, 0);
+    SendUinputEvent (device, EV_SYN, SYN_REPORT, 0);
+    nanosleep(&sleeptime, NULL);
 }
