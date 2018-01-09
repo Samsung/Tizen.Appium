@@ -22,6 +22,7 @@
 #include <memory>
 #include <mutex>
 #include <map>
+#include <functional>
 #include <condition_variable>
 #include <Ecore_Con.h>
 
@@ -29,6 +30,8 @@
 #include "request.h"
 
 using namespace std;
+
+typedef std::function<void(char* buf)> CommandHandler;
 
 class Server
 {
@@ -50,10 +53,20 @@ public:
     void SetPosition(int requestId, int X, int Y);
     void SetAppSocket(Ecore_Con_Client* socket);
 
+    void AddHandler(string action, CommandHandler function);
     void SignalHandler(DBusMessage* msg);
     void ShutDownHandler();
     void ClickHandler(char* buf);
     void FindHandler(char* buf);
+    void PressKeycodeHandler(char* buf);
+    void FlickHandler(char* buf);
+    void GetAttributeHandler(char* buf);
+    void GetSizeHandler(char* buf);
+    void TouchDownHandler(char* buf);
+    void TouchUpHandler(char* buf);
+    void TouchMoveHandler(char* buf);
+    void GetLocationHandler(char* buf);
+    std::map<string, CommandHandler> HandlerMap;
 private:
     map<int, Request> RequestMap;
     int RequestCnt;

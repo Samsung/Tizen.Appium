@@ -52,6 +52,11 @@ Server::Server()
     RequestCnt = 1;
 }
 
+void Server::AddHandler(string action, CommandHandler function)
+{
+    HandlerMap[action] = std::move(function);
+}
+
 Server::~Server()
 {
     _D("Enter");
@@ -65,14 +70,16 @@ Server& Server::getInstance()
 
 void Server::AddRequest(Request req)
 {
-    if(req.RequestId != -1){
+    if(req.RequestId != -1)
+    {
         RequestMap[req.RequestId] = req;
     }
 }
 
 Request Server::GetRequest(int requestId)
 {
-    if(requestId != -1){
+    if(requestId != -1)
+    {
         return RequestMap[requestId];
     }
     Request req;
@@ -81,14 +88,16 @@ Request Server::GetRequest(int requestId)
 
 void Server::UpdateAction(int requestId, string action)
 {
-    if(requestId != -1){
+    if(requestId != -1)
+    {
         RequestMap[requestId].Command = action;
     }
 }
 
 void Server::SetPosition(int requestId, int X, int Y)
 {
-    if(requestId != -1){
+    if(requestId != -1)
+    {
         RequestMap[requestId].X = X;
         RequestMap[requestId].Y = Y;
     }
@@ -167,15 +176,16 @@ Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore
     }
 
     string action = JsonUtils::GetAction(buf);
-    if(!action.compare(ACTION_FIND))
+    if(Server::getInstance().HandlerMap.find(action) != Server::getInstance().HandlerMap.end())
     {
-        Server::getInstance().FindHandler(buf);
+        _D("Find [%s] Handler", action.c_str());
+        Server::getInstance().HandlerMap[action](buf);
     }
-    else if(!action.compare(ACTION_CLICK))
+    else
     {
-        Server::getInstance().ClickHandler(buf);
+        _D("Invalid Command");
     }
-   return ECORE_CALLBACK_RENEW;
+    return ECORE_CALLBACK_RENEW;
 }
 
 void Server::FindHandler(char* buf)
@@ -215,6 +225,55 @@ void Server::ClickHandler(char* buf)
     _D("%s", data);
                     
     InputGenerator::getInstance().SendUinputEventForTouchMouse(DEVICE_TOUCH, request.X, request.Y);
+}
+
+void Server::PressKeycodeHandler(char* buf)
+{
+    _D("Enter");
+
+}
+
+void Server::FlickHandler(char* buf)
+{
+    _D("Enter");
+
+}
+
+void Server::GetAttributeHandler(char* buf)
+{
+    _D("Enter");
+
+}
+
+
+void Server::GetSizeHandler(char* buf)
+{
+    _D("Enter");
+
+}
+
+void Server::TouchDownHandler(char* buf)
+{
+    _D("Enter");
+
+}
+
+void Server::TouchUpHandler(char* buf)
+{
+    _D("Enter");
+
+}
+
+void Server::TouchMoveHandler(char* buf)
+{
+    _D("Enter");
+
+}
+
+void Server::GetLocationHandler(char* buf)
+{
+    _D("Enter");
+
 }
 
 void Server::ShutDownHandler()
@@ -257,6 +316,17 @@ void Server::init()
     DBusSignal::getInstance()->RegisterSignal(InterfaceName, CompleteSignal,
                                 std::bind(&Server::SignalHandler, this, std::placeholders::_1));
 
+    Server::getInstance().AddHandler(ACTION_FIND, std::bind(&Server::FindHandler, this, std::placeholders::_1));
+    Server::getInstance().AddHandler(ACTION_FLICK, std::bind(&Server::FlickHandler, this, std::placeholders::_1));
+    Server::getInstance().AddHandler(ACTION_CLICK, std::bind(&Server::ClickHandler, this, std::placeholders::_1));    
+    Server::getInstance().AddHandler(ACTION_GET_SIZE, std::bind(&Server::GetSizeHandler, this, std::placeholders::_1));
+    Server::getInstance().AddHandler(ACTION_TOUCH_DOWN, std::bind(&Server::TouchDownHandler, this, std::placeholders::_1));
+    Server::getInstance().AddHandler(ACTION_TOUCH_UP, std::bind(&Server::TouchUpHandler, this, std::placeholders::_1));
+    Server::getInstance().AddHandler(ACTION_TOUCH_MOVE, std::bind(&Server::TouchMoveHandler, this, std::placeholders::_1));
+    Server::getInstance().AddHandler(ACTION_GET_LOCATION, std::bind(&Server::GetLocationHandler, this, std::placeholders::_1));
+    Server::getInstance().AddHandler(ACTION_GET_ATTRIBUTE, std::bind(&Server::GetAttributeHandler, this, std::placeholders::_1));
+    Server::getInstance().AddHandler(ACTION_PRESS_KEYCODE, std::bind(&Server::PressKeycodeHandler, this, std::placeholders::_1));
+    
     Ecore_Con_Server *Server;
     if (!(Server = ecore_con_server_add(ECORE_CON_REMOTE_TCP, "127.0.0.1", 8888, NULL)))
     {
