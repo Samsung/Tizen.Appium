@@ -48,7 +48,7 @@ const int SERVER_TIMEOUT = 300;
 
 Server::Server()
 {
-    _D("Enter ### ### ###");
+    _D("Enter");
     RequestCnt = 1;
 }
 
@@ -137,13 +137,14 @@ void Server::SetAppSocket(Ecore_Con_Client* socket)
 
 Eina_Bool ClientAddCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore_Con_Event_Client_Add *ev)
 {
-   _D("Client is added");
+   _D("Connected with Appium");
+   Server::getInstance().SetAppSocket(ev->client);
    return ECORE_CALLBACK_RENEW;
 }
 
 Eina_Bool ClientDeleteCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore_Con_Event_Client_Del *ev)
 {
-   _D("Client is deleted");
+   _D("Disconnected with Appium");
    if (ev->client)
    {
        ecore_con_client_del(ev->client);
@@ -153,69 +154,75 @@ Eina_Bool ClientDeleteCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Eco
 
 Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore_Con_Event_Client_Data *ev)
 {
-   char buf[255];
-   memset(buf, 0, 255);
-   sprintf(buf, "%s", (char*)ev->data);
-   _D("Received :%s", buf);
-   string reply;
+    char buf[255];
+    memset(buf, 0, 255);
+    sprintf(buf, "%s", (char*)ev->data);
+    _D("Received :%s", buf);
 
-   string cmd = JsonUtils::GetCommand(buf);
-   if(!cmd.compare(COMMAND_SHUTDOWN))
-   {
-        _D("Shutdown");
-        reply = JsonUtils::ActionReply("Shutdown");
-        
-        ecore_con_client_send(ev->client, reply.c_str(), strlen(reply.c_str()));
-        ecore_con_client_flush(ev->client);
-
+    string cmd = JsonUtils::GetCommand(buf);
+    if(!cmd.compare(COMMAND_SHUTDOWN))
+    {
+        Server::getInstance().ShutDownHandler();
         return ECORE_CALLBACK_RENEW;
-   }
-   else if (!cmd.compare(COMMAND_ACTION))
-   {
-        string action = JsonUtils::GetAction(buf);
-        if(!action.compare(ACTION_FIND))
-        {
-            _D("Element Find");
-            Request request;
-            request.RequestId = Server::getInstance().GetRequestId();
-            request.AutomationId = JsonUtils::GetAutomationId(buf);
-            request.Command = action;
+    }
 
-            char* args = strdup(request.AutomationId.c_str());
-            char* data = DBusMessage::getInstance()->SendSyncMessage(
-                                                ObjectPath, InterfaceName, GetPositionMethod, args);
-
-            _D("%s", data);
-                                            
-            request.X = Server::getInstance().GetX(data);
-            request.Y = Server::getInstance().GetY(data);
-
-            Server::getInstance().AddRequest(request);  
-
-            reply = JsonUtils::FindReply(to_string(request.RequestId));
-            ecore_con_client_send(ev->client, reply.c_str(), strlen(reply.c_str()));
-            ecore_con_client_flush(ev->client);
-        }
-        else if(!action.compare(ACTION_CLICK))
-        {
-            _D("Action : Click");
-
-            string reqId = JsonUtils::GetElementId(buf);
-            Server::getInstance().UpdateAction(atoi(reqId.c_str()), action);
-            Request request = Server::getInstance().GetRequest(atoi(reqId.c_str()));
-                    
-            sprintf(buf,"%s/%s/%s", reqId.c_str(), request.AutomationId.c_str(), request.Command.c_str());
-            char* args = strdup(buf);
-            char* data = DBusMessage::getInstance()->SendSyncMessage(
-                                                ObjectPath, InterfaceName, SetCommandMethod, args);
-            _D("%s", data);
-                    
-            InputGenerator::getInstance().SendUinputEventForTouchMouse(DEVICE_TOUCH, request.X, request.Y);
-
-            Server::getInstance().SetAppSocket(ev->client);
-        }
-   }
+    string action = JsonUtils::GetAction(buf);
+    if(!action.compare(ACTION_FIND))
+    {
+        Server::getInstance().FindHandler(buf);
+    }
+    else if(!action.compare(ACTION_CLICK))
+    {
+        Server::getInstance().ClickHandler(buf);
+    }
    return ECORE_CALLBACK_RENEW;
+}
+
+void Server::FindHandler(char* buf)
+{
+    _D("Enter");
+    Request request;
+    request.RequestId = Server::getInstance().GetRequestId();
+    request.AutomationId = JsonUtils::GetParam(buf, "selector");
+    string action = JsonUtils::GetAction(buf);
+    request.Command = action;
+
+    char* args = strdup(request.AutomationId.c_str());
+    char* data = DBusMessage::getInstance()->SendSyncMessage(
+                              ObjectPath, InterfaceName, GetPositionMethod, args);
+
+    _D("%s", data);             
+    request.X = Server::getInstance().GetX(data);
+    request.Y = Server::getInstance().GetY(data);
+    Server::getInstance().AddRequest(request);  
+
+    string reply = JsonUtils::FindReply(to_string(request.RequestId));
+    ecore_con_client_send(Appium, reply.c_str(), strlen(reply.c_str()));
+    ecore_con_client_flush(Appium);
+}
+
+void Server::ClickHandler(char* buf)
+{
+    _D("Enter");
+    string action = JsonUtils::GetAction(buf);
+    string reqId = JsonUtils::GetParam(buf, "elementId");
+    Server::getInstance().UpdateAction(atoi(reqId.c_str()), action);
+    Request request = Server::getInstance().GetRequest(atoi(reqId.c_str()));
+                    
+    sprintf(buf,"%s/%s/%s", reqId.c_str(), request.AutomationId.c_str(), request.Command.c_str());
+    char* args = strdup(buf);
+    char* data = DBusMessage::getInstance()->SendSyncMessage(ObjectPath, InterfaceName, SetCommandMethod, args);
+    _D("%s", data);
+                    
+    InputGenerator::getInstance().SendUinputEventForTouchMouse(DEVICE_TOUCH, request.X, request.Y);
+}
+
+void Server::ShutDownHandler()
+{
+   _D("Enter");
+   string reply = JsonUtils::ActionReply("Shutdown");
+   ecore_con_client_send(Appium, reply.c_str(), strlen(reply.c_str()));
+   ecore_con_client_flush(Appium);
 }
 
 void Server::SignalHandler(DBusMessage* msg)

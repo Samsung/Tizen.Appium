@@ -22,7 +22,6 @@ using namespace std;
 
 Request::Request()
 {
-    _D("Enter");
     RequestId = -1;
     X = -1;
     Y = -1;

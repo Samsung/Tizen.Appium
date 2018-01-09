@@ -16,28 +16,6 @@
 
 #include "json_utils.h"
 #include "common/log.h"
-/*
-#include "common/common.h"
-#include "common/dbus_utils.h"
-#include "common/type.h"
-#include "input_generator.h"
-#include "request.h"
-*/
-/*
-#include <chrono>
-#include <thread>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <pthread.h>
-*/
 #include <json/json.h>
 #include <glib.h>
 #include <gio/gio.h>
@@ -54,17 +32,6 @@ JsonUtils::JsonUtils()
 JsonUtils::~JsonUtils()
 {
     _D("Enter");
-}
-
-string JsonUtils::GetElementId(char* data)
-{
-    string buf = data;
-    Json::Value root;
-    Json::Reader reader;
-    
-    reader.parse(buf, root);
-    string id = root["params"]["elementId"].asString();
-    return id;
 }
 
 string JsonUtils::ActionReply(string value)
@@ -105,14 +72,22 @@ string JsonUtils::FindReply(string elementId)
     return ret;
 }
 
-string JsonUtils::GetAutomationId(char* data)
+string JsonUtils::GetParam(char* data, string key)
 {
     string buf = data;
     Json::Value root;
     Json::Reader reader;
-    reader.parse(buf, root);
-    string selector = root["params"]["selector"].asString();    
-    return selector;
+    bool ret = reader.parse(buf, root);
+    if(true == ret)
+    {
+        string value = root["params"][key].asString();
+        return value;
+    }
+    else
+    {
+        _D("fail to parse %s in %s", key.c_str(),data);
+        return "";
+    }
 }
 
 string JsonUtils::GetCommand(char* data)

@@ -36,10 +36,10 @@ using namespace std;
 
 std::set<DBusMessage*> DBusMessage::s_objects_;
 
-DBusMessage* DBusMessage::getInstance() {
-  _D("Enter");
-  static DBusMessage instance;
-  return &instance;
+DBusMessage* DBusMessage::getInstance() 
+{
+    static DBusMessage instance;
+    return &instance;
 }
 
 DBusMessage::DBusMessage() : destination_("org.tizen.appium"), connection_(nullptr) 
@@ -49,16 +49,20 @@ DBusMessage::DBusMessage() : destination_("org.tizen.appium"), connection_(nullp
 
 DBusMessage::~DBusMessage()
 {
-    if (connection_) {
+    if (connection_) 
+    {
         dbus_connection_close(connection_);
         dbus_connection_unref(connection_);
     }
 
     const auto iter = s_objects_.find(this);
 
-    if (s_objects_.end() != iter){
+    if (s_objects_.end() != iter)
+    {
         s_objects_.erase(iter);
-    } else {
+    } 
+    else 
+    {
         _D("Object is not existing in the static pool");
     }
 }
@@ -66,13 +70,15 @@ DBusMessage::~DBusMessage()
 void DBusMessage::CheckConnection()
 {
     _D("Enter");
-    if (!connection_) {
+    if (!connection_) 
+    {
         DBusError err;
         dbus_error_init(&err);
 
         connection_ = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
 
-        if (dbus_error_is_set(&err)) {
+        if (dbus_error_is_set(&err)) 
+        {
             _D("dbus_bus_get error [%s, %s]", err.name, err.message);
         }
     }
@@ -83,9 +89,8 @@ void DBusMessage::CheckConnection()
 }
 
 char* DBusMessage::SendSyncMessage(const std::string& dPath, const std::string& dInterface, 
-                                    const std::string& dMethod, char* arguements) 
+                                   const std::string& dMethod, char* arguements) 
 {
-
     CheckConnection();
     DBusMessage* msg = dbus_message_new_method_call(
                             destination_.c_str(), dPath.c_str(), dInterface.c_str(), dMethod.c_str());
@@ -95,9 +100,9 @@ char* DBusMessage::SendSyncMessage(const std::string& dPath, const std::string& 
         return 0;
     }
     
-    DBusMessageIter args2;
-    dbus_message_iter_init_append(msg, &args2);
-    dbus_message_iter_append_basic(&args2, DBUS_TYPE_STRING, &arguements);
+    DBusMessageIter args;
+    dbus_message_iter_init_append(msg, &args);
+    dbus_message_iter_append_basic(&args, DBUS_TYPE_STRING, &arguements);
 
     DBusError err;
     dbus_error_init(&err);
@@ -114,7 +119,6 @@ char* DBusMessage::SendSyncMessage(const std::string& dPath, const std::string& 
     char* result = 0;
     dbus_bool_t ret = dbus_message_get_args(reply, &err, DBUS_TYPE_STRING, &result, DBUS_TYPE_INVALID);
     dbus_message_unref(reply);
-
     if (!ret) 
     {
         _D("dbus_message_get_args error %s: %s", err.name, err.message);
@@ -147,48 +151,54 @@ DBusSignal* DBusSignal::getInstance()
 
 int DBusSignal::InitializeConnection()
 {
-
     DBusError err;
     int ret;
 
-    if(connection_ != NULL){
+    if(connection_ != NULL)
+    {
         _D("Dbus connection already created");
         return 0;
     }
 
     dbus_error_init(&err);
     connection_ = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
-    if (dbus_error_is_set(&err)) {
+    if (dbus_error_is_set(&err)) 
+    {
         _D("Dbus error [%s , %s]", err.name, err.message);
         dbus_error_free(&err);
         return -1;
     }
 
-    if (NULL == connection_) {
+    if (NULL == connection_) 
+    {
         _D("Dbus error [%s , %s]", err.name, err.message);
         dbus_error_free(&err);
         return -1;
     }
 
-    // TODO : temporary
     dbus_connection_setup_with_g_main(connection_, nullptr);
 
     ret = dbus_bus_request_name(connection_, "tizen.restful.signal", DBUS_NAME_FLAG_REPLACE_EXISTING , &err);
-    if (dbus_error_is_set(&err)) {
+    if (dbus_error_is_set(&err)) 
+    {
         _D("Dbus error [%s , %s]", err.name, err.message);
         dbus_error_free(&err);
         return -1;
     }
 
-    if (DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER != ret) {
+    if (DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER != ret) 
+    {
         _D("Request name already has owner");
     }
 
-    if (dbus_connection_add_filter(connection_, DBusSignalHandler, this, nullptr) == FALSE) {
+    if (dbus_connection_add_filter(connection_, DBusSignalHandler, this, nullptr) == FALSE) 
+    {
         _D("Fail to add filter : %s, %s", err.name, err.message);
         dbus_error_free(&err);
         return -1;
-    }else{
+    }
+    else
+    {
         _D("Handler registered");
         return 0;
     }
@@ -198,12 +208,14 @@ int DBusSignal::InitializeConnection()
 DBusHandlerResult DBusSignal::DBusSignalHandler(DBusConnection* conn, DBusMessage* msg, void* user_data)
 {
     _D("Enter");
-    if (NULL == msg) {
+    if (NULL == msg) 
+    {
         _D("Message Null");
         return DBUS_HANDLER_RESULT_HANDLED ;
     }
 
-    for (auto iter : signalMap){
+    for (auto iter : signalMap)
+    {
         char_separator<char> sep("/");
         tokenizer<char_separator<char>> tokens(iter.first, sep);
         std::list<std::string> pathList(tokens.begin(), tokens.end());
@@ -213,7 +225,8 @@ DBusHandlerResult DBusSignal::DBusSignalHandler(DBusConnection* conn, DBusMessag
         tokenIter++;
         string _method = *tokenIter;
 
-        if (dbus_message_is_signal(msg, _interface.c_str(), _method.c_str())) {
+        if (dbus_message_is_signal(msg, _interface.c_str(), _method.c_str())) 
+        {
             iter.second(msg);
             break;
         }
@@ -229,7 +242,8 @@ int DBusSignal::RegisterSignal(const std::string& dInterface, const std::string&
     DBusError err;
     signalHandler _handler;
 
-    if(nullptr == connection_){
+    if(nullptr == connection_)
+    {
         InitializeConnection();
     }
 
@@ -242,7 +256,8 @@ int DBusSignal::RegisterSignal(const std::string& dInterface, const std::string&
 
     dbus_bus_add_match(connection_, signalRule.c_str(), &err); // see signals from the given interface
     dbus_connection_flush(connection_);
-    if (dbus_error_is_set(&err)) {
+    if (dbus_error_is_set(&err)) 
+    {
         _D("dbus error : %s", err.message);
         dbus_error_free(&err);
         return -1;

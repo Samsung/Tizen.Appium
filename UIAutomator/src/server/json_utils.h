@@ -25,9 +25,6 @@
 #include <condition_variable>
 #include <Ecore_Con.h>
 
-//#include "common/dbus_utils.h"
-//#include "request.h"
-
 using namespace std;
 
 class JsonUtils
@@ -36,13 +33,13 @@ public:
     JsonUtils();
     ~JsonUtils();
 
-    static string GetAutomationId(char* data);
     static string GetCommand(char* data);
     static string GetAction(char* data);
-    static string GetElementId(char* data);
+    //static string GetElementId(char* data);
     static string FindReply(string elementId);
     static string ActionReply(bool result);
     static string ActionReply(string value);
+    static string GetParam(char* data, string key);
 private:
 };
 

@@ -24,7 +24,15 @@ const std::string COMMAND_SHUTDOWN = "shutdown";
 const std::string COMMAND_ACTION = "action";
 
 const std::string ACTION_FIND = "find";
+const std::string ACTION_FLICK = "flick";
+const std::string ACTION_PRESS_KEYCODE = "pressKeyCode";
 const std::string ACTION_CLICK = "element:click";
+const std::string ACTION_GET_ATTRIBUTE = "element:getAttribute";
+const std::string ACTION_GET_SIZE = "element:getSize";
+const std::string ACTION_TOUCH_DOWN = "element:touchDown";
+const std::string ACTION_TOUCH_UP = "element:touchUp";
+const std::string ACTION_TOUCH_MOVE = "element:touchMove";
+const std::string ACTION_GET_LOCATION = "element:getLocation";
 
 const std::string ACTION_WAIT = "wait";
 

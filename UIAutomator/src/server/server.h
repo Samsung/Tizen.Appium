@@ -43,13 +43,17 @@ public:
     int GetX(char* data);
     int GetY(char* data);
     int GetRequestId();
-    void SignalHandler(DBusMessage* msg);
 
     void AddRequest(Request req);
-    void UpdateAction(int requestId, string action);
     Request GetRequest(int requestId);
+    void UpdateAction(int requestId, string action);
     void SetPosition(int requestId, int X, int Y);
     void SetAppSocket(Ecore_Con_Client* socket);
+
+    void SignalHandler(DBusMessage* msg);
+    void ShutDownHandler();
+    void ClickHandler(char* buf);
+    void FindHandler(char* buf);
 private:
     map<int, Request> RequestMap;
     int RequestCnt;
