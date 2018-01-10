@@ -20,6 +20,7 @@
 #include <vector>
 #include <set>
 #include <list>
+#include <algorithm>
 #include <functional>
 #include <boost/tokenizer.hpp>
 #include <dbus/dbus.h>
@@ -34,6 +35,15 @@ using namespace boost;
 using namespace std;
 
 
+DBusArgument::DBusArgument()
+{
+}
+
+DBusArgument::~DBusArgument()
+{
+}
+
+
 std::set<DBusMessage*> DBusMessage::s_objects_;
 
 DBusMessage* DBusMessage::getInstance() 
@@ -42,7 +52,7 @@ DBusMessage* DBusMessage::getInstance()
     return &instance;
 }
 
-DBusMessage::DBusMessage() : destination_("org.tizen.appium"), connection_(nullptr) 
+DBusMessage::DBusMessage() : DBusDestination("org.tizen.appium"), connection_(nullptr), DBusPath("/org/tizen/appium"), DBusInterface("org.tizen.appium") 
 {
     s_objects_.insert(this);
 }
@@ -69,7 +79,6 @@ DBusMessage::~DBusMessage()
 
 void DBusMessage::CheckConnection()
 {
-    _D("Enter");
     if (!connection_) 
     {
         DBusError err;
@@ -88,21 +97,67 @@ void DBusMessage::CheckConnection()
     }
 }
 
-char* DBusMessage::SendSyncMessage(const std::string& dPath, const std::string& dInterface, 
-                                   const std::string& dMethod, char* arguements) 
+void DBusMessage::AddArgument(bool data)
+{   
+    DBusArgument arg;
+    arg.Type = TypeBool;
+    arg.DataBool = data;
+    Arguments.push_back(arg);
+}
+
+void DBusMessage::AddArgument(int data)
+{   
+    DBusArgument arg;
+    arg.Type = TypeInt;
+    arg.DataInt = data;
+    Arguments.push_back(arg);
+}
+
+void DBusMessage::AddArgument(string data)
+{   
+    DBusArgument arg;
+    arg.Type = TypeString;
+    arg.DataString = data;
+    Arguments.push_back(arg);
+}
+
+void DBusMessage::GetReplyMessage(DBusMessage* reply, char** value)
+{
+    DBusError err;
+    dbus_error_init(&err);
+
+    dbus_bool_t ret = dbus_message_get_args(reply, &err, DBUS_TYPE_STRING, value, DBUS_TYPE_INVALID);
+    dbus_message_unref(reply);
+    if (!ret) 
+    {
+        _D("dbus_message_get_args error %s: %s", err.name, err.message);
+        dbus_error_free(&err);
+        return;
+    }
+    return;
+}
+
+DBusMessage* DBusMessage::SendSyncMessage(string method) 
 {
     CheckConnection();
-    DBusMessage* msg = dbus_message_new_method_call(
-                            destination_.c_str(), dPath.c_str(), dInterface.c_str(), dMethod.c_str());
+    DBusMessage* msg = dbus_message_new_method_call(DBusDestination.c_str(), DBusPath.c_str(), DBusInterface.c_str(), method.c_str());
     if (!msg)
     {
         _D("dbus_message_new_method_call error");
         return 0;
     }
-    
     DBusMessageIter args;
     dbus_message_iter_init_append(msg, &args);
-    dbus_message_iter_append_basic(&args, DBUS_TYPE_STRING, &arguements);
+    for(auto cur = Arguments.begin(); cur != Arguments.end(); cur++)
+    {
+        if((*cur).Type == TypeString)
+        {
+            char* temp = strdup((*cur).DataString.c_str());
+            _D("argument : %s", temp);
+            dbus_message_iter_append_basic(&args, DBUS_TYPE_STRING, &temp);
+        }        
+    }
+    Arguments.clear();
 
     DBusError err;
     dbus_error_init(&err);
@@ -115,17 +170,7 @@ char* DBusMessage::SendSyncMessage(const std::string& dPath, const std::string& 
         dbus_error_free(&err);
         return 0;
     }
-
-    char* result = 0;
-    dbus_bool_t ret = dbus_message_get_args(reply, &err, DBUS_TYPE_STRING, &result, DBUS_TYPE_INVALID);
-    dbus_message_unref(reply);
-    if (!ret) 
-    {
-        _D("dbus_message_get_args error %s: %s", err.name, err.message);
-        dbus_error_free(&err);
-        return 0;
-    }
-    return strdup(result);
+    return reply;
 }
 
 std::map<std::string, signalHandler> DBusSignal::signalMap;

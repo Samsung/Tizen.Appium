@@ -45,12 +45,12 @@ public:
 
     int GetX(char* data);
     int GetY(char* data);
-    int GetRequestId();
+    string GetRequestId();
 
     void AddRequest(Request req);
-    Request GetRequest(int requestId);
-    void UpdateAction(int requestId, string action);
-    void SetPosition(int requestId, int X, int Y);
+    Request GetRequest(string requestId);
+    void UpdateAction(string requestId, string action);
+    void SetPosition(string requestId, int X, int Y);
     void SetAppSocket(Ecore_Con_Client* socket);
 
     void AddHandler(string action, CommandHandler function);
@@ -58,7 +58,7 @@ public:
     void ShutDownHandler();
     void ClickHandler(char* buf);
     void FindHandler(char* buf);
-    void PressKeycodeHandler(char* buf);
+    void InputTextHandler(char* buf);
     void FlickHandler(char* buf);
     void GetAttributeHandler(char* buf);
     void GetSizeHandler(char* buf);
@@ -68,7 +68,7 @@ public:
     void GetLocationHandler(char* buf);
     std::map<string, CommandHandler> HandlerMap;
 private:
-    map<int, Request> RequestMap;
+    map<string, Request> RequestMap;
     int RequestCnt;
     Ecore_Con_Client* Appium;
 };

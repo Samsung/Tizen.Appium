@@ -29,39 +29,63 @@ using namespace std;
 
 typedef std::function<void(DBusMessage* msg)> signalHandler;
 
-class DBusMessage {
-public:
-  DBusMessage();
-  virtual ~DBusMessage();
-  static DBusMessage* getInstance();
-
-  char* SendSyncMessage(const std::string& dPath,
-                      const std::string& dInterface, const std::string& dMethod,
-                      char* automationId);
-
-private:
-  std::string destination_;
-  DBusConnection* connection_;
-
-  static std::set<DBusMessage*> s_objects_;
-
-  void CheckConnection();
+enum ArgumentType
+{
+    TypeBool,
+    TypeInt,
+    TypeString,
 };
 
-class DBusSignal {
+class DBusArgument
+{
 public:
-  DBusSignal();
-  virtual ~DBusSignal();
-  static DBusSignal* getInstance();
+    DBusArgument();
+    virtual ~DBusArgument();
+    ArgumentType Type;
+    int DataInt;
+    string DataString;
+    int DataBool;
+};
 
-  int RegisterSignal(const std::string& dInterface, const std::string& dMethod, signalHandler callback);
-  static DBusHandlerResult DBusSignalHandler(DBusConnection* conn, DBusMessage* msg,void* user_data);
+class DBusMessage 
+{
+public:
+    DBusMessage();
+    virtual ~DBusMessage();
+    static DBusMessage* getInstance();
+
+    void AddArgument(string data);
+    void AddArgument(bool data);
+    void AddArgument(int data);
+    DBusMessage* SendSyncMessage(string method);
+    void GetReplyMessage(DBusMessage* reply, char** value);
 
 private:
-  DBusConnection* connection_;
+    string DBusDestination;
+    string DBusPath;
+    string DBusInterface; 
+    DBusConnection* connection_;
 
-  static std::map<std::string, signalHandler> signalMap;
-  int InitializeConnection();
+    static std::set<DBusMessage*> s_objects_;
+    vector<DBusArgument> Arguments;
+
+    void CheckConnection();
+};
+
+class DBusSignal
+{
+public:
+    DBusSignal();
+    virtual ~DBusSignal();
+    static DBusSignal* getInstance();
+
+    int RegisterSignal(const std::string& dInterface, const std::string& dMethod, signalHandler callback);
+    static DBusHandlerResult DBusSignalHandler(DBusConnection* conn, DBusMessage* msg,void* user_data);
+private:
+    DBusConnection* connection_;
+
+    static std::map<std::string, signalHandler> signalMap;
+    int InitializeConnection();
 };
 
 #endif // _DBUS_UTILS_H_

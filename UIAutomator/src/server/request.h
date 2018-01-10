@@ -29,7 +29,7 @@ class Request
 public:
     Request();
     ~Request();
-    int RequestId;
+    string RequestId;
     string AutomationId;
     string Command;
     string Status;

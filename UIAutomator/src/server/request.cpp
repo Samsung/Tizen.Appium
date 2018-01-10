@@ -22,12 +22,12 @@ using namespace std;
 
 Request::Request()
 {
-    RequestId = -1;
-    X = -1;
-    Y = -1;
+    RequestId = "";
     AutomationId = "";
     Command = "";
     Status = "Init";
+    X = -1;
+    Y = -1;
 }
 
 Request::~Request()

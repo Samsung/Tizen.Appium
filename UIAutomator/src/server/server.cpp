@@ -70,15 +70,12 @@ Server& Server::getInstance()
 
 void Server::AddRequest(Request req)
 {
-    if(req.RequestId != -1)
-    {
-        RequestMap[req.RequestId] = req;
-    }
+    RequestMap[req.RequestId] = req;
 }
 
-Request Server::GetRequest(int requestId)
+Request Server::GetRequest(string requestId)
 {
-    if(requestId != -1)
+    if(RequestMap.find(requestId) != RequestMap.end())
     {
         return RequestMap[requestId];
     }
@@ -86,26 +83,26 @@ Request Server::GetRequest(int requestId)
     return req;
 }
 
-void Server::UpdateAction(int requestId, string action)
+void Server::UpdateAction(string requestId, string action)
 {
-    if(requestId != -1)
+    if(RequestMap.find(requestId) != RequestMap.end())
     {
         RequestMap[requestId].Command = action;
     }
 }
 
-void Server::SetPosition(int requestId, int X, int Y)
+void Server::SetPosition(string requestId, int X, int Y)
 {
-    if(requestId != -1)
+    if(RequestMap.find(requestId) != RequestMap.end())
     {
         RequestMap[requestId].X = X;
         RequestMap[requestId].Y = Y;
     }
 }
 
-int Server::GetRequestId()
+string Server::GetRequestId()
 {
-    return RequestCnt++;
+    return to_string(RequestCnt++);
 }
 
 int Server::GetX(char* data)
@@ -194,20 +191,21 @@ void Server::FindHandler(char* buf)
     Request request;
     request.RequestId = Server::getInstance().GetRequestId();
     request.AutomationId = JsonUtils::GetParam(buf, "selector");
-    string action = JsonUtils::GetAction(buf);
-    request.Command = action;
+    request.Command = JsonUtils::GetAction(buf);;
 
-    char* args = strdup(request.AutomationId.c_str());
-    char* data = DBusMessage::getInstance()->SendSyncMessage(
-                              ObjectPath, InterfaceName, GetPositionMethod, args);
+    DBusMessage::getInstance()->AddArgument(request.AutomationId);
+    DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage(GetPositionMethod);
 
-    _D("%s", data);             
-    request.X = Server::getInstance().GetX(data);
-    request.Y = Server::getInstance().GetY(data);
+    char* replyMessage = 0;
+    DBusMessage::getInstance()->GetReplyMessage(reply, &replyMessage);
+    _D("%s from app", replyMessage);             
+
+    request.X = Server::getInstance().GetX(replyMessage);
+    request.Y = Server::getInstance().GetY(replyMessage);
     Server::getInstance().AddRequest(request);  
 
-    string reply = JsonUtils::FindReply(to_string(request.RequestId));
-    ecore_con_client_send(Appium, reply.c_str(), strlen(reply.c_str()));
+    string result = JsonUtils::FindReply(request.RequestId);
+    ecore_con_client_send(Appium, result.c_str(), strlen(result.c_str()));
     ecore_con_client_flush(Appium);
 }
 
@@ -215,22 +213,26 @@ void Server::ClickHandler(char* buf)
 {
     _D("Enter");
     string action = JsonUtils::GetAction(buf);
-    string reqId = JsonUtils::GetParam(buf, "elementId");
-    Server::getInstance().UpdateAction(atoi(reqId.c_str()), action);
-    Request request = Server::getInstance().GetRequest(atoi(reqId.c_str()));
+    string requestId = JsonUtils::GetParam(buf, "elementId");
+    Server::getInstance().UpdateAction(requestId, action);
+    Request request = Server::getInstance().GetRequest(requestId);
                     
-    sprintf(buf,"%s/%s/%s", reqId.c_str(), request.AutomationId.c_str(), request.Command.c_str());
-    char* args = strdup(buf);
-    char* data = DBusMessage::getInstance()->SendSyncMessage(ObjectPath, InterfaceName, SetCommandMethod, args);
-    _D("%s", data);
+    sprintf(buf,"%s/%s/%s", request.RequestId.c_str(), request.AutomationId.c_str(), request.Command.c_str());
+    string args = buf;
+    DBusMessage::getInstance()->AddArgument(args);
+    DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage(SetCommandMethod);
+    char* replyMessage = 0;
+    DBusMessage::getInstance()->GetReplyMessage(reply, &replyMessage);
+    _D("%s from app", replyMessage);
                     
     InputGenerator::getInstance().SendUinputEventForTouchMouse(DEVICE_TOUCH, request.X, request.Y);
 }
 
-void Server::PressKeycodeHandler(char* buf)
+void Server::InputTextHandler(char* buf)
 {
     _D("Enter");
-
+    string keycode = JsonUtils::GetParam(buf, "keycode");
+    // To do : call press keycode mehtod of input generator
 }
 
 void Server::FlickHandler(char* buf)
@@ -242,9 +244,26 @@ void Server::FlickHandler(char* buf)
 void Server::GetAttributeHandler(char* buf)
 {
     _D("Enter");
+    string attribute = JsonUtils::GetParam(buf, "attribute");
+    string elementId = JsonUtils::GetParam(buf, "elementId");
+    Request request = Server::getInstance().GetRequest(elementId);
+    if(!attribute.compare(ATTRIBUTE_TEXT))
+    {
 
+    }
+    else if(!attribute.compare(ATTRIBUTE_ENABLED))
+    {
+
+    }
+    else if(!attribute.compare(ATTRIBUTE_NAME))
+    {
+
+    }
+    else if(!attribute.compare(ATTRIBUTE_DISPLAYED))
+    {
+
+    }
 }
-
 
 void Server::GetSizeHandler(char* buf)
 {
@@ -311,7 +330,7 @@ void Server::SignalHandler(DBusMessage* msg)
 
 void Server::init()
 {
-    _D("Init");
+    _D("Init ###");
 
     DBusSignal::getInstance()->RegisterSignal(InterfaceName, CompleteSignal,
                                 std::bind(&Server::SignalHandler, this, std::placeholders::_1));
@@ -325,7 +344,7 @@ void Server::init()
     Server::getInstance().AddHandler(ACTION_TOUCH_MOVE, std::bind(&Server::TouchMoveHandler, this, std::placeholders::_1));
     Server::getInstance().AddHandler(ACTION_GET_LOCATION, std::bind(&Server::GetLocationHandler, this, std::placeholders::_1));
     Server::getInstance().AddHandler(ACTION_GET_ATTRIBUTE, std::bind(&Server::GetAttributeHandler, this, std::placeholders::_1));
-    Server::getInstance().AddHandler(ACTION_PRESS_KEYCODE, std::bind(&Server::PressKeycodeHandler, this, std::placeholders::_1));
+    Server::getInstance().AddHandler(ACTION_INPUT_TEXT, std::bind(&Server::InputTextHandler, this, std::placeholders::_1));
     
     Ecore_Con_Server *Server;
     if (!(Server = ecore_con_server_add(ECORE_CON_REMOTE_TCP, "127.0.0.1", 8888, NULL)))
