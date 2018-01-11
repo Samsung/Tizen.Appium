@@ -9,14 +9,14 @@ internal static partial class Interop
         internal const string dbus = "libdbus-1.so.3";
     }
 
-    internal enum DBusBusType
+    internal enum DbusBusType
     {
         DBUS_BUS_SESSION,
         DBUS_BUS_SYSTEM,
         DBUS_BUS_STARTER
     }
 
-    internal enum DBusDataType
+    internal enum DbusDataType
     {
         DBUS_TYPE_INT_32 = 0x69,
         DBUS_TYPE_UINT_32 = 0x75,
@@ -33,7 +33,7 @@ internal static partial class Interop
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DBusMessageIter
+    internal struct DbusMessageIter
     {
         IntPtr dummy1;
         IntPtr dummy2;
@@ -69,13 +69,13 @@ internal static partial class Interop
         internal static extern int e_dbus_init();
 
         [DllImport(Libraries.Edbus)]
-        internal static extern IntPtr e_dbus_bus_get(DBusBusType type);
+        internal static extern IntPtr e_dbus_bus_get(DbusBusType type);
 
         [DllImport(Libraries.Edbus)]
-        internal static extern IntPtr dbus_bus_get(DBusBusType type, IntPtr error);
+        internal static extern IntPtr dbus_bus_get(DbusBusType type, IntPtr error);
 
         [DllImport(Libraries.Edbus)]
-        internal static extern IntPtr dbus_bus_get_private(DBusBusType type, IntPtr error);
+        internal static extern IntPtr dbus_bus_get_private(DbusBusType type, IntPtr error);
 
         [DllImport(Libraries.Edbus)]
         internal static extern IntPtr e_dbus_request_name(IntPtr conn, string bus_name, NameFlags flags, RequestCallback callback, IntPtr data);
@@ -111,25 +111,43 @@ internal static partial class Interop
         internal static extern IntPtr e_dbus_message_send(IntPtr conn, IntPtr msg, MethodReturnCallback callback, int timeout, IntPtr data);
 
         [DllImport(Libraries.dbus)]
-        internal static extern bool dbus_message_iter_init(IntPtr msg, ref DBusMessageIter iter);
+        internal static extern bool dbus_message_iter_init(IntPtr msg, ref DbusMessageIter iter);
 
         [DllImport(Libraries.Edbus)]
         internal static extern IntPtr dbus_message_new_method_return(IntPtr msg);
 
         [DllImport(Libraries.Edbus)]
-        internal static extern void dbus_message_iter_init_append(IntPtr msg, ref DBusMessageIter iter);
+        internal static extern void dbus_message_iter_init_append(IntPtr msg, ref DbusMessageIter iter);
 
         [DllImport(Libraries.Edbus)]
-        internal static extern bool dbus_message_iter_append_basic(ref DBusMessageIter iter, int type, ref IntPtr value);
+        internal static extern bool dbus_message_iter_append_basic(ref DbusMessageIter iter, int type, ref IntPtr value);
 
         [DllImport(Libraries.Edbus)]
-        internal static extern int dbus_message_iter_get_arg_type(ref DBusMessageIter iter);
+        internal static extern int dbus_message_iter_get_arg_type(ref DbusMessageIter iter);
 
         [DllImport(Libraries.Edbus)]
-        internal static extern void dbus_message_iter_get_basic(ref DBusMessageIter iter, out IntPtr value);
+        internal static extern void dbus_message_iter_get_basic(ref DbusMessageIter iter, out IntPtr value);
 
         [DllImport(Libraries.Edbus)]
-        internal static extern bool dbus_message_iter_next(ref DBusMessageIter iter);
+        internal static extern bool dbus_message_iter_next(ref DbusMessageIter iter);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern bool dbus_message_iter_has_next(ref DbusMessageIter iter);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern int dbus_message_iter_get_element_count(ref DbusMessageIter iter);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern int dbus_message_iter_get_element_type(ref DbusMessageIter iter);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern void dbus_message_iter_recurse(ref DbusMessageIter iter, ref DbusMessageIter sub);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern bool dbus_message_iter_open_container(ref DbusMessageIter iter, int type, string container_sig, ref DbusMessageIter sub_iter);
+
+        [DllImport(Libraries.Edbus)]
+        internal static extern bool dbus_message_iter_close_container(ref DbusMessageIter iter, ref DbusMessageIter sub_iter);
 
         [DllImport(Libraries.Edbus)]
         internal static extern bool dbus_message_get_args(IntPtr msg, out IntPtr err, int type, out IntPtr data, int quit);

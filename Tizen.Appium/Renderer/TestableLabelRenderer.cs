@@ -14,7 +14,7 @@ namespace Tizen.Appium.Renderer
         {
             if (!String.IsNullOrEmpty(e.NewElement.AutomationId))
             {
-                TestHelper.AddTestableElement(Element.AutomationId, Element);
+                ElementUtils.AddTestableElement(Element.AutomationId, Element);
             }
 
             base.OnElementChanged(e);

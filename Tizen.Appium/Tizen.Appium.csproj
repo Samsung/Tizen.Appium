@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Dbus\Interop.Edbus.cs" />
+    <None Include="Interop\Interop.Edbus.cs" />
   </ItemGroup>
 
   <ItemGroup>
