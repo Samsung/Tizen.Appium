@@ -44,7 +44,7 @@
 
 using namespace std;
 
-const int SERVER_TIMEOUT = 3000;
+const int SERVER_TIMEOUT = 30000;
 
 Server::Server()
 {
@@ -287,7 +287,11 @@ void Server::GetSizeHandler(char* buf)
 void Server::TouchDownHandler(char* buf)
 {
     _D("Enter");
-
+    string action = JsonUtils::GetAction(buf);
+    int X = JsonUtils::GetIntParam(buf, "x");
+    int Y = JsonUtils::GetIntParam(buf, "y");
+    _D("X : %d, Y : %d", X, Y);
+    InputGenerator::getInstance().SendUinputEventForTouchDown(DEVICE_TOUCH, X, Y);
 }
 
 void Server::TouchUpHandler(char* buf)

@@ -239,6 +239,52 @@ void InputGenerator::SendUinputEventForTouchMouse(int device, __s32 value_x, __s
     nanosleep(&sleeptime, NULL);
 }
 
+void InputGenerator::SendUinputEventForTouchDown(int device, __s32 value_x, __s32 value_y)
+{
+    struct timespec sleeptime = {0, 50}; //speed (low value: fast, high value: slow)
+    _D("X = %d,  Y = %d", value_x, value_y);
+
+    int nowId = GetCurrentTrackingId();
+    SendUinputEvent (device, EV_ABS, ABS_MT_TRACKING_ID, nowId);
+    SendUinputEvent (device, EV_KEY, BTN_TOUCH, 1);
+    SendUinputEvent (device, EV_ABS, ABS_MT_POSITION_X, value_x);
+    SendUinputEvent (device, EV_ABS, ABS_MT_POSITION_Y, value_y);
+    SendUinputEvent (device, EV_ABS, ABS_MT_TOUCH_MAJOR, 4);
+    SendUinputEvent (device, EV_SYN, SYN_REPORT, 0);
+
+    nanosleep(&sleeptime, NULL);
+    /*
+    SendUinputEvent (device, EV_ABS, ABS_MT_TRACKING_ID, -1);
+    SendUinputEvent (device, EV_KEY, BTN_TOUCH, 0);
+    SendUinputEvent (device, EV_SYN, SYN_REPORT, 0);
+
+    nanosleep(&sleeptime, NULL);
+    */
+}
+
+void InputGenerator::SendUinputEventForTouchUp(int device, __s32 value_x, __s32 value_y)
+{
+    struct timespec sleeptime = {0, 50}; //speed (low value: fast, high value: slow)
+    _D("X = %d,  Y = %d", value_x, value_y);
+
+    int nowId = GetCurrentTrackingId();
+    SendUinputEvent (device, EV_ABS, ABS_MT_TRACKING_ID, nowId);
+    SendUinputEvent (device, EV_KEY, BTN_TOUCH, 1);
+    SendUinputEvent (device, EV_ABS, ABS_MT_POSITION_X, value_x);
+    SendUinputEvent (device, EV_ABS, ABS_MT_POSITION_Y, value_y);
+    SendUinputEvent (device, EV_ABS, ABS_MT_TOUCH_MAJOR, 4);
+    SendUinputEvent (device, EV_SYN, SYN_REPORT, 0);
+
+    nanosleep(&sleeptime, NULL);
+
+    SendUinputEvent (device, EV_ABS, ABS_MT_TRACKING_ID, -1);
+    SendUinputEvent (device, EV_KEY, BTN_TOUCH, 0);
+    SendUinputEvent (device, EV_SYN, SYN_REPORT, 0);
+
+    nanosleep(&sleeptime, NULL);
+}
+
+
 void InputGenerator::SendUinputEventForWheel(int device, __s32 value_y)
 {
     struct timespec sleeptime = {0, 800000};
