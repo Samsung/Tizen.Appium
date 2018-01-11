@@ -72,6 +72,24 @@ string JsonUtils::FindReply(string elementId)
     return ret;
 }
 
+string JsonUtils::ReplyAxis(string key1, int value1, string key2, int value2 )
+{
+    Json::Value root;
+    root["status"] = 0;
+
+    Json::Value value;
+    value[key1] = value1;
+    value[key2] = value2;
+    root["value"] = value;
+
+    Json::StyledWriter writer;
+    string ret = writer.write(root);
+    _D("%s", ret.c_str());
+
+    return ret;
+}
+
+
 string JsonUtils::GetStringParam(char* data, string key)
 {
     string buf = data;

@@ -79,6 +79,10 @@ Request Server::GetRequest(string requestId)
     {
         return RequestMap[requestId];
     }
+    else
+    {
+        _E("%s request is not found", requestId.c_str());
+    }
     Request req;
     return req;
 }
@@ -169,8 +173,16 @@ void Server::FindHandler(char* buf)
     DBusMessage::getInstance()->AddArgument(request.AutomationId);
     reply = DBusMessage::getInstance()->SendSyncMessage("GetCenterY");
     DBusMessage::getInstance()->GetReplyMessage(reply, &(request.Y));
+
+    //DBusMessage::getInstance()->AddArgument(request.AutomationId);
+    //reply = DBusMessage::getInstance()->SendSyncMessage("GetWidth");
+    //DBusMessage::getInstance()->GetReplyMessage(reply, &(request.Width));
+
+    //DBusMessage::getInstance()->AddArgument(request.AutomationId);
+    //reply = DBusMessage::getInstance()->SendSyncMessage("GetHeight");
+    //DBusMessage::getInstance()->GetReplyMessage(reply, &(request.Height));
     
-    _D("X: %d ,  Y : %d from app", request.X, request.Y);             
+    _D("X: %d ,  Y : %d, Width : %d, Height : %d from app", request.X, request.Y, request.Width, request.Height);             
     Server::getInstance().AddRequest(request);  
 
     string result = JsonUtils::FindReply(request.RequestId);
@@ -281,13 +293,20 @@ void Server::GetAttributeHandler(char* buf)
 void Server::GetSizeHandler(char* buf)
 {
     _D("Enter");
+    string elementId = JsonUtils::GetStringParam(buf, "elementId");
+    Request request = Server::getInstance().GetRequest(elementId);
+    string width = "width";
+    string height = "height";
+    string result = JsonUtils::ReplyAxis(width, request.Width, height, request.Height);
+    ecore_con_client_send(Appium, result.c_str(), strlen(result.c_str()));
+    ecore_con_client_flush(Appium);
 
 }
 
 void Server::TouchDownHandler(char* buf)
 {
     _D("Enter");
-    string action = JsonUtils::GetAction(buf);
+    //string action = JsonUtils::GetAction(buf);
     int X = JsonUtils::GetIntParam(buf, "x");
     int Y = JsonUtils::GetIntParam(buf, "y");
     _D("X : %d, Y : %d", X, Y);
@@ -297,7 +316,7 @@ void Server::TouchDownHandler(char* buf)
 void Server::TouchUpHandler(char* buf)
 {
     _D("Enter");
-    string action = JsonUtils::GetAction(buf);
+    //string action = JsonUtils::GetAction(buf);
     int X = JsonUtils::GetIntParam(buf, "x");
     int Y = JsonUtils::GetIntParam(buf, "y");
     _D("X : %d, Y : %d", X, Y);
@@ -307,13 +326,18 @@ void Server::TouchUpHandler(char* buf)
 void Server::TouchMoveHandler(char* buf)
 {
     _D("Enter");
-
 }
 
 void Server::GetLocationHandler(char* buf)
 {
     _D("Enter");
-
+    string elementId = JsonUtils::GetStringParam(buf, "elementId");
+    Request request = Server::getInstance().GetRequest(elementId);
+    string x = "x";
+    string y = "y";
+    string result = JsonUtils::ReplyAxis(x, request.X, y, request.Y);
+    ecore_con_client_send(Appium, result.c_str(), strlen(result.c_str()));
+    ecore_con_client_flush(Appium);
 }
 
 void Server::ShutDownHandler()
@@ -360,7 +384,7 @@ void Server::EventHandler(DBusMessage* msg)
 
 void Server::init()
 {
-    _D("Init 10.09");
+    _D("Init");
 
     DBusSignal::getInstance()->RegisterSignal(InterfaceName, "Event",
                                 std::bind(&Server::EventHandler, this, std::placeholders::_1));
