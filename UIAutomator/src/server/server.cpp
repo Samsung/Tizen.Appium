@@ -44,7 +44,7 @@
 
 using namespace std;
 
-const int SERVER_TIMEOUT = 300;
+const int SERVER_TIMEOUT = 3000;
 
 Server::Server()
 {
@@ -103,37 +103,6 @@ void Server::SetPosition(string requestId, int X, int Y)
 string Server::GetRequestId()
 {
     return to_string(RequestCnt++);
-}
-
-int Server::GetX(char* data)
-{
-    string split = "/";
-    string origin = data;
-    int idx = origin.find(split);
-    char temp[5];
-    for(int i =0 ; i<idx ; i++)
-    {
-        temp[i] = data[i];
-    }
-    temp[idx] = '\0';
-    int X = atoi(temp);
-    return X;
-}
-
-int Server::GetY(char* data)
-{
-    string split = "/";
-    string origin = data;
-    int idx = origin.find(split);
-    char temp[5];
-    int i=0;
-    for( ; i+idx+1 < (int)strlen(data) ; i++ )
-    {
-        temp[i] = data[i+idx+1];
-    }
-    temp[i] = '\0';
-    int Y = atoi(temp);
-    return Y;
 }
 
 void Server::SetAppSocket(Ecore_Con_Client* socket)
@@ -262,7 +231,16 @@ void Server::GetAttributeHandler(char* buf)
     Request request = Server::getInstance().GetRequest(elementId);
     if(!attribute.compare(ATTRIBUTE_TEXT))
     {
+        DBusMessage::getInstance()->AddArgument(request.AutomationId);
+        DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("GetText");
+        char* replyResult = 0;
+        DBusMessage::getInstance()->GetReplyMessage(reply, &replyResult);
+        _D("GetText : [%s]", replyResult);
 
+        string elementText = replyResult;
+        string result = JsonUtils::ActionReply(elementText);
+        ecore_con_client_send(Appium, result.c_str(), strlen(result.c_str()));
+        ecore_con_client_flush(Appium);
     }
     else if(!attribute.compare(ATTRIBUTE_ENABLED))
     {
@@ -310,13 +288,13 @@ void Server::GetLocationHandler(char* buf)
 
 void Server::ShutDownHandler()
 {
-   _D("Enter");
-   string reply = JsonUtils::ActionReply("Shutdown");
-   ecore_con_client_send(Appium, reply.c_str(), strlen(reply.c_str()));
-   ecore_con_client_flush(Appium);
+    _D("Enter");
+    string reply = JsonUtils::ActionReply("Shutdown");
+    ecore_con_client_send(Appium, reply.c_str(), strlen(reply.c_str()));
+    ecore_con_client_flush(Appium);
 }
 
-void Server::SignalHandler(DBusMessage* msg)
+void Server::EventHandler(DBusMessage* msg)
 {
     _D("Enter");
     DBusMessageIter args;
@@ -352,10 +330,10 @@ void Server::SignalHandler(DBusMessage* msg)
 
 void Server::init()
 {
-    _D("Init ### *** ###");
+    _D("Init 10.09");
 
     DBusSignal::getInstance()->RegisterSignal(InterfaceName, "Event",
-                                std::bind(&Server::SignalHandler, this, std::placeholders::_1));
+                                std::bind(&Server::EventHandler, this, std::placeholders::_1));
 
     Server::getInstance().AddHandler(ACTION_FIND, std::bind(&Server::FindHandler, this, std::placeholders::_1));
     Server::getInstance().AddHandler(ACTION_FLICK, std::bind(&Server::FlickHandler, this, std::placeholders::_1));
@@ -375,12 +353,12 @@ void Server::init()
         return;
     }
 
-   ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_ADD, (Ecore_Event_Handler_Cb)ClientAddCallback, NULL);
-   ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_DEL, (Ecore_Event_Handler_Cb)ClientDeleteCallback, NULL);
-   ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_DATA, (Ecore_Event_Handler_Cb)ClientDataCallback, NULL);
+    ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_ADD, (Ecore_Event_Handler_Cb)ClientAddCallback, NULL);
+    ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_DEL, (Ecore_Event_Handler_Cb)ClientDeleteCallback, NULL);
+    ecore_event_handler_add(ECORE_CON_EVENT_CLIENT_DATA, (Ecore_Event_Handler_Cb)ClientDataCallback, NULL);
 
-   ecore_con_server_timeout_set(Server, SERVER_TIMEOUT);
-   ecore_con_server_client_limit_set(Server, 3, 0);
+    ecore_con_server_timeout_set(Server, SERVER_TIMEOUT);
+    ecore_con_server_client_limit_set(Server, 3, 0);
 }
 
 void Server::exit()

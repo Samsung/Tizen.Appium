@@ -219,7 +219,7 @@ int InputGenerator::GetCurrentTrackingId()
 
 void InputGenerator::SendUinputEventForTouchMouse(int device, __s32 value_x, __s32 value_y)
 {
-    struct timespec sleeptime = {0, 8000}; //speed (low value: fast, high value: slow)
+    struct timespec sleeptime = {0, 50}; //speed (low value: fast, high value: slow)
     _D("X = %d,  Y = %d", value_x, value_y);
 
     int nowId = GetCurrentTrackingId();

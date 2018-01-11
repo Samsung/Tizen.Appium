@@ -52,7 +52,8 @@ DBusMessage* DBusMessage::getInstance()
     return &instance;
 }
 
-DBusMessage::DBusMessage() : DBusDestination("org.tizen.appium"), connection_(nullptr), DBusPath("/org/tizen/appium"), DBusInterface("org.tizen.appium") 
+DBusMessage::DBusMessage() : DBusDestination("org.tizen.appium"), DBusPath("/org/tizen/appium"), 
+                             DBusInterface("org.tizen.appium"), connection_(nullptr) 
 {
     s_objects_.insert(this);
 }
@@ -66,7 +67,6 @@ DBusMessage::~DBusMessage()
     }
 
     const auto iter = s_objects_.find(this);
-
     if (s_objects_.end() != iter)
     {
         s_objects_.erase(iter);

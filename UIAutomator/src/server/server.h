@@ -43,10 +43,7 @@ public:
 
     static Server& getInstance();
 
-    int GetX(char* data);
-    int GetY(char* data);
     string GetRequestId();
-
     void AddRequest(Request req);
     Request GetRequest(string requestId);
     void UpdateAction(string requestId, string action);
@@ -54,7 +51,7 @@ public:
     void SetAppSocket(Ecore_Con_Client* socket);
 
     void AddHandler(string action, CommandHandler function);
-    void SignalHandler(DBusMessage* msg);
+    void EventHandler(DBusMessage* msg);
     void ShutDownHandler();
     void ClickHandler(char* buf);
     void FindHandler(char* buf);
