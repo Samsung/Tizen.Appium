@@ -297,7 +297,11 @@ void Server::TouchDownHandler(char* buf)
 void Server::TouchUpHandler(char* buf)
 {
     _D("Enter");
-
+    string action = JsonUtils::GetAction(buf);
+    int X = JsonUtils::GetIntParam(buf, "x");
+    int Y = JsonUtils::GetIntParam(buf, "y");
+    _D("X : %d, Y : %d", X, Y);
+    InputGenerator::getInstance().SendUinputEventForTouchUp(DEVICE_TOUCH, X, Y);
 }
 
 void Server::TouchMoveHandler(char* buf)
