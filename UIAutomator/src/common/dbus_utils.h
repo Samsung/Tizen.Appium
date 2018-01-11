@@ -57,9 +57,11 @@ public:
     void AddArgument(string data);
     void AddArgument(bool data);
     void AddArgument(int data);
+    void AddArgument(char* data);
     DBusMessage* SendSyncMessage(string method);
     void GetReplyMessage(DBusMessage* reply, char** value);
-
+    void GetReplyMessage(DBusMessage* reply, int* value);
+    void GetReplyMessage(DBusMessage* reply, bool* value);
 private:
     string DBusDestination;
     string DBusPath;

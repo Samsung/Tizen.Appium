@@ -194,14 +194,14 @@ void Server::FindHandler(char* buf)
     request.Command = JsonUtils::GetAction(buf);;
 
     DBusMessage::getInstance()->AddArgument(request.AutomationId);
-    DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage(GetPositionMethod);
+    DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("GetCenterX");
+    DBusMessage::getInstance()->GetReplyMessage(reply, &(request.X));
 
-    char* replyMessage = 0;
-    DBusMessage::getInstance()->GetReplyMessage(reply, &replyMessage);
-    _D("%s from app", replyMessage);             
-
-    request.X = Server::getInstance().GetX(replyMessage);
-    request.Y = Server::getInstance().GetY(replyMessage);
+    DBusMessage::getInstance()->AddArgument(request.AutomationId);
+    reply = DBusMessage::getInstance()->SendSyncMessage("GetCenterY");
+    DBusMessage::getInstance()->GetReplyMessage(reply, &(request.Y));
+    
+    _D("X: %d ,  Y : %d from app", request.Y);             
     Server::getInstance().AddRequest(request);  
 
     string result = JsonUtils::FindReply(request.RequestId);
@@ -214,18 +214,31 @@ void Server::ClickHandler(char* buf)
     _D("Enter");
     string action = JsonUtils::GetAction(buf);
     string requestId = JsonUtils::GetParam(buf, "elementId");
+
     Server::getInstance().UpdateAction(requestId, action);
     Request request = Server::getInstance().GetRequest(requestId);
-                    
-    sprintf(buf,"%s/%s/%s", request.RequestId.c_str(), request.AutomationId.c_str(), request.Command.c_str());
-    string args = buf;
-    DBusMessage::getInstance()->AddArgument(args);
-    DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage(SetCommandMethod);
-    char* replyMessage = 0;
-    DBusMessage::getInstance()->GetReplyMessage(reply, &replyMessage);
-    _D("%s from app", replyMessage);
-                    
-    InputGenerator::getInstance().SendUinputEventForTouchMouse(DEVICE_TOUCH, request.X, request.Y);
+
+    DBusMessage::getInstance()->AddArgument(request.AutomationId);
+    DBusMessage::getInstance()->AddArgument("MouseDown");
+    DBusMessage::getInstance()->AddArgument(request.RequestId);
+    DBusMessage::getInstance()->AddArgument(true);
+
+    DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("SubscribeEvent");
+    bool result = false;
+    DBusMessage::getInstance()->GetReplyMessage(reply, &result);
+    _D("%s from app", result?"true":"false");
+    
+    if(result == true)
+    {
+        InputGenerator::getInstance().SendUinputEventForTouchMouse(DEVICE_TOUCH, request.X, request.Y);
+    }
+    else 
+    {
+        _E("Fail to subscribe event");
+        string reply = JsonUtils::ActionReply(false);
+        ecore_con_client_send(Appium, reply.c_str(), strlen(reply.c_str()));
+        ecore_con_client_flush(Appium);
+    }                
 }
 
 void Server::InputTextHandler(char* buf)
@@ -309,30 +322,39 @@ void Server::SignalHandler(DBusMessage* msg)
     DBusMessageIter args;
     char* data = NULL;
 
-    if (dbus_message_iter_init(msg, &args)){
-        if(DBUS_TYPE_STRING == dbus_message_iter_get_arg_type(&args)) {
+    if (dbus_message_iter_init(msg, &args))
+    {
+        if(DBUS_TYPE_STRING == dbus_message_iter_get_arg_type(&args)) 
+        {
             dbus_message_iter_get_basic(&args, &data);
+            _D("ElementId : %s", data);
+        }
+        dbus_message_iter_next(&args);
+        if(DBUS_TYPE_STRING == dbus_message_iter_get_arg_type(&args)) 
+        {
+            dbus_message_iter_get_basic(&args, &data);
+            _D("EventName : %s", data);
+        }
+        dbus_message_iter_next(&args);
 
-            char* requestId = strtok(data, "/");
-            char* autoId = strtok(NULL, "/");
-            char* command = strtok(NULL, "/");
-
-            _D("%s %s %s", requestId, autoId, command);
-
-            string reply = JsonUtils::ActionReply(true);
-            ecore_con_client_send(Appium, reply.c_str(), strlen(reply.c_str()));
-            ecore_con_client_flush(Appium);
+        if(DBUS_TYPE_STRING == dbus_message_iter_get_arg_type(&args)) 
+        {
+            dbus_message_iter_get_basic(&args, &data);
+            _D("ReuqestId : %s", data);
         }
         dbus_message_iter_next(&args);
     }
+    string reply = JsonUtils::ActionReply(true);
+    ecore_con_client_send(Appium, reply.c_str(), strlen(reply.c_str()));
+    ecore_con_client_flush(Appium);
     return;
 }
 
 void Server::init()
 {
-    _D("Init ###");
+    _D("Init ### *** ###");
 
-    DBusSignal::getInstance()->RegisterSignal(InterfaceName, CompleteSignal,
+    DBusSignal::getInstance()->RegisterSignal(InterfaceName, "Event",
                                 std::bind(&Server::SignalHandler, this, std::placeholders::_1));
 
     Server::getInstance().AddHandler(ACTION_FIND, std::bind(&Server::FindHandler, this, std::placeholders::_1));

@@ -99,6 +99,7 @@ void DBusMessage::CheckConnection()
 
 void DBusMessage::AddArgument(bool data)
 {   
+    _D("Enter");
     DBusArgument arg;
     arg.Type = TypeBool;
     arg.DataBool = data;
@@ -107,14 +108,25 @@ void DBusMessage::AddArgument(bool data)
 
 void DBusMessage::AddArgument(int data)
 {   
+    _D("Enter");
     DBusArgument arg;
     arg.Type = TypeInt;
     arg.DataInt = data;
     Arguments.push_back(arg);
 }
 
+void DBusMessage::AddArgument(char* data)
+{   
+    _D("Enter");
+    DBusArgument arg;
+    arg.Type = TypeString;
+    arg.DataString = data;
+    Arguments.push_back(arg);
+}
+
 void DBusMessage::AddArgument(string data)
 {   
+    _D("Enter");
     DBusArgument arg;
     arg.Type = TypeString;
     arg.DataString = data;
@@ -127,6 +139,38 @@ void DBusMessage::GetReplyMessage(DBusMessage* reply, char** value)
     dbus_error_init(&err);
 
     dbus_bool_t ret = dbus_message_get_args(reply, &err, DBUS_TYPE_STRING, value, DBUS_TYPE_INVALID);
+    dbus_message_unref(reply);
+    if (!ret) 
+    {
+        _D("dbus_message_get_args error %s: %s", err.name, err.message);
+        dbus_error_free(&err);
+        return;
+    }
+    return;
+}
+
+void DBusMessage::GetReplyMessage(DBusMessage* reply, int* value)
+{
+    DBusError err;
+    dbus_error_init(&err);
+
+    dbus_bool_t ret = dbus_message_get_args(reply, &err, DBUS_TYPE_INT32, value, DBUS_TYPE_INVALID);
+    dbus_message_unref(reply);
+    if (!ret) 
+    {
+        _D("dbus_message_get_args error %s: %s", err.name, err.message);
+        dbus_error_free(&err);
+        return;
+    }
+    return;
+}
+
+void DBusMessage::GetReplyMessage(DBusMessage* reply, bool* value)
+{
+    DBusError err;
+    dbus_error_init(&err);
+
+    dbus_bool_t ret = dbus_message_get_args(reply, &err, DBUS_TYPE_BOOLEAN, value, DBUS_TYPE_INVALID);
     dbus_message_unref(reply);
     if (!ret) 
     {
@@ -155,7 +199,25 @@ DBusMessage* DBusMessage::SendSyncMessage(string method)
             char* temp = strdup((*cur).DataString.c_str());
             _D("argument : %s", temp);
             dbus_message_iter_append_basic(&args, DBUS_TYPE_STRING, &temp);
+        }
+        else if((*cur).Type == TypeInt)
+        {
+            int temp = (*cur).DataInt;
+            _D("argument : %d", temp);
+            dbus_message_iter_append_basic(&args, DBUS_TYPE_INT32, &temp);
         }        
+        else if((*cur).Type == TypeBool)
+        {
+            bool temp = (*cur).DataBool;
+            dbus_bool_t value = false;
+            if(temp == true){
+                value = true;
+            }else{
+                value = false;
+            }
+            _D("argument : %s", temp==true?"true":"false");
+            dbus_message_iter_append_basic(&args, DBUS_TYPE_BOOLEAN, &value);
+        }
     }
     Arguments.clear();
 
@@ -247,7 +309,6 @@ int DBusSignal::InitializeConnection()
         _D("Handler registered");
         return 0;
     }
-
 }
 
 DBusHandlerResult DBusSignal::DBusSignalHandler(DBusConnection* conn, DBusMessage* msg, void* user_data)
