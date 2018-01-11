@@ -99,7 +99,7 @@ void DBusMessage::CheckConnection()
 
 void DBusMessage::AddArgument(bool data)
 {   
-    _D("Enter");
+    _D("Enter %s", data?"true":"false");
     DBusArgument arg;
     arg.Type = TypeBool;
     arg.DataBool = data;
@@ -108,7 +108,7 @@ void DBusMessage::AddArgument(bool data)
 
 void DBusMessage::AddArgument(int data)
 {   
-    _D("Enter");
+    _D("Enter %d", data);
     DBusArgument arg;
     arg.Type = TypeInt;
     arg.DataInt = data;
@@ -117,7 +117,7 @@ void DBusMessage::AddArgument(int data)
 
 void DBusMessage::AddArgument(char* data)
 {   
-    _D("Enter");
+    _D("Enter %s", data);
     DBusArgument arg;
     arg.Type = TypeString;
     arg.DataString = data;
@@ -126,7 +126,7 @@ void DBusMessage::AddArgument(char* data)
 
 void DBusMessage::AddArgument(string data)
 {   
-    _D("Enter");
+    _D("Enter %s", data.c_str());
     DBusArgument arg;
     arg.Type = TypeString;
     arg.DataString = data;
@@ -183,6 +183,7 @@ void DBusMessage::GetReplyMessage(DBusMessage* reply, bool* value)
 
 DBusMessage* DBusMessage::SendSyncMessage(string method) 
 {
+    _D("%s", method.c_str());
     CheckConnection();
     DBusMessage* msg = dbus_message_new_method_call(DBusDestination.c_str(), DBusPath.c_str(), DBusInterface.c_str(), method.c_str());
     if (!msg)

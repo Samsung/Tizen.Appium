@@ -38,7 +38,8 @@ public:
     static string FindReply(string elementId);
     static string ActionReply(bool result);
     static string ActionReply(string value);
-    static string GetParam(char* data, string key);
+    static string GetStringParam(char* data, string key);
+    static int GetIntParam(char* data, string key);
 private:
 };
 

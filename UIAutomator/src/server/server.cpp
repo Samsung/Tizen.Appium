@@ -112,19 +112,19 @@ void Server::SetAppSocket(Ecore_Con_Client* socket)
 
 Eina_Bool ClientAddCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore_Con_Event_Client_Add *ev)
 {
-   _D("Connected with Appium");
-   Server::getInstance().SetAppSocket(ev->client);
-   return ECORE_CALLBACK_RENEW;
+    _D("Connected with Appium");
+    Server::getInstance().SetAppSocket(ev->client);
+    return ECORE_CALLBACK_RENEW;
 }
 
 Eina_Bool ClientDeleteCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore_Con_Event_Client_Del *ev)
 {
-   _D("Disconnected with Appium");
-   if (ev->client)
-   {
+    _D("Disconnected with Appium");
+    if (ev->client)
+    {
        ecore_con_client_del(ev->client);
-   }
-   return ECORE_CALLBACK_RENEW;
+    }
+    return ECORE_CALLBACK_RENEW;
 }
 
 Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore_Con_Event_Client_Data *ev)
@@ -159,7 +159,7 @@ void Server::FindHandler(char* buf)
     _D("Enter");
     Request request;
     request.RequestId = Server::getInstance().GetRequestId();
-    request.AutomationId = JsonUtils::GetParam(buf, "selector");
+    request.AutomationId = JsonUtils::GetStringParam(buf, "selector");
     request.Command = JsonUtils::GetAction(buf);;
 
     DBusMessage::getInstance()->AddArgument(request.AutomationId);
@@ -170,7 +170,7 @@ void Server::FindHandler(char* buf)
     reply = DBusMessage::getInstance()->SendSyncMessage("GetCenterY");
     DBusMessage::getInstance()->GetReplyMessage(reply, &(request.Y));
     
-    _D("X: %d ,  Y : %d from app", request.Y);             
+    _D("X: %d ,  Y : %d from app", request.X, request.Y);             
     Server::getInstance().AddRequest(request);  
 
     string result = JsonUtils::FindReply(request.RequestId);
@@ -182,7 +182,7 @@ void Server::ClickHandler(char* buf)
 {
     _D("Enter");
     string action = JsonUtils::GetAction(buf);
-    string requestId = JsonUtils::GetParam(buf, "elementId");
+    string requestId = JsonUtils::GetStringParam(buf, "elementId");
 
     Server::getInstance().UpdateAction(requestId, action);
     Request request = Server::getInstance().GetRequest(requestId);
@@ -213,21 +213,25 @@ void Server::ClickHandler(char* buf)
 void Server::InputTextHandler(char* buf)
 {
     _D("Enter");
-    string keycode = JsonUtils::GetParam(buf, "keycode");
+    string keycode = JsonUtils::GetStringParam(buf, "keycode");
     // To do : call press keycode mehtod of input generator
 }
 
 void Server::FlickHandler(char* buf)
 {
     _D("Enter");
-
+    string action = JsonUtils::GetAction(buf);
+    int xSpeed = JsonUtils::GetIntParam(buf, "xSpeed");
+    int ySpeed = JsonUtils::GetIntParam(buf, "ySpeed");
+    _D("xSpeed : %d, ySpeed : %d", xSpeed, ySpeed);
+    InputGenerator::getInstance().SendUinputEventForFlick(DEVICE_TOUCH, xSpeed, ySpeed);
 }
 
 void Server::GetAttributeHandler(char* buf)
 {
     _D("Enter");
-    string attribute = JsonUtils::GetParam(buf, "attribute");
-    string elementId = JsonUtils::GetParam(buf, "elementId");
+    string attribute = JsonUtils::GetStringParam(buf, "attribute");
+    string elementId = JsonUtils::GetStringParam(buf, "elementId");
     Request request = Server::getInstance().GetRequest(elementId);
     if(!attribute.compare(ATTRIBUTE_TEXT))
     {
@@ -244,15 +248,33 @@ void Server::GetAttributeHandler(char* buf)
     }
     else if(!attribute.compare(ATTRIBUTE_ENABLED))
     {
+        DBusMessage::getInstance()->AddArgument(request.AutomationId);
+        DBusMessage::getInstance()->AddArgument("IsEnabled");
+        DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("GetProperty");
+        char* replyResult = 0;
+        DBusMessage::getInstance()->GetReplyMessage(reply, &replyResult);
+        _D("Enabled : [%s]", replyResult);
 
+        string elementText = replyResult;
+        string result = JsonUtils::ActionReply(elementText);
+        ecore_con_client_send(Appium, result.c_str(), strlen(result.c_str()));
+        ecore_con_client_flush(Appium);
     }
     else if(!attribute.compare(ATTRIBUTE_NAME))
     {
-
+        _D("Name : [%s]", request.AutomationId.c_str());
+        string result = JsonUtils::ActionReply(request.AutomationId);
+        ecore_con_client_send(Appium, result.c_str(), strlen(result.c_str()));
+        ecore_con_client_flush(Appium);
     }
     else if(!attribute.compare(ATTRIBUTE_DISPLAYED))
     {
-
+        // TO DO : discuss about displayed property 
+        _D("Displayed :");
+        string displayed = "true";
+        string result = JsonUtils::ActionReply(displayed);
+        ecore_con_client_send(Appium, result.c_str(), strlen(result.c_str()));
+        ecore_con_client_flush(Appium);
     }
 }
 

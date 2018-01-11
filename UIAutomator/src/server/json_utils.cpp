@@ -72,7 +72,7 @@ string JsonUtils::FindReply(string elementId)
     return ret;
 }
 
-string JsonUtils::GetParam(char* data, string key)
+string JsonUtils::GetStringParam(char* data, string key)
 {
     string buf = data;
     Json::Value root;
@@ -87,6 +87,24 @@ string JsonUtils::GetParam(char* data, string key)
     {
         _D("fail to parse %s in %s", key.c_str(),data);
         return "";
+    }
+}
+
+int JsonUtils::GetIntParam(char* data, string key)
+{
+    string buf = data;
+    Json::Value root;
+    Json::Reader reader;
+    bool ret = reader.parse(buf, root);
+    if(true == ret)
+    {
+        int value = root["params"][key].asInt();
+        return value;
+    }
+    else
+    {
+        _D("fail to parse %s in %s", key.c_str(),data);
+        return -1;
     }
 }
 
