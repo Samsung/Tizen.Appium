@@ -81,10 +81,11 @@ bool InputGenerator::InitUinput()
     struct uinput_user_dev device_mouse;
     memset(&device_mouse, 0, sizeof device_mouse);
 
-     const char *file_name = "/dev/uinput";
+    const char *file_name = "/dev/uinput";
     fd_uinput_mouse = open(file_name, O_WRONLY | O_NONBLOCK);
      
-    if (fd_uinput_mouse < 0) {
+    if (fd_uinput_mouse < 0) 
+    {
         _D ("Fail to open fd uinput_mouse!\n");
         return false;
     }
@@ -96,57 +97,69 @@ bool InputGenerator::InitUinput()
     device_mouse.id.product = 1;
     device_mouse.id.version = 1;
 
-    if (ioctl(fd_uinput_mouse, UI_SET_EVBIT, EV_SYN) < 0) {
+    if (ioctl(fd_uinput_mouse, UI_SET_EVBIT, EV_SYN) < 0) 
+    {
         _D ("Fail ioctl method");
         return false;
     }
 
-    if (ioctl(fd_uinput_mouse, UI_SET_EVBIT, EV_KEY) < 0) {
+    if (ioctl(fd_uinput_mouse, UI_SET_EVBIT, EV_KEY) < 0) 
+    {
         _D ("Fail ioctl method");
         return false;
     }
 
-    if (ioctl(fd_uinput_mouse, UI_SET_EVBIT, EV_ABS) < 0) {
+    if (ioctl(fd_uinput_mouse, UI_SET_EVBIT, EV_ABS) < 0) 
+    {
         _D ("Fail ioctl method");
         return false;
     }
 
-    if (ioctl(fd_uinput_mouse, UI_SET_KEYBIT, BTN_TOUCH) < 0) {
+    if (ioctl(fd_uinput_mouse, UI_SET_KEYBIT, BTN_TOUCH) < 0) 
+    {
         _D ("Fail ioctl method");
         return false;
     }
 
-    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_X) < 0) {
+    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_X) < 0) 
+    {
         _D ("Fail ioctl method");
         return false;
     }
 
-    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_Y) < 0) {
+    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_Y) < 0) 
+    {
         _D ("Fail ioctl method");
         return false;
     }
 
-    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_MT_SLOT) < 0) {  // slot
+    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_MT_SLOT) < 0) 
+    {  
         _D ("Fail ioctl method");
         return false;
     }
-    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_MT_TOUCH_MAJOR) < 0) {  // MT Touch Major
+    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_MT_TOUCH_MAJOR) < 0) 
+    {  
         _D ("Fail ioctl method");
         return false;
     }
-    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_MT_WIDTH_MAJOR) < 0) {  // MT width Major
+    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_MT_WIDTH_MAJOR) < 0) 
+    {  
         _D ("Fail ioctl method");
         return false;
     }
-    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_MT_POSITION_X) < 0) {  // MT Position X
+    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_MT_POSITION_X) < 0) 
+    {  
         _D ("Fail ioctl method");
         return false;
     }
-    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_MT_POSITION_Y) < 0) {  // MT Position Y 
+    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_MT_POSITION_Y) < 0) 
+    {  
         _D ("Fail ioctl method");
         return false;
     }
-    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_MT_TRACKING_ID) < 0) {  // MT Tacking ID
+    if (ioctl(fd_uinput_mouse, UI_SET_ABSBIT, ABS_MT_TRACKING_ID) < 0) 
+    {  
         _D ("Fail ioctl method");
         return false;
     }
@@ -168,12 +181,14 @@ bool InputGenerator::InitUinput()
     device_mouse.absmin[ABS_MT_TRACKING_ID] = 0;
     device_mouse.absmax[ABS_MT_TRACKING_ID] = 65535;
 
-    if (write(fd_uinput_mouse, &device_mouse, sizeof(device_mouse)) != sizeof(device_mouse)) {
+    if (write(fd_uinput_mouse, &device_mouse, sizeof(device_mouse)) != sizeof(device_mouse)) 
+    {
         _D ("Fail to setup uinput structure on fd\n");
         return false;
     }
 
-    if (ioctl(fd_uinput_mouse, UI_DEV_CREATE) < 0) {
+    if (ioctl(fd_uinput_mouse, UI_DEV_CREATE) < 0) 
+    {
         _D ("Fail to create keyboard uinput device\n");
         return false;
     }
@@ -190,12 +205,15 @@ void InputGenerator::SendUinputEvent(int device, __u16 type, __u16 code, __s32 v
     event.code = code;
     event.value = value;
     
-    if (device == 1) {
-        if (write(fd_uinput_mouse, &event, sizeof(event)) != sizeof(event)) {
+    if (device == 1) 
+    {
+        if (write(fd_uinput_mouse, &event, sizeof(event)) != sizeof(event)) 
+        {
             _D ("Error to send uinput event");
         }
     }
-    else {
+    else 
+    {
         _D ("Fail to send uinput event because of device name!");
     }
 }

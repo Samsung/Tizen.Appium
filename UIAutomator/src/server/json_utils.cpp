@@ -34,6 +34,17 @@ JsonUtils::~JsonUtils()
     _D("Enter");
 }
 
+string JsonUtils::ActionReply(char* value)
+{
+    string data = value;
+    Json::Value root;
+    root["status"] = 0;
+    root["value"] = data;
+    Json::StyledWriter writer;
+    std::string ret = writer.write(root);
+    return ret;
+}
+
 string JsonUtils::ActionReply(string value)
 {
     Json::Value root;
@@ -41,8 +52,6 @@ string JsonUtils::ActionReply(string value)
     root["value"] = value;
     Json::StyledWriter writer;
     std::string ret = writer.write(root);
-    _D("%s", ret.c_str());
-
     return ret;
 }
 
@@ -53,8 +62,6 @@ string JsonUtils::ActionReply(bool result)
     root["value"] = result;
     Json::StyledWriter writer;
     std::string ret = writer.write(root);
-    _D("%s", ret.c_str());
-
     return ret;
 }
 
@@ -67,8 +74,6 @@ string JsonUtils::FindReply(string elementId)
     root["value"] = list;
     Json::StyledWriter writer;
     std::string ret = writer.write(root);
-    _D("%s", ret.c_str());
-
     return ret;
 }
 
@@ -84,7 +89,6 @@ string JsonUtils::ReplyAxis(string key1, int value1, string key2, int value2 )
 
     Json::StyledWriter writer;
     string ret = writer.write(root);
-    //_D("%s", ret.c_str());
     return ret;
 }
 

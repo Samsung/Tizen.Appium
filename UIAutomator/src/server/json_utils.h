@@ -38,6 +38,7 @@ public:
     static string FindReply(string elementId);
     static string ActionReply(bool result);
     static string ActionReply(string value);
+    static string ActionReply(char* value);
     static string ReplyAxis(string key1, int value1, string key2, int value2 );
     static string GetStringParam(char* data, string key);
     static int GetIntParam(char* data, string key);

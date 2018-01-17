@@ -25,9 +25,12 @@
 #include <boost/tokenizer.hpp>
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib-lowlevel.h>
+#include <E_DBus.h>
 
 #include "log.h"
 #include "dbus_utils.h"
+#include "server/json_utils.h"
+#include "server/server.h"
 
 #define DBUS_REPLY_TIMEOUT (-1)
 
@@ -53,17 +56,17 @@ DBusMessage* DBusMessage::getInstance()
 }
 
 DBusMessage::DBusMessage() : DBusDestination("org.tizen.appium"), DBusPath("/org/tizen/appium"), 
-                             DBusInterface("org.tizen.appium"), connection_(nullptr) 
+                             DBusInterface("org.tizen.appium"), DbusConnection(nullptr) 
 {
     s_objects_.insert(this);
 }
 
 DBusMessage::~DBusMessage()
 {
-    if (connection_) 
+    if (DbusConnection) 
     {
-        dbus_connection_close(connection_);
-        dbus_connection_unref(connection_);
+        dbus_connection_close(DbusConnection);
+        dbus_connection_unref(DbusConnection);
     }
 
     const auto iter = s_objects_.find(this);
@@ -79,27 +82,27 @@ DBusMessage::~DBusMessage()
 
 void DBusMessage::CheckConnection()
 {
-    if (!connection_) 
+    if (!DbusConnection) 
     {
         DBusError err;
         dbus_error_init(&err);
 
-        connection_ = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
-
+        DbusConnection = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
         if (dbus_error_is_set(&err)) 
         {
             _D("dbus_bus_get error [%s, %s]", err.name, err.message);
         }
     }
 
-    if (!connection_) {
+    if (!DbusConnection) 
+    {
         return;
     }
 }
 
 void DBusMessage::AddArgument(bool data)
 {   
-    _D("Enter %s", data?"true":"false");
+    _D("%s", data?"true":"false");
     DBusArgument arg;
     arg.Type = TypeBool;
     arg.DataBool = data;
@@ -108,7 +111,7 @@ void DBusMessage::AddArgument(bool data)
 
 void DBusMessage::AddArgument(int data)
 {   
-    _D("Enter %d", data);
+    _D("%d", data);
     DBusArgument arg;
     arg.Type = TypeInt;
     arg.DataInt = data;
@@ -117,7 +120,7 @@ void DBusMessage::AddArgument(int data)
 
 void DBusMessage::AddArgument(char* data)
 {   
-    _D("Enter %s", data);
+    _D("%s", data);
     DBusArgument arg;
     arg.Type = TypeString;
     arg.DataString = data;
@@ -126,7 +129,7 @@ void DBusMessage::AddArgument(char* data)
 
 void DBusMessage::AddArgument(string data)
 {   
-    _D("Enter %s", data.c_str());
+    _D("%s", data.c_str());
     DBusArgument arg;
     arg.Type = TypeString;
     arg.DataString = data;
@@ -211,9 +214,11 @@ DBusMessage* DBusMessage::SendSyncMessage(string method)
         {
             bool temp = (*cur).DataBool;
             dbus_bool_t value = false;
-            if(temp == true){
+            if(temp == true)
+            {
                 value = true;
-            }else{
+            }else
+            {
                 value = false;
             }
             _D("argument : %s", temp==true?"true":"false");
@@ -224,7 +229,7 @@ DBusMessage* DBusMessage::SendSyncMessage(string method)
 
     DBusError err;
     dbus_error_init(&err);
-    DBusMessage* reply = dbus_connection_send_with_reply_and_block(connection_, msg, DBUS_REPLY_TIMEOUT, &err);
+    DBusMessage* reply = dbus_connection_send_with_reply_and_block(DbusConnection, msg, DBUS_REPLY_TIMEOUT, &err);
     dbus_message_unref(msg);
 
     if (!reply) 
@@ -236,18 +241,24 @@ DBusMessage* DBusMessage::SendSyncMessage(string method)
     return reply;
 }
 
-std::map<std::string, signalHandler> DBusSignal::signalMap;
+vector<SignalHandler> DBusSignal::SignalVector;
 
-DBusSignal::DBusSignal() : connection_(nullptr) 
+DBusSignal::DBusSignal() : EdbusConnection(NULL), EdbusHandler(NULL)  
 {
 }
 
 DBusSignal::~DBusSignal() 
 {
-    if (connection_) 
+    if (EdbusHandler != NULL) 
     {
-        dbus_connection_close(connection_);
-        dbus_connection_unref(connection_);
+        e_dbus_signal_handler_del(EdbusConnection, EdbusHandler);
+        EdbusHandler = NULL;
+    }
+
+    if (EdbusConnection != NULL)
+     {
+        e_dbus_connection_close(EdbusConnection);
+        EdbusConnection = NULL;
     }
 }
 
@@ -257,131 +268,53 @@ DBusSignal* DBusSignal::getInstance()
   return &instance;
 }
 
-int DBusSignal::InitializeConnection()
+int DBusSignal::InitConnection()
 {
-    DBusError err;
-    int ret;
-
-    if(connection_ != NULL)
+    _D("Enter");
+    e_dbus_init();
+    EdbusConnection = e_dbus_bus_get(DBUS_BUS_SYSTEM);
+    if (EdbusConnection == NULL) 
     {
-        _D("Dbus connection already created");
-        return 0;
-    }
-
-    dbus_error_init(&err);
-    connection_ = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
-    if (dbus_error_is_set(&err)) 
-    {
-        _D("Dbus error [%s , %s]", err.name, err.message);
-        dbus_error_free(&err);
+        _E("noti register : failed to get dbus bus");
         return -1;
     }
 
-    if (NULL == connection_) 
+    string method = "Event";    
+    EdbusHandler = e_dbus_signal_handler_add(EdbusConnection, NULL, 
+                     ObjectPath.c_str(), InterfaceName.c_str(), method.c_str(), DBusSignalHandler, 0);
+    if (EdbusHandler == NULL)
     {
-        _D("Dbus error [%s , %s]", err.name, err.message);
-        dbus_error_free(&err);
+        _E("fail to add size signal");
         return -1;
     }
-
-    dbus_connection_setup_with_g_main(connection_, nullptr);
-
-    ret = dbus_bus_request_name(connection_, "tizen.restful.signal", DBUS_NAME_FLAG_REPLACE_EXISTING , &err);
-    if (dbus_error_is_set(&err)) 
-    {
-        _D("Dbus error [%s , %s]", err.name, err.message);
-        dbus_error_free(&err);
-        return -1;
-    }
-
-    if (DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER != ret) 
-    {
-        _D("Request name already has owner");
-    }
-
-    if (dbus_connection_add_filter(connection_, DBusSignalHandler, this, nullptr) == FALSE) 
-    {
-        _D("Fail to add filter : %s, %s", err.name, err.message);
-        dbus_error_free(&err);
-        return -1;
-    }
-    else
-    {
-        _D("Handler registered");
-        return 0;
-    }
+    return 0;
 }
 
-DBusHandlerResult DBusSignal::DBusSignalHandler(DBusConnection* conn, DBusMessage* msg, void* user_data)
+void DBusSignal::DBusSignalHandler(void *data, DBusMessage *msg)
 {
     _D("Enter");
     if (NULL == msg) 
     {
-        _D("Message Null");
-        return DBUS_HANDLER_RESULT_HANDLED ;
+        _E("Message Null");
+        return;
     }
 
-    for (auto iter : signalMap)
+    for (auto iter : SignalVector)
     {
-        char_separator<char> sep("/");
-        tokenizer<char_separator<char>> tokens(iter.first, sep);
-        std::list<std::string> pathList(tokens.begin(), tokens.end());
-
-        auto tokenIter = tokens.begin();
-        string _interface = *tokenIter;
-        tokenIter++;
-        string _method = *tokenIter;
-
-        if (dbus_message_is_signal(msg, _interface.c_str(), _method.c_str())) 
-        {
-            iter.second(msg);
-            break;
-        }
+        iter(NULL, msg);
     }
-
-    _D("End");
-    return DBUS_HANDLER_RESULT_HANDLED ;
+    return;
 }
 
-int DBusSignal::RegisterSignal(const std::string& dInterface, const std::string& dMethod, signalHandler callback) 
+int DBusSignal::RegisterSignal(SignalHandler callback) 
 {
     _D("Enter");
-    DBusError err;
-    signalHandler _handler;
-
-    if(nullptr == connection_)
+    if(nullptr == EdbusConnection)
     {
-        InitializeConnection();
+        InitConnection();
+    
     }
-
-    std::stringstream _ruleStream;
-    _ruleStream << "type='signal'" << ",interface='" << dInterface << "'";
-
-    std::string signalRule = _ruleStream.str();
-
-    dbus_error_init(&err);
-
-    dbus_bus_add_match(connection_, signalRule.c_str(), &err); // see signals from the given interface
-    dbus_connection_flush(connection_);
-    if (dbus_error_is_set(&err)) 
-    {
-        _D("dbus error : %s", err.message);
-        dbus_error_free(&err);
-        return -1;
-    }
-
-    _handler = std::move(callback);
-
-    std::stringstream _signalKey;
-    _signalKey<<dInterface<<"/"<<dMethod;
-    std::string signalKey = _signalKey.str();
-
-    auto iter = signalMap.find(signalKey);
-    if(iter != signalMap.end()){
-        signalMap.erase(iter);
-    }
-    signalMap[signalKey] = _handler;
-
-    _D("End");
+    SignalHandler _handler = std::move(callback);
+    SignalVector.push_back(_handler);
     return 0;
 }

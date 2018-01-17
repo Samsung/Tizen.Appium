@@ -23,11 +23,12 @@
 #include <set>
 #include <functional>
 #include <dbus/dbus.h>
+#include <E_DBus.h>
 #include "type.h"
 
 using namespace std;
 
-typedef std::function<void(DBusMessage* msg)> signalHandler;
+typedef std::function<void(void *data, DBusMessage *msg)> SignalHandler;
 
 enum ArgumentType
 {
@@ -66,7 +67,7 @@ private:
     string DBusDestination;
     string DBusPath;
     string DBusInterface; 
-    DBusConnection* connection_;
+    DBusConnection* DbusConnection;
 
     static std::set<DBusMessage*> s_objects_;
     vector<DBusArgument> Arguments;
@@ -81,13 +82,13 @@ public:
     virtual ~DBusSignal();
     static DBusSignal* getInstance();
 
-    int RegisterSignal(const std::string& dInterface, const std::string& dMethod, signalHandler callback);
-    static DBusHandlerResult DBusSignalHandler(DBusConnection* conn, DBusMessage* msg,void* user_data);
+    int RegisterSignal(SignalHandler callback);
+    static void DBusSignalHandler(void *data, DBusMessage *msg);
 private:
-    DBusConnection* connection_;
-
-    static std::map<std::string, signalHandler> signalMap;
-    int InitializeConnection();
+    E_DBus_Connection* EdbusConnection;
+    E_DBus_Signal_Handler* EdbusHandler;
+    static vector<SignalHandler> SignalVector;
+    int InitConnection();
 };
 
 #endif // _DBUS_UTILS_H_

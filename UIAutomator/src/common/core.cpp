@@ -15,12 +15,13 @@
  */
 
 #include "log.h"
-#include "server/server.h"
-#include "server/input_generator.h"
 
 #include <Ecore.h>
 #include <Ecore_Con.h>
 #include <signal.h>
+#include <E_DBus.h>
+#include "server/server.h"
+#include "server/input_generator.h"
 
 static void sig_quit(int signo)
 {
@@ -52,14 +53,12 @@ static int uiautomator_init(int argc, char **argv)
 
     ecore_main_loop_begin();
     ecore_shutdown();
-
     return 0;
 }
 
 int main (int argc, char **argv)
 {
-    _D("Service Start");
-
+    _D("UIAutomator start");
     eina_init();
     ecore_init();
     ecore_con_init();

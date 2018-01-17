@@ -19,6 +19,7 @@ BuildRequires:  pkgconfig(edbus)
 BuildRequires:  pkgconfig(systemd)
 BuildRequires:  cmake
 BuildRequires:  boost-devel
+BuildRequires: pkgconfig(edbus)
 
 Requires(preun): /usr/bin/systemctl
 #Requires(post): sys-assert

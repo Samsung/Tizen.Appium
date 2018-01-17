@@ -181,24 +181,33 @@ void Server::FindHandler(char* buf)
     reply = DBusMessage::getInstance()->SendSyncMessage("GetCenterY");
     DBusMessage::getInstance()->GetReplyMessage(reply, &(request.Y));
 
-    //DBusMessage::getInstance()->AddArgument(request.AutomationId);
-    //reply = DBusMessage::getInstance()->SendSyncMessage("GetWidth");
-    //DBusMessage::getInstance()->GetReplyMessage(reply, &(request.Width));
 
-    //DBusMessage::getInstance()->AddArgument(request.AutomationId);
-    //reply = DBusMessage::getInstance()->SendSyncMessage("GetHeight");
-    //DBusMessage::getInstance()->GetReplyMessage(reply, &(request.Height));
+    DBusMessage::getInstance()->AddArgument(request.AutomationId);
+    //string property = "Width";
+    DBusMessage::getInstance()->AddArgument("Width");
+    reply = DBusMessage::getInstance()->SendSyncMessage("GetProperty");
+    char* result = 0;
+    DBusMessage::getInstance()->GetReplyMessage(reply, &result);
+    request.Width = atoi(result);
+
+
+    DBusMessage::getInstance()->AddArgument(request.AutomationId);
+    string property = "Hegith";
+    DBusMessage::getInstance()->AddArgument(property);
+    reply = DBusMessage::getInstance()->SendSyncMessage("GetProperty");
+    DBusMessage::getInstance()->GetReplyMessage(reply, &result);
+    request.Height = atoi(result);
     
     _D("X: %d ,  Y : %d, Width : %d, Height : %d from app", request.X, request.Y, request.Width, request.Height);             
     Server::getInstance().AddRequest(request);  
 
-    string result = JsonUtils::FindReply(request.RequestId);
-    Server::getInstance().SendMessageToAppium(result);
+    string replyMsg = JsonUtils::FindReply(request.RequestId);
+    Server::getInstance().SendMessageToAppium(replyMsg);
 }
 
 void Server::ClickHandler(char* buf)
 {
-    _D("Enter");
+    _D("Enter click");
     string action = JsonUtils::GetAction(buf);
     string requestId = JsonUtils::GetStringParam(buf, "elementId");
 
@@ -206,7 +215,8 @@ void Server::ClickHandler(char* buf)
     Request request = Server::getInstance().GetRequest(requestId);
 
     DBusMessage::getInstance()->AddArgument(request.AutomationId);
-    DBusMessage::getInstance()->AddArgument("MouseDown");
+    string event = "MouseDown";
+    DBusMessage::getInstance()->AddArgument(event);
     DBusMessage::getInstance()->AddArgument(request.RequestId);
     DBusMessage::getInstance()->AddArgument(true);
 
@@ -247,47 +257,48 @@ void Server::FlickHandler(char* buf)
 
 void Server::GetAttributeHandler(char* buf)
 {
-    _D("Enter");
     string attribute = JsonUtils::GetStringParam(buf, "attribute");
     string elementId = JsonUtils::GetStringParam(buf, "elementId");
     Request request = Server::getInstance().GetRequest(elementId);
-    string result;
+    string replyMsg;
+    char* result = NULL;
+    _D("Attribute : [%s]", attribute.c_str());
     if(!attribute.compare(ATTRIBUTE_TEXT))
     {
         DBusMessage::getInstance()->AddArgument(request.AutomationId);
         DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("GetText");
-        char* replyResult = 0;
-        DBusMessage::getInstance()->GetReplyMessage(reply, &replyResult);
-        _D("GetText : [%s]", replyResult);
+        DBusMessage::getInstance()->GetReplyMessage(reply, &result);
 
-        string elementText = replyResult;
-        result = JsonUtils::ActionReply(elementText);
+        //string elementText = result;
+        replyMsg = JsonUtils::ActionReply(result);
     }
     else if(!attribute.compare(ATTRIBUTE_ENABLED))
     {
         DBusMessage::getInstance()->AddArgument(request.AutomationId);
-        DBusMessage::getInstance()->AddArgument("IsEnabled");
+        string property = "IsEnabled";
+        DBusMessage::getInstance()->AddArgument(property);
         DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("GetProperty");
-        char* replyResult = 0;
-        DBusMessage::getInstance()->GetReplyMessage(reply, &replyResult);
-        _D("Enabled : [%s]", replyResult);
+        DBusMessage::getInstance()->GetReplyMessage(reply, &result);
 
-        string elementText = replyResult;
-        result = JsonUtils::ActionReply(elementText);
+        //string elementText = result;
+        replyMsg = JsonUtils::ActionReply(result);
     }
     else if(!attribute.compare(ATTRIBUTE_NAME))
     {
-        _D("Name : [%s]", request.AutomationId.c_str());
-        result = JsonUtils::ActionReply(request.AutomationId);
+        replyMsg = JsonUtils::ActionReply(request.AutomationId);
     }
     else if(!attribute.compare(ATTRIBUTE_DISPLAYED))
     {
-        // TO DO : discuss about displayed property 
-        _D("Displayed :");
-        string displayed = "true";
-        result = JsonUtils::ActionReply(displayed);
+        DBusMessage::getInstance()->AddArgument(request.AutomationId);
+        string property = "IsVisible";
+        DBusMessage::getInstance()->AddArgument(property);
+        DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("GetProperty");
+        DBusMessage::getInstance()->GetReplyMessage(reply, &result);
+
+        //string elementText = result;
+        replyMsg = JsonUtils::ActionReply(result);
     }
-    Server::getInstance().SendMessageToAppium(result);
+    Server::getInstance().SendMessageToAppium(replyMsg);
 }
 
 void Server::GetSizeHandler(char* buf)
@@ -344,31 +355,31 @@ void Server::ShutDownHandler()
     Server::getInstance().SendMessageToAppium(reply);
 }
 
-void Server::EventHandler(DBusMessage* msg)
+void Server::EventHandler(void *data, DBusMessage *msg)
 {
     _D("Enter");
     DBusMessageIter args;
-    char* data = NULL;
+    char* value = NULL;
 
     if (dbus_message_iter_init(msg, &args))
     {
         if(DBUS_TYPE_STRING == dbus_message_iter_get_arg_type(&args)) 
         {
-            dbus_message_iter_get_basic(&args, &data);
-            _D("ElementId : %s", data);
+            dbus_message_iter_get_basic(&args, &value);
+            _D("ElementId : %s", value);
         }
         dbus_message_iter_next(&args);
         if(DBUS_TYPE_STRING == dbus_message_iter_get_arg_type(&args)) 
         {
-            dbus_message_iter_get_basic(&args, &data);
-            _D("EventName : %s", data);
+            dbus_message_iter_get_basic(&args, &value);
+            _D("EventName : %s", value);
         }
         dbus_message_iter_next(&args);
 
         if(DBUS_TYPE_STRING == dbus_message_iter_get_arg_type(&args)) 
         {
-            dbus_message_iter_get_basic(&args, &data);
-            _D("ReuqestId : %s", data);
+            dbus_message_iter_get_basic(&args, &value);
+            _D("ReuqestId : %s", value);
         }
         dbus_message_iter_next(&args);
     }
@@ -379,10 +390,9 @@ void Server::EventHandler(DBusMessage* msg)
 
 void Server::init()
 {
-    _D("Init");
+    _D("Enter");
 
-    DBusSignal::getInstance()->RegisterSignal(InterfaceName, "Event",
-                                std::bind(&Server::EventHandler, this, std::placeholders::_1));
+    DBusSignal::getInstance()->RegisterSignal(std::bind(&Server::EventHandler, this, std::placeholders::_1, std::placeholders::_2));
 
     Server::getInstance().AddHandler(ACTION_FIND, std::bind(&Server::FindHandler, this, std::placeholders::_1));
     Server::getInstance().AddHandler(ACTION_FLICK, std::bind(&Server::FlickHandler, this, std::placeholders::_1));

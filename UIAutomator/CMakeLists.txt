@@ -44,6 +44,7 @@ SET(PKG_MODULES
     jsoncpp 
     gio-2.0
     dbus-glib-1
+    edbus
 )
 PKG_CHECK_MODULES(pkgs REQUIRED ${PKG_MODULES})
 

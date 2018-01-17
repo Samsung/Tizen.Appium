@@ -52,7 +52,7 @@ public:
     void SendMessageToAppium(string msg);
 
     void AddHandler(string action, CommandHandler function);
-    void EventHandler(DBusMessage* msg);
+    void EventHandler(void *data, DBusMessage *msg);
     void ShutDownHandler();
     void ClickHandler(char* buf);
     void FindHandler(char* buf);

@@ -4,8 +4,6 @@ using System.Runtime.InteropServices;
 
 namespace Tizen.Appium.Dbus
 {
-    //public delegate Arguments DbusCallback(Arguments args);
-
     public class DbusConnection
     {
         static IntPtr _conn;
