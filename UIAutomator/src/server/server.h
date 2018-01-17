@@ -49,6 +49,7 @@ public:
     void UpdateAction(string requestId, string action);
     void SetPosition(string requestId, int X, int Y);
     void SetAppSocket(Ecore_Con_Client* socket);
+    void SendMessageToAppium(string msg);
 
     void AddHandler(string action, CommandHandler function);
     void EventHandler(DBusMessage* msg);

@@ -84,8 +84,7 @@ string JsonUtils::ReplyAxis(string key1, int value1, string key2, int value2 )
 
     Json::StyledWriter writer;
     string ret = writer.write(root);
-    _D("%s", ret.c_str());
-
+    //_D("%s", ret.c_str());
     return ret;
 }
 

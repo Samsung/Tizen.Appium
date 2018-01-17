@@ -158,6 +158,13 @@ Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore
     return ECORE_CALLBACK_RENEW;
 }
 
+void Server::SendMessageToAppium(string msg)
+{
+    _D("Enter : %s", msg.c_str());
+    ecore_con_client_send(Appium, msg.c_str(), strlen(msg.c_str()));
+    ecore_con_client_flush(Appium);
+}
+
 void Server::FindHandler(char* buf)
 {
     _D("Enter");
@@ -186,8 +193,7 @@ void Server::FindHandler(char* buf)
     Server::getInstance().AddRequest(request);  
 
     string result = JsonUtils::FindReply(request.RequestId);
-    ecore_con_client_send(Appium, result.c_str(), strlen(result.c_str()));
-    ecore_con_client_flush(Appium);
+    Server::getInstance().SendMessageToAppium(result);
 }
 
 void Server::ClickHandler(char* buf)
@@ -217,8 +223,7 @@ void Server::ClickHandler(char* buf)
     {
         _E("Fail to subscribe event");
         string reply = JsonUtils::ActionReply(false);
-        ecore_con_client_send(Appium, reply.c_str(), strlen(reply.c_str()));
-        ecore_con_client_flush(Appium);
+        Server::getInstance().SendMessageToAppium(reply);
     }                
 }
 
@@ -237,6 +242,7 @@ void Server::FlickHandler(char* buf)
     int ySpeed = JsonUtils::GetIntParam(buf, "ySpeed");
     _D("xSpeed : %d, ySpeed : %d", xSpeed, ySpeed);
     InputGenerator::getInstance().SendUinputEventForFlick(DEVICE_TOUCH, xSpeed, ySpeed);
+    string reply = JsonUtils::ActionReply(true);
 }
 
 void Server::GetAttributeHandler(char* buf)
@@ -245,6 +251,7 @@ void Server::GetAttributeHandler(char* buf)
     string attribute = JsonUtils::GetStringParam(buf, "attribute");
     string elementId = JsonUtils::GetStringParam(buf, "elementId");
     Request request = Server::getInstance().GetRequest(elementId);
+    string result;
     if(!attribute.compare(ATTRIBUTE_TEXT))
     {
         DBusMessage::getInstance()->AddArgument(request.AutomationId);
@@ -254,9 +261,7 @@ void Server::GetAttributeHandler(char* buf)
         _D("GetText : [%s]", replyResult);
 
         string elementText = replyResult;
-        string result = JsonUtils::ActionReply(elementText);
-        ecore_con_client_send(Appium, result.c_str(), strlen(result.c_str()));
-        ecore_con_client_flush(Appium);
+        result = JsonUtils::ActionReply(elementText);
     }
     else if(!attribute.compare(ATTRIBUTE_ENABLED))
     {
@@ -268,26 +273,21 @@ void Server::GetAttributeHandler(char* buf)
         _D("Enabled : [%s]", replyResult);
 
         string elementText = replyResult;
-        string result = JsonUtils::ActionReply(elementText);
-        ecore_con_client_send(Appium, result.c_str(), strlen(result.c_str()));
-        ecore_con_client_flush(Appium);
+        result = JsonUtils::ActionReply(elementText);
     }
     else if(!attribute.compare(ATTRIBUTE_NAME))
     {
         _D("Name : [%s]", request.AutomationId.c_str());
-        string result = JsonUtils::ActionReply(request.AutomationId);
-        ecore_con_client_send(Appium, result.c_str(), strlen(result.c_str()));
-        ecore_con_client_flush(Appium);
+        result = JsonUtils::ActionReply(request.AutomationId);
     }
     else if(!attribute.compare(ATTRIBUTE_DISPLAYED))
     {
         // TO DO : discuss about displayed property 
         _D("Displayed :");
         string displayed = "true";
-        string result = JsonUtils::ActionReply(displayed);
-        ecore_con_client_send(Appium, result.c_str(), strlen(result.c_str()));
-        ecore_con_client_flush(Appium);
+        result = JsonUtils::ActionReply(displayed);
     }
+    Server::getInstance().SendMessageToAppium(result);
 }
 
 void Server::GetSizeHandler(char* buf)
@@ -298,29 +298,27 @@ void Server::GetSizeHandler(char* buf)
     string width = "width";
     string height = "height";
     string result = JsonUtils::ReplyAxis(width, request.Width, height, request.Height);
-    ecore_con_client_send(Appium, result.c_str(), strlen(result.c_str()));
-    ecore_con_client_flush(Appium);
-
+    Server::getInstance().SendMessageToAppium(result);
 }
 
 void Server::TouchDownHandler(char* buf)
 {
     _D("Enter");
-    //string action = JsonUtils::GetAction(buf);
     int X = JsonUtils::GetIntParam(buf, "x");
     int Y = JsonUtils::GetIntParam(buf, "y");
     _D("X : %d, Y : %d", X, Y);
     InputGenerator::getInstance().SendUinputEventForTouchDown(DEVICE_TOUCH, X, Y);
+    string reply = JsonUtils::ActionReply(true);
 }
 
 void Server::TouchUpHandler(char* buf)
 {
     _D("Enter");
-    //string action = JsonUtils::GetAction(buf);
     int X = JsonUtils::GetIntParam(buf, "x");
     int Y = JsonUtils::GetIntParam(buf, "y");
     _D("X : %d, Y : %d", X, Y);
     InputGenerator::getInstance().SendUinputEventForTouchUp(DEVICE_TOUCH, X, Y);
+    string reply = JsonUtils::ActionReply(true);
 }
 
 void Server::TouchMoveHandler(char* buf)
@@ -336,16 +334,14 @@ void Server::GetLocationHandler(char* buf)
     string x = "x";
     string y = "y";
     string result = JsonUtils::ReplyAxis(x, request.X, y, request.Y);
-    ecore_con_client_send(Appium, result.c_str(), strlen(result.c_str()));
-    ecore_con_client_flush(Appium);
+    Server::getInstance().SendMessageToAppium(result);
 }
 
 void Server::ShutDownHandler()
 {
     _D("Enter");
     string reply = JsonUtils::ActionReply("Shutdown");
-    ecore_con_client_send(Appium, reply.c_str(), strlen(reply.c_str()));
-    ecore_con_client_flush(Appium);
+    Server::getInstance().SendMessageToAppium(reply);
 }
 
 void Server::EventHandler(DBusMessage* msg)
@@ -377,8 +373,7 @@ void Server::EventHandler(DBusMessage* msg)
         dbus_message_iter_next(&args);
     }
     string reply = JsonUtils::ActionReply(true);
-    ecore_con_client_send(Appium, reply.c_str(), strlen(reply.c_str()));
-    ecore_con_client_flush(Appium);
+    Server::getInstance().SendMessageToAppium(reply);
     return;
 }
 
