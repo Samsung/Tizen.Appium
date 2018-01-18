@@ -66,8 +66,8 @@ public:
 	void SendUinputEventForKey(int device, __u16 code);
 	void SendUinputEventForTouchMouse(int device, __s32 value_x, __s32 value_y);
 	void SendUinputEventForTouchDown(int device, __s32 value_x, __s32 value_y);
+	void SendUinputEventForTouchMove(int device, __s32 value_x, __s32 value_y);
 	void SendUinputEventForTouchUp(int device, __s32 value_x, __s32 value_y);
-	void SendUinputEventForWheel(int device, __s32 value_y);
 	void SendUinputEventForFlick(int device, int xSpeed, int ySpeed);
 private:
 	int fd_uinput_mouse;

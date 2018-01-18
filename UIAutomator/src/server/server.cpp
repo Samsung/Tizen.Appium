@@ -207,7 +207,7 @@ void Server::FindHandler(char* buf)
 
 void Server::ClickHandler(char* buf)
 {
-    _D("Enter click");
+    _D("Enter");
     string action = JsonUtils::GetAction(buf);
     string requestId = JsonUtils::GetStringParam(buf, "elementId");
 
@@ -335,6 +335,11 @@ void Server::TouchUpHandler(char* buf)
 void Server::TouchMoveHandler(char* buf)
 {
     _D("Enter");
+    int X = JsonUtils::GetIntParam(buf, "x");
+    int Y = JsonUtils::GetIntParam(buf, "y");
+    _D("X : %d, Y : %d", X, Y);
+    InputGenerator::getInstance().SendUinputEventForTouchMove(DEVICE_TOUCH, X, Y);
+    string reply = JsonUtils::ActionReply(true);
 }
 
 void Server::GetLocationHandler(char* buf)

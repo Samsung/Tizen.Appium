@@ -163,12 +163,11 @@ bool InputGenerator::InitUinput()
         _D ("Fail ioctl method");
         return false;
     }
-
-	device_mouse.absmin[ABS_X] = 0;
-    device_mouse.absmax[ABS_X] = 719;
-	device_mouse.absmin[ABS_Y] = 0;
-    device_mouse.absmax[ABS_Y] = 1279;
-	device_mouse.absmin[ABS_MT_SLOT] = 0;
+    device_mouse.absmin[ABS_X] = 0;
+    device_mouse.absmax[ABS_X] = 719;    
+    device_mouse.absmin[ABS_Y] = 0;
+    device_mouse.absmax[ABS_Y] = 1279;    
+    device_mouse.absmin[ABS_MT_SLOT] = 0;
     device_mouse.absmax[ABS_MT_SLOT] = 1;
     device_mouse.absmin[ABS_MT_TOUCH_MAJOR] = 0;
     device_mouse.absmax[ABS_MT_TOUCH_MAJOR] = 15;
@@ -273,6 +272,18 @@ void InputGenerator::SendUinputEventForTouchDown(int device, __s32 value_x, __s3
     nanosleep(&sleeptime, NULL);
 }
 
+void InputGenerator::SendUinputEventForTouchMove(int device, __s32 value_x, __s32 value_y)
+{
+    struct timespec sleeptime = {0, 50}; //speed (low value: fast, high value: slow)
+    _D("X = %d,  Y = %d", value_x, value_y);
+
+    SendUinputEvent (device, EV_ABS, ABS_MT_POSITION_X, value_x);
+    SendUinputEvent (device, EV_ABS, ABS_MT_POSITION_Y, value_y);
+    SendUinputEvent (device, EV_ABS, ABS_MT_TOUCH_MAJOR, 3);
+    SendUinputEvent (device, EV_SYN, SYN_REPORT, 0);
+    nanosleep(&sleeptime, NULL);
+}
+
 void InputGenerator::SendUinputEventForTouchUp(int device, __s32 value_x, __s32 value_y)
 {
     struct timespec sleeptime = {0, 50}; //speed (low value: fast, high value: slow)
@@ -282,20 +293,6 @@ void InputGenerator::SendUinputEventForTouchUp(int device, __s32 value_x, __s32 
     SendUinputEvent (device, EV_KEY, BTN_TOUCH, 0);
     SendUinputEvent (device, EV_SYN, SYN_REPORT, 0);
 
-    nanosleep(&sleeptime, NULL);
-}
-
-
-void InputGenerator::SendUinputEventForWheel(int device, __s32 value_y)
-{
-    struct timespec sleeptime = {0, 800000};
-    __s32 y;
-
-    y = value_y / 4;
-
-    _D("wheel value : %d, %d", value_y, y);
-    SendUinputEvent (device, EV_REL, REL_WHEEL, y);
-    SendUinputEvent (device, EV_SYN, SYN_REPORT, 0);
     nanosleep(&sleeptime, NULL);
 }
 
