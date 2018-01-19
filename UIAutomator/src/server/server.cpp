@@ -239,7 +239,7 @@ bool Server::ElementSubscriveEvent(string automationId, string eventName, string
 
 void Server::ClickHandler(char* buf)
 {
-    _D("Enter");
+    _D("ClickHandler");
     string action = JsonUtils::GetAction(buf);
     string requestId = JsonUtils::GetStringParam(buf, "elementId");
 
@@ -318,7 +318,7 @@ void Server::TouchDownHandler(char* buf)
 {
     int X = JsonUtils::GetIntParam(buf, "x");
     int Y = JsonUtils::GetIntParam(buf, "y");
-    _D("X : %d, Y : %d", X, Y);
+    _D("X=%d, Y=%d", X, Y);
     InputGenerator::getInstance().SendUinputEventForTouchDown(DEVICE_TOUCH, X, Y);
     string reply = JsonUtils::ActionReply(true);
 }
@@ -327,7 +327,7 @@ void Server::TouchUpHandler(char* buf)
 {
     int X = JsonUtils::GetIntParam(buf, "x");
     int Y = JsonUtils::GetIntParam(buf, "y");
-    _D("X : %d, Y : %d", X, Y);
+    _D("X=%d, Y=%d", X, Y);
     InputGenerator::getInstance().SendUinputEventForTouchUp(DEVICE_TOUCH, X, Y);
     string reply = JsonUtils::ActionReply(true);
 }
@@ -336,7 +336,7 @@ void Server::TouchMoveHandler(char* buf)
 {
     int X = JsonUtils::GetIntParam(buf, "x");
     int Y = JsonUtils::GetIntParam(buf, "y");
-    _D("X : %d, Y : %d", X, Y);
+    _D("X=%d, Y=%d", X, Y);
     InputGenerator::getInstance().SendUinputEventForTouchMove(DEVICE_TOUCH, X, Y);
     string reply = JsonUtils::ActionReply(true);
 }
@@ -381,8 +381,7 @@ void Server::EventHandler(void *data, DBusMessage *msg)
 
 void Server::init()
 {
-    _D("Enter");
-
+    _D("Server init");
     DBusSignal::getInstance()->RegisterSignal(std::bind(&Server::EventHandler, this, std::placeholders::_1, std::placeholders::_2));
 
     AddHandler(ACTION_FIND, std::bind(&Server::FindHandler, this, std::placeholders::_1));

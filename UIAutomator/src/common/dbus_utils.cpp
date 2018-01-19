@@ -37,7 +37,6 @@
 using namespace boost;
 using namespace std;
 
-
 DBusArgument::DBusArgument()
 {
 }
@@ -45,9 +44,6 @@ DBusArgument::DBusArgument()
 DBusArgument::~DBusArgument()
 {
 }
-
-
-//std::set<DBusMessage*> DBusMessage::s_objects_;
 
 DBusMessage* DBusMessage::getInstance() 
 {
@@ -91,7 +87,6 @@ void DBusMessage::CheckConnection()
 
 void DBusMessage::AddArgument(bool data)
 {   
-    //_D("%s", data?"true":"false");
     DBusArgument arg;
     arg.Type = TypeBool;
     arg.DataBool = data;
@@ -100,7 +95,6 @@ void DBusMessage::AddArgument(bool data)
 
 void DBusMessage::AddArgument(int data)
 {   
-    //_D("%d", data);
     DBusArgument arg;
     arg.Type = TypeInt;
     arg.DataInt = data;
@@ -109,7 +103,6 @@ void DBusMessage::AddArgument(int data)
 
 void DBusMessage::AddArgument(char* data)
 {   
-    //_D("%s", data);
     DBusArgument arg;
     arg.Type = TypeString;
     arg.DataString = data;
@@ -118,7 +111,6 @@ void DBusMessage::AddArgument(char* data)
 
 void DBusMessage::AddArgument(string data)
 {   
-    //_D("%s", data.c_str());
     DBusArgument arg;
     arg.Type = TypeString;
     arg.DataString = data;
