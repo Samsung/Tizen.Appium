@@ -192,7 +192,7 @@ void Server::FindHandler(char* buf)
 
 
     DBusMessage::getInstance()->AddArgument(request.AutomationId);
-    string property = "Hegith";
+    string property = "Height";
     DBusMessage::getInstance()->AddArgument(property);
     reply = DBusMessage::getInstance()->SendSyncMessage("GetProperty");
     DBusMessage::getInstance()->GetReplyMessage(reply, &result);
