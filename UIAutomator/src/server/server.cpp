@@ -68,9 +68,10 @@ Server& Server::getInstance()
     return instance;
 }
 
-void Server::AddRequest(Request req)
+void Server::AddRequest(Request request)
 {
-    RequestMap[req.RequestId] = req;
+    _D("Add request, X=%d, Y=%d, Width=%d, Height=%d", request.X, request.Y, request.Width, request.Height);             
+    RequestMap[request.RequestId] = request;
 }
 
 Request Server::GetRequest(string requestId)
@@ -148,7 +149,7 @@ Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore
     string action = JsonUtils::GetAction(buf);
     if(Server::getInstance().HandlerMap.find(action) != Server::getInstance().HandlerMap.end())
     {
-        _D("Find [%s] Handler", action.c_str());
+        _D("[%s] Handler", action.c_str());
         Server::getInstance().HandlerMap[action](buf);
     }
     else
@@ -165,44 +166,75 @@ void Server::SendMessageToAppium(string msg)
     ecore_con_client_flush(Appium);
 }
 
+string Server::ElementGetProperty(string automationId, string property)
+{
+    _D("Get %s of %s", property.c_str(), automationId.c_str());
+    DBusMessage::getInstance()->AddArgument(automationId);
+    DBusMessage::getInstance()->AddArgument(property);
+    DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("GetProperty");
+    char* result = 0;
+    DBusMessage::getInstance()->GetReplyMessage(reply, &result);
+    string ret = result;
+    return ret;
+}
+
+int Server::ElementGetIntMessage(string automationId, string method)
+{
+    _D("%s of %s", method.c_str(), automationId.c_str());
+    DBusMessage::getInstance()->AddArgument(automationId);
+    DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage(method);
+    int ret;
+    DBusMessage::getInstance()->GetReplyMessage(reply, &ret);
+    return ret;
+}
+
+string Server::ElementGetStringMessage(string automationId, string method)
+{
+    _D("%s of %s", method.c_str(), automationId.c_str());
+    DBusMessage::getInstance()->AddArgument(automationId);
+    DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage(method);
+    char* ret;
+    DBusMessage::getInstance()->GetReplyMessage(reply, &ret);
+    string result = ret;
+    return result;
+}
+
 void Server::FindHandler(char* buf)
 {
     _D("Enter");
     Request request;
-    request.RequestId = Server::getInstance().GetRequestId();
+    request.RequestId = GetRequestId();
     request.AutomationId = JsonUtils::GetStringParam(buf, "selector");
     request.Command = JsonUtils::GetAction(buf);;
 
-    DBusMessage::getInstance()->AddArgument(request.AutomationId);
-    DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("GetCenterX");
-    DBusMessage::getInstance()->GetReplyMessage(reply, &(request.X));
+    request.X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
+    request.Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
 
-    DBusMessage::getInstance()->AddArgument(request.AutomationId);
-    reply = DBusMessage::getInstance()->SendSyncMessage("GetCenterY");
-    DBusMessage::getInstance()->GetReplyMessage(reply, &(request.Y));
+    string ret = ElementGetProperty(request.AutomationId, "Width");
+    request.Width = atoi(ret.c_str());
 
-
-    DBusMessage::getInstance()->AddArgument(request.AutomationId);
-    //string property = "Width";
-    DBusMessage::getInstance()->AddArgument("Width");
-    reply = DBusMessage::getInstance()->SendSyncMessage("GetProperty");
-    char* result = 0;
-    DBusMessage::getInstance()->GetReplyMessage(reply, &result);
-    request.Width = atoi(result);
-
-
-    DBusMessage::getInstance()->AddArgument(request.AutomationId);
-    string property = "Height";
-    DBusMessage::getInstance()->AddArgument(property);
-    reply = DBusMessage::getInstance()->SendSyncMessage("GetProperty");
-    DBusMessage::getInstance()->GetReplyMessage(reply, &result);
-    request.Height = atoi(result);
+    ret = ElementGetProperty(request.AutomationId, "Height");
+    request.Height = atoi(ret.c_str());
     
-    _D("X: %d ,  Y : %d, Width : %d, Height : %d from app", request.X, request.Y, request.Width, request.Height);             
-    Server::getInstance().AddRequest(request);  
+    AddRequest(request);  
 
     string replyMsg = JsonUtils::FindReply(request.RequestId);
-    Server::getInstance().SendMessageToAppium(replyMsg);
+    SendMessageToAppium(replyMsg);
+}
+
+bool Server::ElementSubscriveEvent(string automationId, string eventName, string requestId, bool once)
+{
+    _D("Subscribe : automationId=%s, eventName=%s requestId=%s once=%d", 
+        automationId.c_str(), eventName.c_str(), requestId.c_str(), once);
+    DBusMessage::getInstance()->AddArgument(automationId);
+    DBusMessage::getInstance()->AddArgument(eventName);
+    DBusMessage::getInstance()->AddArgument(requestId);
+    DBusMessage::getInstance()->AddArgument(once);
+
+    DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("SubscribeEvent");
+    bool ret = false;
+    DBusMessage::getInstance()->GetReplyMessage(reply, &ret);
+    return ret;
 }
 
 void Server::ClickHandler(char* buf)
@@ -211,20 +243,10 @@ void Server::ClickHandler(char* buf)
     string action = JsonUtils::GetAction(buf);
     string requestId = JsonUtils::GetStringParam(buf, "elementId");
 
-    Server::getInstance().UpdateAction(requestId, action);
-    Request request = Server::getInstance().GetRequest(requestId);
+    UpdateAction(requestId, action);
+    Request request = GetRequest(requestId);
 
-    DBusMessage::getInstance()->AddArgument(request.AutomationId);
-    string event = "MouseDown";
-    DBusMessage::getInstance()->AddArgument(event);
-    DBusMessage::getInstance()->AddArgument(request.RequestId);
-    DBusMessage::getInstance()->AddArgument(true);
-
-    DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("SubscribeEvent");
-    bool result = false;
-    DBusMessage::getInstance()->GetReplyMessage(reply, &result);
-    _D("%s from app", result?"true":"false");
-    
+    bool result = ElementSubscriveEvent(request.AutomationId, "MouseDown", request.RequestId, true);
     if(result == true)
     {
         InputGenerator::getInstance().SendUinputEventForTouchMouse(DEVICE_TOUCH, request.X, request.Y);
@@ -233,7 +255,7 @@ void Server::ClickHandler(char* buf)
     {
         _E("Fail to subscribe event");
         string reply = JsonUtils::ActionReply(false);
-        Server::getInstance().SendMessageToAppium(reply);
+        SendMessageToAppium(reply);
     }                
 }
 
@@ -246,7 +268,6 @@ void Server::InputTextHandler(char* buf)
 
 void Server::FlickHandler(char* buf)
 {
-    _D("Enter");
     string action = JsonUtils::GetAction(buf);
     int xSpeed = JsonUtils::GetIntParam(buf, "xSpeed");
     int ySpeed = JsonUtils::GetIntParam(buf, "ySpeed");
@@ -258,30 +279,19 @@ void Server::FlickHandler(char* buf)
 void Server::GetAttributeHandler(char* buf)
 {
     string attribute = JsonUtils::GetStringParam(buf, "attribute");
-    string elementId = JsonUtils::GetStringParam(buf, "elementId");
-    Request request = Server::getInstance().GetRequest(elementId);
-    string replyMsg;
-    char* result = NULL;
     _D("Attribute : [%s]", attribute.c_str());
+    string elementId = JsonUtils::GetStringParam(buf, "elementId");
+    Request request = GetRequest(elementId);
+    string replyMsg;
     if(!attribute.compare(ATTRIBUTE_TEXT))
     {
-        DBusMessage::getInstance()->AddArgument(request.AutomationId);
-        DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("GetText");
-        DBusMessage::getInstance()->GetReplyMessage(reply, &result);
-
-        //string elementText = result;
+        string result = ElementGetStringMessage(request.AutomationId, "GetText");
         replyMsg = JsonUtils::ActionReply(result);
     }
     else if(!attribute.compare(ATTRIBUTE_ENABLED))
     {
-        DBusMessage::getInstance()->AddArgument(request.AutomationId);
-        string property = "IsEnabled";
-        DBusMessage::getInstance()->AddArgument(property);
-        DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("GetProperty");
-        DBusMessage::getInstance()->GetReplyMessage(reply, &result);
-
-        //string elementText = result;
-        replyMsg = JsonUtils::ActionReply(result);
+        string ret = ElementGetProperty(request.AutomationId, "IsEnabled");
+        replyMsg = JsonUtils::ActionReply(ret);
     }
     else if(!attribute.compare(ATTRIBUTE_NAME))
     {
@@ -289,14 +299,8 @@ void Server::GetAttributeHandler(char* buf)
     }
     else if(!attribute.compare(ATTRIBUTE_DISPLAYED))
     {
-        DBusMessage::getInstance()->AddArgument(request.AutomationId);
-        string property = "IsVisible";
-        DBusMessage::getInstance()->AddArgument(property);
-        DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("GetProperty");
-        DBusMessage::getInstance()->GetReplyMessage(reply, &result);
-
-        //string elementText = result;
-        replyMsg = JsonUtils::ActionReply(result);
+        string ret = ElementGetProperty(request.AutomationId, "IsVisible");
+        replyMsg = JsonUtils::ActionReply(ret);
     }
     Server::getInstance().SendMessageToAppium(replyMsg);
 }
@@ -305,16 +309,13 @@ void Server::GetSizeHandler(char* buf)
 {
     _D("Enter");
     string elementId = JsonUtils::GetStringParam(buf, "elementId");
-    Request request = Server::getInstance().GetRequest(elementId);
-    string width = "width";
-    string height = "height";
-    string result = JsonUtils::ReplyAxis(width, request.Width, height, request.Height);
-    Server::getInstance().SendMessageToAppium(result);
+    Request request = GetRequest(elementId);
+    string result = JsonUtils::ReplyAxis("width", request.Width, "height", request.Height);
+    SendMessageToAppium(result);
 }
 
 void Server::TouchDownHandler(char* buf)
 {
-    _D("Enter");
     int X = JsonUtils::GetIntParam(buf, "x");
     int Y = JsonUtils::GetIntParam(buf, "y");
     _D("X : %d, Y : %d", X, Y);
@@ -324,7 +325,6 @@ void Server::TouchDownHandler(char* buf)
 
 void Server::TouchUpHandler(char* buf)
 {
-    _D("Enter");
     int X = JsonUtils::GetIntParam(buf, "x");
     int Y = JsonUtils::GetIntParam(buf, "y");
     _D("X : %d, Y : %d", X, Y);
@@ -334,7 +334,6 @@ void Server::TouchUpHandler(char* buf)
 
 void Server::TouchMoveHandler(char* buf)
 {
-    _D("Enter");
     int X = JsonUtils::GetIntParam(buf, "x");
     int Y = JsonUtils::GetIntParam(buf, "y");
     _D("X : %d, Y : %d", X, Y);
@@ -346,50 +345,37 @@ void Server::GetLocationHandler(char* buf)
 {
     _D("Enter");
     string elementId = JsonUtils::GetStringParam(buf, "elementId");
-    Request request = Server::getInstance().GetRequest(elementId);
-    string x = "x";
-    string y = "y";
-    string result = JsonUtils::ReplyAxis(x, request.X, y, request.Y);
-    Server::getInstance().SendMessageToAppium(result);
+    Request request = GetRequest(elementId);
+    string result = JsonUtils::ReplyAxis("x", request.X, "y", request.Y);
+    SendMessageToAppium(result);
 }
 
 void Server::ShutDownHandler()
 {
     _D("Enter");
     string reply = JsonUtils::ActionReply("Shutdown");
-    Server::getInstance().SendMessageToAppium(reply);
+    SendMessageToAppium(reply);
 }
 
 void Server::EventHandler(void *data, DBusMessage *msg)
 {
     _D("Enter");
     DBusMessageIter args;
-    char* value = NULL;
-
+    char* elementId = NULL;
+    char* eventName = NULL;
+    char* reuqestId = NULL;
     if (dbus_message_iter_init(msg, &args))
     {
-        if(DBUS_TYPE_STRING == dbus_message_iter_get_arg_type(&args)) 
-        {
-            dbus_message_iter_get_basic(&args, &value);
-            _D("ElementId : %s", value);
-        }
+        dbus_message_iter_get_basic(&args, &elementId);
         dbus_message_iter_next(&args);
-        if(DBUS_TYPE_STRING == dbus_message_iter_get_arg_type(&args)) 
-        {
-            dbus_message_iter_get_basic(&args, &value);
-            _D("EventName : %s", value);
-        }
+        dbus_message_iter_get_basic(&args, &eventName);
         dbus_message_iter_next(&args);
-
-        if(DBUS_TYPE_STRING == dbus_message_iter_get_arg_type(&args)) 
-        {
-            dbus_message_iter_get_basic(&args, &value);
-            _D("ReuqestId : %s", value);
-        }
+        dbus_message_iter_get_basic(&args, &reuqestId);
         dbus_message_iter_next(&args);
+        _D("ElementId=%s, EventName=%s, ReuqestId=%s", elementId, eventName, reuqestId);
     }
     string reply = JsonUtils::ActionReply(true);
-    Server::getInstance().SendMessageToAppium(reply);
+    SendMessageToAppium(reply);
     return;
 }
 
@@ -399,16 +385,16 @@ void Server::init()
 
     DBusSignal::getInstance()->RegisterSignal(std::bind(&Server::EventHandler, this, std::placeholders::_1, std::placeholders::_2));
 
-    Server::getInstance().AddHandler(ACTION_FIND, std::bind(&Server::FindHandler, this, std::placeholders::_1));
-    Server::getInstance().AddHandler(ACTION_FLICK, std::bind(&Server::FlickHandler, this, std::placeholders::_1));
-    Server::getInstance().AddHandler(ACTION_CLICK, std::bind(&Server::ClickHandler, this, std::placeholders::_1));    
-    Server::getInstance().AddHandler(ACTION_GET_SIZE, std::bind(&Server::GetSizeHandler, this, std::placeholders::_1));
-    Server::getInstance().AddHandler(ACTION_TOUCH_DOWN, std::bind(&Server::TouchDownHandler, this, std::placeholders::_1));
-    Server::getInstance().AddHandler(ACTION_TOUCH_UP, std::bind(&Server::TouchUpHandler, this, std::placeholders::_1));
-    Server::getInstance().AddHandler(ACTION_TOUCH_MOVE, std::bind(&Server::TouchMoveHandler, this, std::placeholders::_1));
-    Server::getInstance().AddHandler(ACTION_GET_LOCATION, std::bind(&Server::GetLocationHandler, this, std::placeholders::_1));
-    Server::getInstance().AddHandler(ACTION_GET_ATTRIBUTE, std::bind(&Server::GetAttributeHandler, this, std::placeholders::_1));
-    Server::getInstance().AddHandler(ACTION_INPUT_TEXT, std::bind(&Server::InputTextHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_FIND, std::bind(&Server::FindHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_FLICK, std::bind(&Server::FlickHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_CLICK, std::bind(&Server::ClickHandler, this, std::placeholders::_1));    
+    AddHandler(ACTION_GET_SIZE, std::bind(&Server::GetSizeHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_TOUCH_DOWN, std::bind(&Server::TouchDownHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_TOUCH_UP, std::bind(&Server::TouchUpHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_TOUCH_MOVE, std::bind(&Server::TouchMoveHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_GET_LOCATION, std::bind(&Server::GetLocationHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_GET_ATTRIBUTE, std::bind(&Server::GetAttributeHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_INPUT_TEXT, std::bind(&Server::InputTextHandler, this, std::placeholders::_1));
     
     Ecore_Con_Server *Server;
     if (!(Server = ecore_con_server_add(ECORE_CON_REMOTE_TCP, "127.0.0.1", 8888, NULL)))

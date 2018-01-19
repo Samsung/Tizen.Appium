@@ -50,6 +50,11 @@ public:
     void SetPosition(string requestId, int X, int Y);
     void SetAppSocket(Ecore_Con_Client* socket);
     void SendMessageToAppium(string msg);
+    
+    string ElementGetProperty(string automationId, string property);
+    string ElementGetStringMessage(string automationId, string method);
+    int ElementGetIntMessage(string automationId, string method);
+    bool ElementSubscriveEvent(string automationId, string eventName, string requestId, bool once);
 
     void AddHandler(string action, CommandHandler function);
     void EventHandler(void *data, DBusMessage *msg);

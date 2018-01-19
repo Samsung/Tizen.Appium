@@ -64,15 +64,12 @@ public:
     void GetReplyMessage(DBusMessage* reply, int* value);
     void GetReplyMessage(DBusMessage* reply, bool* value);
 private:
+    void CheckConnection();
     string DBusDestination;
     string DBusPath;
     string DBusInterface; 
     DBusConnection* DbusConnection;
-
-    static std::set<DBusMessage*> s_objects_;
     vector<DBusArgument> Arguments;
-
-    void CheckConnection();
 };
 
 class DBusSignal

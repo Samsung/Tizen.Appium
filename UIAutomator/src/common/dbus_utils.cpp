@@ -47,7 +47,7 @@ DBusArgument::~DBusArgument()
 }
 
 
-std::set<DBusMessage*> DBusMessage::s_objects_;
+//std::set<DBusMessage*> DBusMessage::s_objects_;
 
 DBusMessage* DBusMessage::getInstance() 
 {
@@ -55,10 +55,9 @@ DBusMessage* DBusMessage::getInstance()
     return &instance;
 }
 
-DBusMessage::DBusMessage() : DBusDestination("org.tizen.appium"), DBusPath("/org/tizen/appium"), 
-                             DBusInterface("org.tizen.appium"), DbusConnection(nullptr) 
+DBusMessage::DBusMessage() 
+: DBusDestination("org.tizen.appium"), DBusPath("/org/tizen/appium"),DBusInterface("org.tizen.appium"), DbusConnection(nullptr) 
 {
-    s_objects_.insert(this);
 }
 
 DBusMessage::~DBusMessage()
@@ -67,16 +66,6 @@ DBusMessage::~DBusMessage()
     {
         dbus_connection_close(DbusConnection);
         dbus_connection_unref(DbusConnection);
-    }
-
-    const auto iter = s_objects_.find(this);
-    if (s_objects_.end() != iter)
-    {
-        s_objects_.erase(iter);
-    } 
-    else 
-    {
-        _D("Object is not existing in the static pool");
     }
 }
 
@@ -102,7 +91,7 @@ void DBusMessage::CheckConnection()
 
 void DBusMessage::AddArgument(bool data)
 {   
-    _D("%s", data?"true":"false");
+    //_D("%s", data?"true":"false");
     DBusArgument arg;
     arg.Type = TypeBool;
     arg.DataBool = data;
@@ -111,7 +100,7 @@ void DBusMessage::AddArgument(bool data)
 
 void DBusMessage::AddArgument(int data)
 {   
-    _D("%d", data);
+    //_D("%d", data);
     DBusArgument arg;
     arg.Type = TypeInt;
     arg.DataInt = data;
@@ -120,7 +109,7 @@ void DBusMessage::AddArgument(int data)
 
 void DBusMessage::AddArgument(char* data)
 {   
-    _D("%s", data);
+    //_D("%s", data);
     DBusArgument arg;
     arg.Type = TypeString;
     arg.DataString = data;
@@ -129,7 +118,7 @@ void DBusMessage::AddArgument(char* data)
 
 void DBusMessage::AddArgument(string data)
 {   
-    _D("%s", data.c_str());
+    //_D("%s", data.c_str());
     DBusArgument arg;
     arg.Type = TypeString;
     arg.DataString = data;
@@ -138,6 +127,12 @@ void DBusMessage::AddArgument(string data)
 
 void DBusMessage::GetReplyMessage(DBusMessage* reply, char** value)
 {
+    if(NULL == reply)
+    {
+        _E("Reply message is null");
+        return;
+    }
+
     DBusError err;
     dbus_error_init(&err);
 
@@ -154,6 +149,12 @@ void DBusMessage::GetReplyMessage(DBusMessage* reply, char** value)
 
 void DBusMessage::GetReplyMessage(DBusMessage* reply, int* value)
 {
+    if(NULL == reply)
+    {
+        _E("Reply message is null");
+        return;
+    }
+
     DBusError err;
     dbus_error_init(&err);
 
@@ -170,6 +171,12 @@ void DBusMessage::GetReplyMessage(DBusMessage* reply, int* value)
 
 void DBusMessage::GetReplyMessage(DBusMessage* reply, bool* value)
 {
+    if(NULL == reply)
+    {
+        _E("Reply message is null");
+        return;
+    }
+
     DBusError err;
     dbus_error_init(&err);
 
