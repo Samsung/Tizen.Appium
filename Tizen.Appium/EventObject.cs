@@ -37,12 +37,12 @@ namespace Tizen.Appium
             }
             catch (ArgumentException)
             {
-                Console.WriteLine("Not available event name");
+                Log.Debug(TizenAppium.Tag,"Not available event name");
                 return null;
             }
             catch (Exception e)
             {
-                Console.WriteLine("It is failed to create event object", e);
+                Log.Debug(TizenAppium.Tag,"It is failed to create event object"+e);
                 return null;
             }
         }
@@ -87,12 +87,12 @@ namespace Tizen.Appium
 
         public bool Subscribe()
         {
-            Console.WriteLine(" ### [Subscribe] elementId: {0}, subscriptionId: {1}", ElementId, Id);
+            Log.Debug(TizenAppium.Tag," ### [Subscribe] elementId: "+ ElementId + ", subscriptionId: "+Id);
 
             var ve = ElementUtils.GetTestableElement(ElementId) as VisualElement;
             if (ve == null)
             {
-                Console.WriteLine("### Not Found Element");
+                Log.Debug(TizenAppium.Tag,"### Not Found Element");
                 return false;
             }
 
@@ -105,7 +105,7 @@ namespace Tizen.Appium
 
         public bool Unsubscribe()
         {
-            Console.WriteLine(" ### [Unsubscribe] elementId: {0}, subscriptionId: {1}", ElementId, Id);
+            Log.Debug(TizenAppium.Tag," ### [Unsubscribe] elementId: "+ ElementId + ", subscriptionId: "+Id);
 
             _eventObj.On -= EventHandler;
             EventObject.RemoveEventObject(Id);

@@ -14,7 +14,7 @@ namespace Tizen.Appium.Dbus
 
         public Arguments Run(Arguments args)
         {
-            Console.WriteLine("#### GetText");
+            Log.Debug(TizenAppium.Tag,"#### GetText");
 
             var elementId = (string)args[Dbus.Params.ElementId];
             var textProperty = "Text";
@@ -25,7 +25,7 @@ namespace Tizen.Appium.Dbus
             var element = ElementUtils.GetTestableElement(elementId);
             if (element == null)
             {
-                Console.WriteLine("### Not Found Element");
+                Log.Debug(TizenAppium.Tag,"### Not Found Element");
                 ret.SetArgument(Dbus.Params.Return, string.Empty);
                 return ret;
             }

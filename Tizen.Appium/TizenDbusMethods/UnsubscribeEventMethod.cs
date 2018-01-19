@@ -14,7 +14,7 @@ namespace Tizen.Appium.Dbus
 
         public Arguments Run(Arguments args)
         {
-            Console.WriteLine("#### Unsubscribe");
+            Log.Debug(TizenAppium.Tag,"#### Unsubscribe");
 
             var id = (string)args[Dbus.Params.SubscriptionId];
             var ret = new Arguments();
@@ -23,7 +23,7 @@ namespace Tizen.Appium.Dbus
 
             if (evtObj == null)
             {
-                Console.WriteLine("#### Not available ID:{0}. There is no subscriber for this id.", id);
+                Log.Debug(TizenAppium.Tag,"#### Not available ID:"+id+". There is no subscriber for this id.");
                 ret.SetArgument(Dbus.Params.Return, false);
             }
             else

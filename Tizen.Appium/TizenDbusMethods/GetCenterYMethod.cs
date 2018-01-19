@@ -16,7 +16,7 @@ namespace Tizen.Appium.Dbus
 
         public Arguments Run(Arguments args)
         {
-            Console.WriteLine("##### GetCenterY");
+            Log.Debug(TizenAppium.Tag,"##### GetCenterY");
 
             var elementId = (string)args[Dbus.Params.ElementId];
             var ret = new Arguments();
@@ -24,7 +24,7 @@ namespace Tizen.Appium.Dbus
             var ve = ElementUtils.GetTestableElement(elementId) as VisualElement;
             if (ve == null)
             {
-                Console.WriteLine("#### Not Found Element");
+                Log.Debug(TizenAppium.Tag,"#### Not Found Element");
                 ret.SetArgument(Dbus.Params.Return, -1);
                 return ret;
             }

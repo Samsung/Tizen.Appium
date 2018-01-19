@@ -24,7 +24,7 @@ namespace Tizen.Appium.Dbus
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    Log.Debug(TizenAppium.Tag,e.ToString());
                     return null;
                 }
             }
@@ -40,7 +40,7 @@ namespace Tizen.Appium.Dbus
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    Log.Debug(TizenAppium.Tag,e.ToString());
                     return null;
                 }
             }
@@ -75,7 +75,7 @@ namespace Tizen.Appium.Dbus
 
         public static Arguments MessageToArguments(IntPtr message, params string[] parameters)
         {
-            Console.WriteLine("#### required args: {0}", parameters);
+            Log.Debug(TizenAppium.Tag,"#### required args: "+parameters);
 
             Arguments args = new Arguments();
 
@@ -110,7 +110,7 @@ namespace Tizen.Appium.Dbus
                 }
                 else
                 {
-                    Console.WriteLine("#### No more items in the message");
+                    Log.Debug(TizenAppium.Tag,"#### No more items in the message");
                     break;
                 }
             }
@@ -169,7 +169,7 @@ namespace Tizen.Appium.Dbus
                 }
                 else
                 {
-                    Console.WriteLine("#### No more items in the arguments");
+                    Log.Debug(TizenAppium.Tag,"#### No more items in the arguments");
                     break;
                 }
             }

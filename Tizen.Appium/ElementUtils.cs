@@ -10,7 +10,7 @@ namespace Tizen.Appium
 
         public static Element GetTestableElement(string id)
         {
-            Console.WriteLine("#### _testObjects.ContainsKey?{0}, _testObjects.Count={1}", _testObjects.ContainsKey(id), _testObjects.Count);
+            Log.Debug(TizenAppium.Tag,"#### _testObjects.ContainsKey?"+ _testObjects.ContainsKey(id) + ", _testObjects.Count="+_testObjects.Count);
             WeakReference value;
             _testObjects.TryGetValue(id, out value);
             if (value != null && value.IsAlive)
@@ -25,7 +25,7 @@ namespace Tizen.Appium
 
         public static void AddTestableElement(string id, Element element)
         {
-            Console.WriteLine("#### add object={0}, type={1} ", id, element.GetType());
+            Log.Debug(TizenAppium.Tag,"#### add object="+ id + ", type="+element.GetType());
             if (_testObjects.ContainsKey(id) || String.IsNullOrEmpty(id))
                 return;
 

@@ -1,4 +1,5 @@
 using System;
+using Tizen;
 
 namespace Tizen.Appium.Dbus
 {
@@ -15,7 +16,7 @@ namespace Tizen.Appium.Dbus
 
         public Arguments Run(Arguments args)
         {
-            Console.WriteLine("#### SubscribeEvent");
+            Log.Debug(TizenAppium.Tag,"#### SubscribeEvent");
 
             var elementId = (string)args[Dbus.Params.ElementId];
             var eventName = (string)args[Dbus.Params.EventName];
@@ -23,7 +24,7 @@ namespace Tizen.Appium.Dbus
             var once = (bool)args[Dbus.Params.Once];
             var ret = new Arguments();
 
-            Console.WriteLine("#### elementId:{0}, eventName:{1}, id:{2}, once:{3}", elementId, eventName, id, once);
+            Log.Debug(TizenAppium.Tag,"#### elementId:"+ elementId+", eventName:"+ eventName + ", id:"+id+", once:"+once);
 
             var evtObj = EventObject.CreateEventObject(id, elementId, eventName, once, () =>
             {
@@ -32,7 +33,7 @@ namespace Tizen.Appium.Dbus
 
             if (evtObj == null)
             {
-                Console.WriteLine("#### Not available ID:{0}. it is already used for other event.", id);
+                Log.Debug(TizenAppium.Tag,"#### Not available ID:"+id+". it is already used for other event.");
                 ret.SetArgument(Dbus.Params.Return, false);
             }
             else

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Tizen;
 
 namespace Tizen.Appium.Dbus
 {
@@ -16,38 +17,38 @@ namespace Tizen.Appium.Dbus
 
         public DbusConnection()
         {
-            Console.WriteLine(" #### DbusConnection");
+            Log.Debug(TizenAppium.Tag," #### DbusConnection");
             InitializeDbusConnection();
         }
 
         static void InitializeDbusConnection()
         {
-            Console.WriteLine(" #### InitializeDbusConnection");
+            Log.Debug(TizenAppium.Tag," #### InitializeDbusConnection");
             IntPtr error;
             Interop.Edbus.dbus_error_init(out error);
 
             int ret = Interop.Edbus.e_dbus_init();
             if (ret == 0)
             {
-                Console.WriteLine("#### Error: Failed to init dbus");
+                Log.Debug(TizenAppium.Tag,"#### Error: Failed to init dbus");
             }
 
             _conn = Interop.Edbus.dbus_bus_get_private(Interop.DbusBusType.DBUS_BUS_SYSTEM, error);
             if (_conn == null)
             {
-                Console.WriteLine("#### Error: Failed to get dbus bus");
+                Log.Debug(TizenAppium.Tag,"#### Error: Failed to get dbus bus");
             }
 
             ret = Interop.Edbus.dbus_bus_request_name(_conn, Names.BusName, 0, error);
             if (ret == -1)
             {
-                Console.WriteLine("#### Error: Failed to set dbus name");
+                Log.Debug(TizenAppium.Tag,"#### Error: Failed to set dbus name");
             }
 
             _econn = Interop.Edbus.e_dbus_connection_setup(_conn);
             if (_econn == null)
             {
-                Console.WriteLine("#### Error: Failed to setup connection");
+                Log.Debug(TizenAppium.Tag,"#### Error: Failed to setup connection");
             }
 
             _object = Interop.Edbus.e_dbus_object_add(_econn, Names.ObjectPath, IntPtr.Zero);
@@ -55,12 +56,12 @@ namespace Tizen.Appium.Dbus
 
             Interop.Edbus.e_dbus_object_interface_attach(_object, _interface);
 
-            Console.WriteLine("#### DbusConnection is initialized successfully!!");
+            Log.Debug(TizenAppium.Tag,"#### DbusConnection is initialized successfully!!");
         }
 
         public void Close()
         {
-            Console.WriteLine(" #### dbus close !!!");
+            Log.Debug(TizenAppium.Tag," #### dbus close !!!");
             _methodHandlers.Clear();
 
             //dbus_connection_close(), dbus_connection_unref(), will be called in e_dbus_connection_close()
@@ -71,11 +72,11 @@ namespace Tizen.Appium.Dbus
         {
             Interop.Edbus.MethodCallback methodHandler = (obj, message) =>
             {
-                Console.WriteLine("#### {0} method is invoked with {1}", method.Name, method.Params);
+                Log.Debug(TizenAppium.Tag,"#### "+ method.Name + " method is invoked with "+method.Params);
                 var args = Arguments.MessageToArguments(message, method.Params);
-                Console.WriteLine("#### args = {0}", args);
+                Log.Debug(TizenAppium.Tag,"#### args = {0}", args.ToString());
                 var ret = method.Run(args);
-                Console.WriteLine("#### ret = {0}", ret);
+                Log.Debug(TizenAppium.Tag,"#### ret = {0}", ret.ToString());
 
                 IntPtr reply = Arguments.ArgumentsToReturnMessage(message, ret, method.ReturnSignature);
 
@@ -89,24 +90,24 @@ namespace Tizen.Appium.Dbus
 
         public void BroadcaseSignal(string signalName, Arguments args, string sig)
         {
-            Console.WriteLine("#### BroadcaseSignal: args={0}, signature={1}", args, sig);
+            Log.Debug(TizenAppium.Tag,"#### BroadcaseSignal: args="+ args + ", signature="+sig);
 
             var message = Arguments.ArgumentsToSignalMessage(signalName, args, sig);
 
             if (_conn != null)
             {
                 Interop.Edbus.e_dbus_message_send(_econn, message, SendCallback, -1, IntPtr.Zero);
-                Console.WriteLine("#### sent!!");
+                Log.Debug(TizenAppium.Tag,"#### sent!!");
             }
             else
             {
-                Console.WriteLine("#### Dbus connection is not initialized");
+                Log.Debug(TizenAppium.Tag,"#### Dbus connection is not initialized");
             }
         }
 
         static IntPtr SendCallback(IntPtr data, IntPtr message, IntPtr error)
         {
-            Console.WriteLine("#### Error occurs while signal is sent");
+            Log.Debug(TizenAppium.Tag,"#### Error occurs while signal is sent");
             return IntPtr.Zero;
         }
     }
