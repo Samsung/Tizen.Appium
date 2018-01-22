@@ -1,0 +1,6 @@
+[D-BUS Service]
+Name=org.tizen.system.uiautomator
+Exec=/bin/false
+SystemdService=uiautomator.service
+User=system
+Group=system
