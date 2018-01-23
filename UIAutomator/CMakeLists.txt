@@ -21,7 +21,6 @@ SET(SRCS ${SRCS}
     UIAutomator/src/inputgenerator/input_generator.cpp
     UIAutomator/src/inputgenerator/touch.cpp
     UIAutomator/src/inputgenerator/keyboard.cpp
-    UIAutomator/src/inputgenerator/hardware_key.cpp
 )
 
 # -----------------------------------------------------------------------------
