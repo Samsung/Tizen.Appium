@@ -45,7 +45,6 @@ static int uiautomator_init(int argc, char **argv)
     _D("Enter");
 
     Server::getInstance().init();
-    //InputGenerator::getInstance().Init();
 
     signal(SIGTERM, sig_quit); // SIGTERM signal termination - 15
     signal(SIGUSR1, sig_usr1); // SIGUSR1 - 10
