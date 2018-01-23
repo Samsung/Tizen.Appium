@@ -19,7 +19,7 @@
 #include "common/common.h"
 #include "common/dbus_utils.h"
 #include "common/type.h"
-#include "input_generator.h"
+#include "inputgenerator/input_generator.h"
 #include "json_utils.h"
 #include "request.h"
 
@@ -249,21 +249,29 @@ void Server::ClickHandler(char* buf)
     bool result = ElementSubscriveEvent(request.AutomationId, "MouseDown", request.RequestId, true);
     if(result == true)
     {
-        InputGenerator::getInstance().SendUinputEventForTouchMouse(DEVICE_TOUCH, request.X, request.Y);
+        touch.Click(request.X, request.Y);
     }
-    else 
+    else
     {
         _E("Fail to subscribe event");
         string reply = JsonUtils::ActionReply(false);
         SendMessageToAppium(reply);
-    }                
+    }
 }
 
 void Server::InputTextHandler(char* buf)
 {
     _D("Enter");
-    string keycode = JsonUtils::GetStringParam(buf, "keycode");
-    // To do : call press keycode mehtod of input generator
+    string text = JsonUtils::GetStringParam(buf, "text");
+    int count = text.size();
+    char codes[count + 1];
+    strcpy(codes, text.c_str());
+    codes[sizeof(codes) - 1] = 0;
+    for (int i = 0; i < count; i++) {
+        keyboard.PressKeyCode(codes[i]);
+    }
+    string reply = JsonUtils::ActionReply(true);
+    SendMessageToAppium(reply);
 }
 
 void Server::FlickHandler(char* buf)
@@ -272,8 +280,9 @@ void Server::FlickHandler(char* buf)
     int xSpeed = JsonUtils::GetIntParam(buf, "xSpeed");
     int ySpeed = JsonUtils::GetIntParam(buf, "ySpeed");
     _D("xSpeed : %d, ySpeed : %d", xSpeed, ySpeed);
-    InputGenerator::getInstance().SendUinputEventForFlick(DEVICE_TOUCH, xSpeed, ySpeed);
+    touch.Flick(xSpeed, ySpeed);
     string reply = JsonUtils::ActionReply(true);
+    SendMessageToAppium(reply);
 }
 
 void Server::GetAttributeHandler(char* buf)
@@ -302,6 +311,12 @@ void Server::GetAttributeHandler(char* buf)
         string ret = ElementGetProperty(request.AutomationId, "IsVisible");
         replyMsg = JsonUtils::ActionReply(ret);
     }
+    else if (!attribute.compare(ATTRIBUTE_SIZE))
+    {
+        Request request = GetRequest(elementId);
+        replyMsg = JsonUtils::ReplyAxis("width", request.Width, "height", request.Height);
+    }
+
     Server::getInstance().SendMessageToAppium(replyMsg);
 }
 
@@ -319,8 +334,9 @@ void Server::TouchDownHandler(char* buf)
     int X = JsonUtils::GetIntParam(buf, "x");
     int Y = JsonUtils::GetIntParam(buf, "y");
     _D("X=%d, Y=%d", X, Y);
-    InputGenerator::getInstance().SendUinputEventForTouchDown(DEVICE_TOUCH, X, Y);
+    touch.Down(X, Y);
     string reply = JsonUtils::ActionReply(true);
+    SendMessageToAppium(reply);
 }
 
 void Server::TouchUpHandler(char* buf)
@@ -328,8 +344,9 @@ void Server::TouchUpHandler(char* buf)
     int X = JsonUtils::GetIntParam(buf, "x");
     int Y = JsonUtils::GetIntParam(buf, "y");
     _D("X=%d, Y=%d", X, Y);
-    InputGenerator::getInstance().SendUinputEventForTouchUp(DEVICE_TOUCH, X, Y);
+    touch.Up(X, Y);
     string reply = JsonUtils::ActionReply(true);
+    SendMessageToAppium(reply);
 }
 
 void Server::TouchMoveHandler(char* buf)
@@ -337,8 +354,9 @@ void Server::TouchMoveHandler(char* buf)
     int X = JsonUtils::GetIntParam(buf, "x");
     int Y = JsonUtils::GetIntParam(buf, "y");
     _D("X=%d, Y=%d", X, Y);
-    InputGenerator::getInstance().SendUinputEventForTouchMove(DEVICE_TOUCH, X, Y);
+    touch.Move(X, Y);
     string reply = JsonUtils::ActionReply(true);
+    SendMessageToAppium(reply);
 }
 
 void Server::GetLocationHandler(char* buf)

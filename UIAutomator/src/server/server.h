@@ -28,6 +28,9 @@
 
 #include "common/dbus_utils.h"
 #include "request.h"
+#include "inputgenerator/touch.h"
+#include "inputgenerator/keyboard.h"
+#include "inputgenerator/hardware_key.h"
 
 using namespace std;
 
@@ -74,6 +77,8 @@ private:
     map<string, Request> RequestMap;
     int RequestCnt;
     Ecore_Con_Client* Appium;
+    Touch touch;
+    Keyboard keyboard;
 };
 
 #endif /* __SERVER_H_ */

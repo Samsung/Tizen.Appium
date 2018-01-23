@@ -38,6 +38,7 @@ const std::string ATTRIBUTE_TEXT = "text";
 const std::string ATTRIBUTE_ENABLED = "enabled";
 const std::string ATTRIBUTE_NAME = "name";
 const std::string ATTRIBUTE_DISPLAYED = "displayed";
+const std::string ATTRIBUTE_SIZE = "size";
 
 const std::string BusName = "org.tizen.appium";
 const std::string ObjectPath = "/org/tizen/appium";
