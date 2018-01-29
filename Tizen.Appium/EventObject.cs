@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ElmSharp;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Tizen;
+using System.Linq;
 
 namespace Tizen.Appium
 {
@@ -37,14 +38,25 @@ namespace Tizen.Appium
             }
             catch (ArgumentException)
             {
-                Log.Debug(TizenAppium.Tag,"Not available event name");
+                Log.Debug(TizenAppium.Tag, "Not available event name");
                 return null;
             }
             catch (Exception e)
             {
-                Log.Debug(TizenAppium.Tag,"It is failed to create event object"+e);
+                Log.Debug(TizenAppium.Tag, "It is failed to create event object" + e);
                 return null;
             }
+        }
+
+        //for debugging
+        public static void RemoveAll()
+        {
+            foreach (var item in _eventObjectTable.ToList())
+            {
+                (item.Value as EventObject)?.Unsubscribe();
+            }
+            _eventObjectTable.Clear();
+            Log.Debug(TizenAppium.Tag, " _eventObjectTable.count: " + _eventObjectTable.Count);
         }
 
         public static EventObject GetEventObject(string id)
@@ -87,12 +99,12 @@ namespace Tizen.Appium
 
         public bool Subscribe()
         {
-            Log.Debug(TizenAppium.Tag," ### [Subscribe] elementId: "+ ElementId + ", subscriptionId: "+Id);
+            Log.Debug(TizenAppium.Tag, " ### [Subscribe] elementId: " + ElementId + ", subscriptionId: " + Id);
 
             var ve = ElementUtils.GetTestableElement(ElementId) as VisualElement;
             if (ve == null)
             {
-                Log.Debug(TizenAppium.Tag,"### Not Found Element");
+                Log.Debug(TizenAppium.Tag, "### Not Found Element");
                 return false;
             }
 
@@ -105,7 +117,7 @@ namespace Tizen.Appium
 
         public bool Unsubscribe()
         {
-            Log.Debug(TizenAppium.Tag," ### [Unsubscribe] elementId: "+ ElementId + ", subscriptionId: "+Id);
+            Log.Debug(TizenAppium.Tag, " ### [Unsubscribe] elementId: " + ElementId + ", subscriptionId: " + Id);
 
             _eventObj.On -= EventHandler;
             EventObject.RemoveEventObject(Id);

@@ -1,31 +1,32 @@
 using System;
+using Tizen.Appium.Dbus;
 
-namespace Tizen.Appium.Dbus
+namespace Tizen.Appium
 {
     public class GetPropertyMethod : IDbusMethod
     {
-        public string Name => Dbus.Methods.GetProperty;
+        public string Name => MethodNames.GetProperty;
 
         public string Signature => "ss";
 
         public string ReturnSignature => "s";
 
-        public string[] Params => new string[] { Dbus.Params.ElementId, Dbus.Params.PropertyName };
+        public string[] Args => new string[] { Params.ElementId, Params.PropertyName };
 
         public Arguments Run(Arguments args)
         {
-            Log.Debug(TizenAppium.Tag,"#### GetProperty");
+            Log.Debug(TizenAppium.Tag, "#### GetProperty");
 
-            var elementId = (string)args[Dbus.Params.ElementId];
-            var propertyName = (string)args[Dbus.Params.PropertyName];
+            var elementId = (string)args[Params.ElementId];
+            var propertyName = (string)args[Params.PropertyName];
 
             var ret = new Arguments();
 
             var element = ElementUtils.GetTestableElement(elementId);
             if (element == null)
             {
-                Log.Debug(TizenAppium.Tag,"### Not Found Element");
-                ret.SetArgument(Dbus.Params.Return, string.Empty);
+                Log.Debug(TizenAppium.Tag, "### Not Found Element");
+                ret.SetArgument(Params.Return, string.Empty);
                 return ret;
             }
 
@@ -38,11 +39,11 @@ namespace Tizen.Appium.Dbus
             }
             else
             {
-                Log.Debug(TizenAppium.Tag,"### "+ elementId + " element does not have "+ propertyName + " property.");
+                Log.Debug(TizenAppium.Tag, "### " + elementId + " element does not have " + propertyName + " property.");
                 retVal = string.Empty;
             }
 
-            ret.SetArgument(Dbus.Params.Return, retVal.ToString());
+            ret.SetArgument(Params.Return, retVal.ToString());
 
             return ret;
         }
