@@ -1,4 +1,3 @@
-using System;
 using Tizen.Appium.Dbus;
 
 namespace Tizen.Appium

@@ -1,4 +1,3 @@
-using System;
 using Tizen.Appium.Dbus;
 
 namespace Tizen.Appium
@@ -32,19 +31,24 @@ namespace Tizen.Appium
 
             var value = element.GetType().GetProperty(propertyName)?.GetValue(element);
             object retVal = new object();
-
             if (value != null)
             {
                 retVal = value;
+                ret.SetArgument(Params.Return, retVal.ToString());
+                return ret;
             }
-            else
+
+            var item = ElementUtils.GetTestableItem(propertyName);
+            if (item != null)
             {
-                Log.Debug(TizenAppium.Tag, "### " + elementId + " element does not have " + propertyName + " property.");
-                retVal = string.Empty;
+                retVal = item.GetHashCode();
+                ret.SetArgument(Params.Return, retVal.ToString());
+                return ret;
             }
 
+            Log.Debug(TizenAppium.Tag, "### " + elementId + " element does not have " + propertyName + " property.");
+            retVal = string.Empty;
             ret.SetArgument(Params.Return, retVal.ToString());
-
             return ret;
         }
     }

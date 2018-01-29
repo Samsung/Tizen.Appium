@@ -11,14 +11,18 @@ namespace Tizen.Appium
     {
         static Dictionary<string, EventObject> _eventObjectTable = new Dictionary<string, EventObject>();
 
-        EvasObjectEvent _eventObj;
+        EvasObjectEvent _eventObj = null;
         Action _action;
 
         public string Id { get; private set; }
 
         public string ElementId { get; private set; }
 
-        public EvasObjectCallbackType EventType { get; private set; }
+        public EventType Type { get; private set; }
+
+        public EvasObjectCallbackType EvasObjectEventType { get; private set; }
+
+        public string EventName { get; private set; }
 
         public bool Once { get; private set; }
 
@@ -79,11 +83,22 @@ namespace Tizen.Appium
             }
         }
 
+        EventObject(string id, string elementId, string eventName, bool once, Action action)
+        {
+            Id = id;
+            ElementId = elementId;
+            EventName = eventName;
+            Type = EventType.SmartEvent;
+            Once = once;
+            _action = action;
+        }
+
         EventObject(string id, string elementId, EvasObjectCallbackType eventType, bool once, Action action)
         {
             Id = id;
             ElementId = elementId;
-            EventType = eventType;
+            EvasObjectEventType = eventType;
+            Type = EventType.EvasObjectEvent;
             Once = once;
             _action = action;
         }
@@ -102,24 +117,48 @@ namespace Tizen.Appium
             Log.Debug(TizenAppium.Tag, " ### [Subscribe] elementId: " + ElementId + ", subscriptionId: " + Id);
 
             var ve = ElementUtils.GetTestableElement(ElementId) as VisualElement;
-            if (ve == null)
+            if (ve != null)
             {
-                Log.Debug(TizenAppium.Tag, "### Not Found Element");
-                return false;
+                _eventObj = new EvasObjectEvent(Platform.GetOrCreateRenderer(ve).NativeView, EvasObjectEventType);
+                _eventObj.On += EventHandler;
+                return true;
             }
 
-            _eventObj = new EvasObjectEvent(Platform.GetOrCreateRenderer(ve).NativeView, EventType);
+            var item = ElementUtils.GetTestableElement(ElementId) as ItemObject;
+            if (item != null)
+            {
+                // TODO
+                //Log.Debug(TizenAppium.Tag, "evas object: " + ElementId);
+                //_eventObj = new EvasObjectEvent(evasObj, EvasObjectEventType);
+                //_eventObj.On += EventHandler;
+                //return true;
 
-            _eventObj.On += EventHandler;
+                // TODO : to be removed. It is a temporaty solution for item pressed event. because of bug in TrackObject.
+                Log.Debug(TizenAppium.Tag, "evas object: " + ElementId);
+                item.SetPressCallback(ElementId, EventHandler);
+                return true;
+            }
 
-            return true;
+            Log.Debug(TizenAppium.Tag, "### Not Found Element");
+            return false;
         }
 
         public bool Unsubscribe()
         {
             Log.Debug(TizenAppium.Tag, " ### [Unsubscribe] elementId: " + ElementId + ", subscriptionId: " + Id);
 
-            _eventObj.On -= EventHandler;
+            if (_eventObj != null)
+            {
+                _eventObj.On -= EventHandler;
+            }
+
+            // TODO : to be removed. It is a temporaty solution for item pressed event. because of bug in TrackObject.
+            var item = ElementUtils.GetTestableElement(ElementId) as ItemObject;
+            if (item != null)
+            {
+                item.UnsetPressCallback(ElementId);
+            }
+
             EventObject.RemoveEventObject(Id);
 
             return true;

@@ -1,7 +1,7 @@
-using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Tizen;
 using Tizen.Appium.Dbus;
+using ElmSharp;
 
 namespace Tizen.Appium
 {
@@ -23,18 +23,24 @@ namespace Tizen.Appium
             var ret = new Arguments();
 
             var ve = ElementUtils.GetTestableElement(elementId) as VisualElement;
-            if (ve == null)
+            if (ve != null)
             {
-                Log.Debug(TizenAppium.Tag, "#### Not Found Element");
-                ret.SetArgument(Params.Return, -1);
+                var nativeView = Platform.GetOrCreateRenderer(ve).NativeView;
+                var x = nativeView.Geometry.X + (nativeView.Geometry.Width / 2);
+                ret.SetArgument(Params.Return, x);
                 return ret;
             }
 
-            var nativeView = Platform.GetOrCreateRenderer(ve).NativeView;
-            var x = nativeView.Geometry.X + (nativeView.Geometry.Width / 2);
+            var item = ElementUtils.GetTestableElement(elementId) as ItemObject;
+            if (item != null)
+            {
+                var x = item.TrackObject.Geometry.X + (item.TrackObject.Geometry.Width / 2);
+                ret.SetArgument(Params.Return, x);
+                return ret;
+            }
 
-            ret.SetArgument(Params.Return, x);
-
+            Log.Debug(TizenAppium.Tag, "#### Not Found Element");
+            ret.SetArgument(Params.Return, -1);
             return ret;
         }
     }
