@@ -26,8 +26,6 @@ Request::Request()
     AutomationId = "";
     Command = "";
     Status = "Init";
-    X = -1;
-    Y = -1;
 }
 
 Request::~Request()

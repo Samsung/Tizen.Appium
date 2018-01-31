@@ -33,10 +33,6 @@ public:
     string AutomationId;
     string Command;
     string Status;
-    int X;
-    int Y;
-    int Width;
-    int Height;
 };
 
 #endif /* __REQUEST_H_ */
