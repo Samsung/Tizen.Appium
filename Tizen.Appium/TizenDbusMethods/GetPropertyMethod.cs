@@ -14,7 +14,7 @@ namespace Tizen.Appium.Dbus
 
         public Arguments Run(Arguments args)
         {
-            Log.Debug(TizenAppium.Tag,"#### GetProperty");
+            Log.Debug(TizenAppium.Tag, "#### GetProperty");
 
             var elementId = (string)args[Dbus.Params.ElementId];
             var propertyName = (string)args[Dbus.Params.PropertyName];
@@ -24,7 +24,7 @@ namespace Tizen.Appium.Dbus
             var element = ElementUtils.GetTestableElement(elementId);
             if (element == null)
             {
-                Log.Debug(TizenAppium.Tag,"### Not Found Element");
+                Log.Debug(TizenAppium.Tag, "### Not Found Element");
                 ret.SetArgument(Dbus.Params.Return, string.Empty);
                 return ret;
             }
@@ -38,11 +38,18 @@ namespace Tizen.Appium.Dbus
             }
             else
             {
-                Log.Debug(TizenAppium.Tag,"### "+ elementId + " element does not have "+ propertyName + " property.");
+                Log.Debug(TizenAppium.Tag, "### " + elementId + " element does not have " + propertyName + " property.");
                 retVal = string.Empty;
             }
 
-            ret.SetArgument(Dbus.Params.Return, retVal.ToString());
+            if (retVal.GetType() == typeof(bool))
+            {
+                ret.SetArgument(Dbus.Params.Return, retVal.ToString().ToLower());
+            }
+            else
+            {
+                ret.SetArgument(Dbus.Params.Return, retVal.ToString());
+            }
 
             return ret;
         }

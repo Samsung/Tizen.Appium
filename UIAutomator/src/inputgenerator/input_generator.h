@@ -38,37 +38,25 @@
 #include <assert.h>
 #include <math.h>
 #include <tizen_error.h>
-#include <math.h>
+#include <common/log.h>
 
 #include <linux/input.h>
 #include <linux/uinput.h>
 
-#define TRACKING_ID_MAX 65535
-
-#define DEVICE_TOUCH 1
-
-const int ABS_X_MID = 359;
-const int ABS_Y_MID = 639;
+using namespace std;
 
 class InputGenerator
 {
 public:
-    InputGenerator();
+    void SendInputEvent(int fake_device, int type, int code, int value);
+protected:
     ~InputGenerator();
 
-    static InputGenerator& getInstance();
-    void Init();
-
-	int OpenFile(const char *file_name);
-	bool InitUinput();
-	int GetCurrentTrackingId();
-	void SendUinputEvent(int device, __u16 type, __u16 code, __s32 value);
-	void SendUinputEventForKey(int device, __u16 code);
-	void SendUinputEventForTouchMouse(int device, __s32 value_x, __s32 value_y);
-	void SendUinputEventForTouchDown(int device, __s32 value_x, __s32 value_y);
-	void SendUinputEventForTouchMove(int device, __s32 value_x, __s32 value_y);
-	void SendUinputEventForTouchUp(int device, __s32 value_x, __s32 value_y);
-	void SendUinputEventForFlick(int device, int xSpeed, int ySpeed);
+    int fake_device;
+    struct uinput_user_dev device_information;
+    virtual bool Initialize() = 0;
+    virtual bool SetInputCodes() = 0;
+    virtual void SetDeviceInformation() = 0;
 private:
 	int fd_uinput_mouse;
 	int id;
