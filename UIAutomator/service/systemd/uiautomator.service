@@ -3,11 +3,11 @@ Description=Restful Service
 Requires=opt-usr-mount
 
 [Service]
-BusName=org.tizen.system.uiautomator
+#BusName=org.tizen.system.uiautomator
 ExecStart=/usr/bin/uiautomator
 Restart=always
 #RestartSec=1
-KillSignal=SIGUSR1
+#KillSignal=SIGUSR1
 
 [Install]
 WantedBy=multi-user.target

@@ -67,7 +67,7 @@ systemctl daemon-reload
 %{_bindir}/uiautomator
 %{_libdir}/systemd/system/uiautomator.service
 %{_libdir}/systemd/system/graphical.target.wants/uiautomator.service
-%{_datadir}/dbus-1/services/org.tizen.system.uiautomator.service
+#%{_datadir}/dbus-1/services/org.tizen.system.uiautomator.service
 %{_datadir}/license/uiautomator
 %{_sysconfdir}/smack/accesses.d/uiautomator.rule
 
