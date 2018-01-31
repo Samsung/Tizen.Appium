@@ -10,23 +10,26 @@ namespace Tizen.Appium
         static DbusConnection _dbusConn;
         bool disposed = false;
 
-        internal static DbusConnection DbusConnection
+        public static DbusConnection Connection
         {
             get
             {
+                if (_dbusConn == null)
+                {
+                    _dbusConn = new DbusConnection(DbusNames.BusName, DbusNames.ObjectPath, DbusNames.InterfaceName);
+                }
                 return _dbusConn;
             }
         }
 
         public TizenAppiumDbus()
         {
-            Log.Debug(TizenAppium.Tag,"#### TizenAppiumDbus");
-            _dbusConn = new DbusConnection();
+            Log.Debug(TizenAppium.Tag, "#### TizenAppiumDbus");
 
-            InitializeDbusMethods();
+            InitializeDbus();
         }
 
-        void InitializeDbusMethods()
+        static void InitializeDbus()
         {
             Assembly asm = typeof(TizenAppiumDbus).GetTypeInfo().Assembly;
             Type methodType = typeof(IDbusMethod);
@@ -37,8 +40,8 @@ namespace Tizen.Appium
 
             foreach (var method in methods)
             {
-                Log.Debug(TizenAppium.Tag,"#### method:"+method);
-                _dbusConn.AddMethod(method);
+                Log.Debug(TizenAppium.Tag, "#### method:" + method);
+                Connection.AddMethod(method);
             }
         }
 
@@ -55,7 +58,7 @@ namespace Tizen.Appium
 
             if (disposing)
             {
-                _dbusConn.Close();
+                Connection.Close();
             }
             disposed = true;
         }

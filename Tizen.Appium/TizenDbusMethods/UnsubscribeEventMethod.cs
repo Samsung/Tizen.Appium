@@ -1,35 +1,35 @@
-using System;
+using Tizen.Appium.Dbus;
 
-namespace Tizen.Appium.Dbus
+namespace Tizen.Appium
 {
     public class UnsubscribeEventMethod : IDbusMethod
     {
-        public string Name => Dbus.Methods.UnsubscribeEvent;
+        public string Name => MethodNames.UnsubscribeEvent;
 
         public string Signature => "s";
 
         public string ReturnSignature => "b";
 
-        public string[] Params => new string[] { Dbus.Params.SubscriptionId };
+        public string[] Args => new string[] { Params.SubscriptionId };
 
         public Arguments Run(Arguments args)
         {
-            Log.Debug(TizenAppium.Tag,"#### Unsubscribe");
+            Log.Debug(TizenAppium.Tag, "#### Unsubscribe");
 
-            var id = (string)args[Dbus.Params.SubscriptionId];
+            var id = (string)args[Params.SubscriptionId];
             var ret = new Arguments();
 
             var evtObj = EventObject.GetEventObject(id);
 
             if (evtObj == null)
             {
-                Log.Debug(TizenAppium.Tag,"#### Not available ID:"+id+". There is no subscriber for this id.");
-                ret.SetArgument(Dbus.Params.Return, false);
+                Log.Debug(TizenAppium.Tag, "#### Not available ID:" + id + ". There is no subscriber for this id.");
+                ret.SetArgument(Params.Return, false);
             }
             else
             {
                 var retVal = evtObj?.Unsubscribe();
-                ret.SetArgument(Dbus.Params.Return, retVal);
+                ret.SetArgument(Params.Return, retVal);
             }
 
             return ret;

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Tizen.Appium.Dbus
 {
@@ -24,7 +23,7 @@ namespace Tizen.Appium.Dbus
                 }
                 catch (Exception e)
                 {
-                    Log.Debug(TizenAppium.Tag,e.ToString());
+                    Log.Debug(TizenAppium.Tag, e.ToString());
                     return null;
                 }
             }
@@ -40,7 +39,7 @@ namespace Tizen.Appium.Dbus
                 }
                 catch (Exception e)
                 {
-                    Log.Debug(TizenAppium.Tag,e.ToString());
+                    Log.Debug(TizenAppium.Tag, e.ToString());
                     return null;
                 }
             }
@@ -75,7 +74,7 @@ namespace Tizen.Appium.Dbus
 
         public static Arguments MessageToArguments(IntPtr message, params string[] parameters)
         {
-            Log.Debug(TizenAppium.Tag,"#### required args: "+parameters);
+            Log.Debug(TizenAppium.Tag, "#### required args: " + parameters);
 
             Arguments args = new Arguments();
 
@@ -110,7 +109,7 @@ namespace Tizen.Appium.Dbus
                 }
                 else
                 {
-                    Log.Debug(TizenAppium.Tag,"#### No more items in the message");
+                    Log.Debug(TizenAppium.Tag, "#### No more items in the message");
                     break;
                 }
             }
@@ -133,7 +132,7 @@ namespace Tizen.Appium.Dbus
 
         public static IntPtr ArgumentsToSignalMessage(string signalName, Arguments args, string sig)
         {
-            IntPtr message = Interop.Edbus.dbus_message_new_signal(Names.ObjectPath, Names.InterfaceName, signalName);
+            IntPtr message = Interop.Edbus.dbus_message_new_signal(DbusNames.ObjectPath, DbusNames.InterfaceName, signalName);
             Interop.DbusMessageIter iter = new Interop.DbusMessageIter();
             Interop.Edbus.dbus_message_iter_init_append(message, ref iter);
 
@@ -169,7 +168,7 @@ namespace Tizen.Appium.Dbus
                 }
                 else
                 {
-                    Log.Debug(TizenAppium.Tag,"#### No more items in the arguments");
+                    Log.Debug(TizenAppium.Tag, "#### No more items in the arguments");
                     break;
                 }
             }

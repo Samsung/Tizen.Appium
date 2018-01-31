@@ -8,7 +8,7 @@ namespace Tizen.Appium.Dbus
 
         string ReturnSignature { get; }
 
-        string[] Params { get; }
+        string[] Args { get; }
 
         Arguments Run(Arguments args);
     }
