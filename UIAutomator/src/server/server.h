@@ -25,6 +25,7 @@
 #include <functional>
 #include <condition_variable>
 #include <Ecore_Con.h>
+#include <tgmath.h>
 
 #include "common/dbus_utils.h"
 #include "request.h"
@@ -61,15 +62,17 @@ public:
     void AddHandler(string action, CommandHandler function);
     void EventHandler(void *data, DBusMessage *msg);
     void ShutDownHandler();
-    void ClickHandler(char* buf);
+    
     void FindHandler(char* buf);
     void InputTextHandler(char* buf);
-    void FlickHandler(char* buf);
     void GetAttributeHandler(char* buf);
     void GetSizeHandler(char* buf);
+    void ClickHandler(char* buf);
     void TouchDownHandler(char* buf);
     void TouchUpHandler(char* buf);
     void TouchMoveHandler(char* buf);
+    void TouchLongClickHandler(char* buf);
+    void FlickHandler(char* buf);
     void GetLocationHandler(char* buf);
     std::map<string, CommandHandler> HandlerMap;
 private:
@@ -78,6 +81,8 @@ private:
     Ecore_Con_Client* Appium;
     Touch touch;
     Keyboard keyboard;
+
+    Request GetRequestAfterUpdateAction(char* buf);
 };
 
 #endif /* __SERVER_H_ */
