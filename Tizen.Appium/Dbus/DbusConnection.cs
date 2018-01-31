@@ -18,6 +18,7 @@ namespace Tizen.Appium.Dbus
             Log.Debug(TizenAppium.Tag, " #### DbusConnection");
 
             InitializeDbusConnection(busName, objectPath, interfaceName);
+
         }
 
         void InitializeDbusConnection(string busName, string objectPath, string interfaceName)
@@ -76,6 +77,7 @@ namespace Tizen.Appium.Dbus
             {
                 Log.Debug(TizenAppium.Tag, "#### " + method.Name + " method is invoked with " + method.Args);
                 var args = Arguments.MessageToArguments(message, method.Args);
+
                 Log.Debug(TizenAppium.Tag, "#### args = " + args.ToString());
                 var ret = method.Run(args);
                 Log.Debug(TizenAppium.Tag, "#### ret = " + ret.ToString());

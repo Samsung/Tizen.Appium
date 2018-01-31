@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-#include "request.h"
-#include "common/log.h"
-#include "common/common.h"
+#include "input_generator.h"
 
-using namespace std;
-
-Request::Request()
-{
-    RequestId = "";
-    AutomationId = "";
-    Command = "";
-    Status = "Init";
+InputGenerator::~InputGenerator() {
+    if (ioctl(fake_device, UI_DEV_DESTROY) < 0) {
+        _D("Fail to destroy fake uinput device\n");
+    }
+    close(fake_device);
 }
 
-Request::~Request()
-{
-}
+void InputGenerator::SendInputEvent(int fake_device, int type, int code, int value) {
+    struct input_event event;
 
+    memset(&event, 0, sizeof(event));
+    event.type = type;
+    event.code = code;
+    event.value = value;
+
+    if (write(fake_device, &event, sizeof(event)) != sizeof(event)) {
+        _D("Error to send uinput event");
+    }
+}

@@ -26,18 +26,20 @@ const std::string COMMAND_ACTION = "action";
 const std::string ACTION_FIND = "find";
 const std::string ACTION_FLICK = "flick";
 const std::string ACTION_INPUT_TEXT = "inputText";
-const std::string ACTION_CLICK = "element:click";
+const std::string ACTION_CLICK = "click";
+const std::string ACTION_TOUCH_DOWN = "touchDown";
+const std::string ACTION_TOUCH_UP = "touchUp";
+const std::string ACTION_TOUCH_MOVE = "touchMove";
+const std::string ACTION_TOUCH_LONG_CLICK = "touchLongClick";
 const std::string ACTION_GET_ATTRIBUTE = "element:getAttribute";
 const std::string ACTION_GET_SIZE = "element:getSize";
-const std::string ACTION_TOUCH_DOWN = "element:touchDown";
-const std::string ACTION_TOUCH_UP = "element:touchUp";
-const std::string ACTION_TOUCH_MOVE = "element:touchMove";
 const std::string ACTION_GET_LOCATION = "element:getLocation";
 
 const std::string ATTRIBUTE_TEXT = "text";
 const std::string ATTRIBUTE_ENABLED = "enabled";
 const std::string ATTRIBUTE_NAME = "name";
 const std::string ATTRIBUTE_DISPLAYED = "displayed";
+const std::string ATTRIBUTE_SIZE = "size";
 
 const std::string BusName = "org.tizen.appium";
 const std::string ObjectPath = "/org/tizen/appium";

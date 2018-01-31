@@ -19,7 +19,7 @@
 #include "common/common.h"
 #include "common/dbus_utils.h"
 #include "common/type.h"
-#include "input_generator.h"
+#include "inputgenerator/input_generator.h"
 #include "json_utils.h"
 #include "request.h"
 
@@ -70,7 +70,6 @@ Server& Server::getInstance()
 
 void Server::AddRequest(Request request)
 {
-    _D("Add request, X=%d, Y=%d, Width=%d, Height=%d", request.X, request.Y, request.Width, request.Height);             
     RequestMap[request.RequestId] = request;
 }
 
@@ -96,13 +95,18 @@ void Server::UpdateAction(string requestId, string action)
     }
 }
 
+Request Server::GetRequestAfterUpdateAction(char* buf) {
+    string action = JsonUtils::GetAction(buf);
+    string requestId = JsonUtils::GetStringParam(buf, "elementId");
+
+    UpdateAction(requestId, action);
+    Request request = GetRequest(requestId);
+    return request;
+}
+
 void Server::SetPosition(string requestId, int X, int Y)
 {
-    if(RequestMap.find(requestId) != RequestMap.end())
-    {
-        RequestMap[requestId].X = X;
-        RequestMap[requestId].Y = Y;
-    }
+    _D("Need to implement");
 }
 
 string Server::GetRequestId()
@@ -137,7 +141,6 @@ Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore
     char buf[255];
     memset(buf, 0, 255);
     sprintf(buf, "%s", (char*)ev->data);
-    _D("Received :%s", buf);
 
     string cmd = JsonUtils::GetCommand(buf);
     if(!cmd.compare(COMMAND_SHUTDOWN))
@@ -207,15 +210,6 @@ void Server::FindHandler(char* buf)
     request.AutomationId = JsonUtils::GetStringParam(buf, "selector");
     request.Command = JsonUtils::GetAction(buf);;
 
-    request.X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
-    request.Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
-
-    string ret = ElementGetProperty(request.AutomationId, "Width");
-    request.Width = atoi(ret.c_str());
-
-    ret = ElementGetProperty(request.AutomationId, "Height");
-    request.Height = atoi(ret.c_str());
-    
     AddRequest(request);  
 
     string replyMsg = JsonUtils::FindReply(request.RequestId);
@@ -237,43 +231,255 @@ bool Server::ElementSubscriveEvent(string automationId, string eventName, string
     return ret;
 }
 
-void Server::ClickHandler(char* buf)
-{
-    _D("ClickHandler");
-    string action = JsonUtils::GetAction(buf);
-    string requestId = JsonUtils::GetStringParam(buf, "elementId");
-
-    UpdateAction(requestId, action);
-    Request request = GetRequest(requestId);
-
-    bool result = ElementSubscriveEvent(request.AutomationId, "MouseDown", request.RequestId, true);
-    if(result == true)
-    {
-        InputGenerator::getInstance().SendUinputEventForTouchMouse(DEVICE_TOUCH, request.X, request.Y);
-    }
-    else 
-    {
-        _E("Fail to subscribe event");
-        string reply = JsonUtils::ActionReply(false);
-        SendMessageToAppium(reply);
-    }                
-}
-
 void Server::InputTextHandler(char* buf)
 {
     _D("Enter");
-    string keycode = JsonUtils::GetStringParam(buf, "keycode");
-    // To do : call press keycode mehtod of input generator
+    string text = JsonUtils::GetStringParam(buf, "text");
+    int count = text.size();
+    char codes[count + 1];
+    strcpy(codes, text.c_str());
+    codes[sizeof(codes) - 1] = 0;
+    for (int i = 0; i < count; i++)
+    {
+        keyboard.PressKeyCode(codes[i]);
+    }
+    string reply = JsonUtils::ActionReply(true);
+    SendMessageToAppium(reply);
+}
+
+void Server::ClickHandler(char* buf)
+{
+    string requestId = JsonUtils::GetStringParam(buf, "elementId");
+    Request request = GetRequest(requestId);
+    _D("RequestId : %s", request.RequestId.c_str());
+
+    if (request.RequestId.empty())
+    {
+        int X = JsonUtils::GetIntParam(buf, "x");
+        int Y = JsonUtils::GetIntParam(buf, "y");
+
+        touch.Click(X, Y);
+
+        string reply = JsonUtils::ActionReply(true);
+        SendMessageToAppium(reply);
+    }
+    else
+    {
+        string action = JsonUtils::GetAction(buf);
+        UpdateAction(request.RequestId, action);
+
+        bool result = ElementSubscriveEvent(request.AutomationId, "MouseUp", request.RequestId, true);
+        if (result == true)
+        {
+            int X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
+            int Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
+            touch.Click(X, Y);
+        }
+        else
+        {
+            _E("Fail to subscribe event");
+            string reply = JsonUtils::ActionReply(false);
+            SendMessageToAppium(reply);
+        }
+    }
+}
+
+void Server::TouchDownHandler(char* buf)
+{
+    string requestId = JsonUtils::GetStringParam(buf, "elementId");
+    Request request = GetRequest(requestId);
+
+    if (request.RequestId.empty())
+    {
+        int X = JsonUtils::GetIntParam(buf, "x");
+        int Y = JsonUtils::GetIntParam(buf, "y");
+
+        touch.Down(X, Y);
+
+        string reply = JsonUtils::ActionReply(true);
+        SendMessageToAppium(reply);
+    }
+    else 
+    {
+        string action = JsonUtils::GetAction(buf);
+        UpdateAction(request.RequestId, action);
+
+        bool result = ElementSubscriveEvent(request.AutomationId, "MouseDown", request.RequestId, true);
+        if (result == true)
+        {
+            int X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
+            int Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
+            touch.Down(X, Y);
+        }
+        else
+        {
+            _E("Fail to subscribe event");
+            string reply = JsonUtils::ActionReply(false);
+            SendMessageToAppium(reply);
+        }
+    }
+}
+
+void Server::TouchUpHandler(char* buf)
+{
+    string requestId = JsonUtils::GetStringParam(buf, "elementId");
+    Request request = GetRequest(requestId);
+
+    if (request.RequestId.empty())
+    {
+        int X = JsonUtils::GetIntParam(buf, "x");
+        int Y = JsonUtils::GetIntParam(buf, "y");
+
+        touch.Up(X, Y);
+
+        string reply = JsonUtils::ActionReply(true);
+        SendMessageToAppium(reply);
+    }
+    else
+    {
+        string action = JsonUtils::GetAction(buf);
+        UpdateAction(request.RequestId, action);
+
+        bool result = ElementSubscriveEvent(request.AutomationId, "MouseUp", request.RequestId, true);
+        if (result == true)
+        {
+            int X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
+            int Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
+            touch.Up(X, Y);
+        }
+        else
+        {
+            _E("Fail to subscribe event");
+            string reply = JsonUtils::ActionReply(false);
+            SendMessageToAppium(reply);
+        }
+    }
+}
+
+void Server::TouchMoveHandler(char* buf)
+{
+    string requestId = JsonUtils::GetStringParam(buf, "elementId");
+    Request request = GetRequest(requestId);
+
+    if (request.RequestId.empty())
+    {
+        int X = JsonUtils::GetIntParam(buf, "x");
+        int Y = JsonUtils::GetIntParam(buf, "y");
+
+        touch.Move(X, Y);
+
+        string reply = JsonUtils::ActionReply(true);
+        SendMessageToAppium(reply);
+    }
+    else
+    {
+        string action = JsonUtils::GetAction(buf);
+        UpdateAction(request.RequestId, action);
+
+        bool result = ElementSubscriveEvent(request.AutomationId, "MouseMove", request.RequestId, true);
+        if (result == true)
+        {
+            int X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
+            int Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
+            touch.Move(X, Y);
+        }
+        else
+        {
+            _E("Fail to subscribe event");
+            string reply = JsonUtils::ActionReply(false);
+            SendMessageToAppium(reply);
+        }
+    }
+}
+
+void Server::TouchLongClickHandler(char* buf) {
+    string requestId = JsonUtils::GetStringParam(buf, "elementId");
+    Request request = GetRequest(requestId);
+    int duration = JsonUtils::GetIntParam(buf, "duration");
+
+    _D("duration : %d", duration);
+
+    if (duration == -1) {
+        duration = 2000;
+    }
+
+    if (request.RequestId.empty())
+    {
+        int X = JsonUtils::GetIntParam(buf, "x");
+        int Y = JsonUtils::GetIntParam(buf, "y");
+
+        touch.Down(X, Y);
+        usleep(duration);
+        touch.Up(X, Y);
+
+        string reply = JsonUtils::ActionReply(true);
+        SendMessageToAppium(reply);
+    }
+    else
+    {
+        string action = JsonUtils::GetAction(buf);
+        UpdateAction(request.RequestId, action);
+
+        bool result = ElementSubscriveEvent(request.AutomationId, "MouseUp", request.RequestId, true);
+        if (result == true)
+        {
+            int X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
+            int Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
+            touch.Down(X, Y);
+            usleep(duration);
+            touch.Up(X, Y);
+        }
+        else
+        {
+            _E("Fail to subscribe event");
+            string reply = JsonUtils::ActionReply(false);
+            SendMessageToAppium(reply);
+        }
+    }
 }
 
 void Server::FlickHandler(char* buf)
 {
-    string action = JsonUtils::GetAction(buf);
-    int xSpeed = JsonUtils::GetIntParam(buf, "xSpeed");
-    int ySpeed = JsonUtils::GetIntParam(buf, "ySpeed");
-    _D("xSpeed : %d, ySpeed : %d", xSpeed, ySpeed);
-    InputGenerator::getInstance().SendUinputEventForFlick(DEVICE_TOUCH, xSpeed, ySpeed);
-    string reply = JsonUtils::ActionReply(true);
+    string requestId = JsonUtils::GetStringParam(buf, "elementId");
+    Request request = GetRequest(requestId);
+
+    if (request.RequestId.empty())
+    {
+        int xSpeed = JsonUtils::GetIntParam(buf, "xSpeed");
+        int ySpeed = JsonUtils::GetIntParam(buf, "ySpeed");
+
+        touch.Flick(xSpeed, ySpeed);
+
+        string reply = JsonUtils::ActionReply(true);
+        SendMessageToAppium(reply);
+    }
+    else
+    {
+        string action = JsonUtils::GetAction(buf);
+        UpdateAction(request.RequestId, action);
+
+        bool result = ElementSubscriveEvent(request.AutomationId, "MouseUp", request.RequestId, true);
+        if (result == true)
+        {
+            int xoffset = JsonUtils::GetIntParam(buf, "xoffset");
+            int yoffset = JsonUtils::GetIntParam(buf, "yoffset");
+            int speed = JsonUtils::GetIntParam(buf, "speed");
+            int steps = 1250.0 / speed + 1;
+
+            int xStart = ElementGetIntMessage(request.AutomationId, "GetCenterX");
+            int yStart = ElementGetIntMessage(request.AutomationId, "GetCenterY");
+            int xEnd = xStart + xoffset;
+            int yEnd = yStart + yoffset;
+
+            touch.Swipe(xStart, yStart, xEnd, yEnd, steps);
+        }
+        else
+        {
+            _E("Fail to subscribe event");
+            string reply = JsonUtils::ActionReply(false);
+            SendMessageToAppium(reply);
+        }
+    }
 }
 
 void Server::GetAttributeHandler(char* buf)
@@ -302,6 +508,24 @@ void Server::GetAttributeHandler(char* buf)
         string ret = ElementGetProperty(request.AutomationId, "IsVisible");
         replyMsg = JsonUtils::ActionReply(ret);
     }
+    else if (!attribute.compare(ATTRIBUTE_SIZE))
+    {
+        Request request = GetRequest(elementId);
+
+        string ret = ElementGetProperty(request.AutomationId, "Width");
+        int width = atoi(ret.c_str());
+
+        ret = ElementGetProperty(request.AutomationId, "Height");
+        int height = atoi(ret.c_str());
+
+        replyMsg = JsonUtils::ReplyAxis("width", width, "height", height);
+    }
+    else
+    {
+        string result = ElementGetStringMessage(request.AutomationId, attribute);
+        replyMsg = JsonUtils::ActionReply(result);
+    }
+
     Server::getInstance().SendMessageToAppium(replyMsg);
 }
 
@@ -310,35 +534,15 @@ void Server::GetSizeHandler(char* buf)
     _D("Enter");
     string elementId = JsonUtils::GetStringParam(buf, "elementId");
     Request request = GetRequest(elementId);
-    string result = JsonUtils::ReplyAxis("width", request.Width, "height", request.Height);
+
+    string ret = ElementGetProperty(request.AutomationId, "Width");
+    int width = atoi(ret.c_str());
+
+    ret = ElementGetProperty(request.AutomationId, "Height");
+    int height = atoi(ret.c_str());
+
+    string result = JsonUtils::ReplyAxis("width", width, "height", height);
     SendMessageToAppium(result);
-}
-
-void Server::TouchDownHandler(char* buf)
-{
-    int X = JsonUtils::GetIntParam(buf, "x");
-    int Y = JsonUtils::GetIntParam(buf, "y");
-    _D("X=%d, Y=%d", X, Y);
-    InputGenerator::getInstance().SendUinputEventForTouchDown(DEVICE_TOUCH, X, Y);
-    string reply = JsonUtils::ActionReply(true);
-}
-
-void Server::TouchUpHandler(char* buf)
-{
-    int X = JsonUtils::GetIntParam(buf, "x");
-    int Y = JsonUtils::GetIntParam(buf, "y");
-    _D("X=%d, Y=%d", X, Y);
-    InputGenerator::getInstance().SendUinputEventForTouchUp(DEVICE_TOUCH, X, Y);
-    string reply = JsonUtils::ActionReply(true);
-}
-
-void Server::TouchMoveHandler(char* buf)
-{
-    int X = JsonUtils::GetIntParam(buf, "x");
-    int Y = JsonUtils::GetIntParam(buf, "y");
-    _D("X=%d, Y=%d", X, Y);
-    InputGenerator::getInstance().SendUinputEventForTouchMove(DEVICE_TOUCH, X, Y);
-    string reply = JsonUtils::ActionReply(true);
 }
 
 void Server::GetLocationHandler(char* buf)
@@ -346,7 +550,11 @@ void Server::GetLocationHandler(char* buf)
     _D("Enter");
     string elementId = JsonUtils::GetStringParam(buf, "elementId");
     Request request = GetRequest(elementId);
-    string result = JsonUtils::ReplyAxis("x", request.X, "y", request.Y);
+
+    int X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
+    int Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
+
+    string result = JsonUtils::ReplyAxis("x", X, "y", Y);
     SendMessageToAppium(result);
 }
 
@@ -385,12 +593,13 @@ void Server::init()
     DBusSignal::getInstance()->RegisterSignal(std::bind(&Server::EventHandler, this, std::placeholders::_1, std::placeholders::_2));
 
     AddHandler(ACTION_FIND, std::bind(&Server::FindHandler, this, std::placeholders::_1));
-    AddHandler(ACTION_FLICK, std::bind(&Server::FlickHandler, this, std::placeholders::_1));
-    AddHandler(ACTION_CLICK, std::bind(&Server::ClickHandler, this, std::placeholders::_1));    
-    AddHandler(ACTION_GET_SIZE, std::bind(&Server::GetSizeHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_CLICK, std::bind(&Server::ClickHandler, this, std::placeholders::_1));
     AddHandler(ACTION_TOUCH_DOWN, std::bind(&Server::TouchDownHandler, this, std::placeholders::_1));
     AddHandler(ACTION_TOUCH_UP, std::bind(&Server::TouchUpHandler, this, std::placeholders::_1));
     AddHandler(ACTION_TOUCH_MOVE, std::bind(&Server::TouchMoveHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_TOUCH_LONG_CLICK, std::bind(&Server::TouchLongClickHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_FLICK, std::bind(&Server::FlickHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_GET_SIZE, std::bind(&Server::GetSizeHandler, this, std::placeholders::_1));
     AddHandler(ACTION_GET_LOCATION, std::bind(&Server::GetLocationHandler, this, std::placeholders::_1));
     AddHandler(ACTION_GET_ATTRIBUTE, std::bind(&Server::GetAttributeHandler, this, std::placeholders::_1));
     AddHandler(ACTION_INPUT_TEXT, std::bind(&Server::InputTextHandler, this, std::placeholders::_1));

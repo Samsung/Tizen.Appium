@@ -49,6 +49,7 @@ namespace Tizen.Appium
             Log.Debug(TizenAppium.Tag, "### " + elementId + " element does not have " + propertyName + " property.");
             retVal = string.Empty;
             ret.SetArgument(Params.Return, retVal.ToString());
+
             return ret;
         }
     }
