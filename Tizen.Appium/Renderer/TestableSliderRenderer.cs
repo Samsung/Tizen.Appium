@@ -1,6 +1,9 @@
 using System;
 using Xamarin.Forms.Platform.Tizen;
 using Xamarin.Forms;
+using Tizen.Appium.Renderer;
+
+[assembly: ExportRenderer(typeof(Slider), typeof(TestableSliderRenderer))]
 
 namespace Tizen.Appium.Renderer
 {

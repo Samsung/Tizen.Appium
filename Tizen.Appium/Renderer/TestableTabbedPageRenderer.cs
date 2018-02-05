@@ -3,17 +3,17 @@ using Xamarin.Forms.Platform.Tizen;
 using Xamarin.Forms;
 using Tizen.Appium.Renderer;
 
-[assembly: ExportRenderer(typeof(Entry), typeof(TestableEntryRenderer))]
+[assembly: ExportRenderer(typeof(TabbedPage), typeof(TestableTabbedPageRenderer))]
 
 namespace Tizen.Appium.Renderer
 {
-    public class TestableEntryRenderer : EntryRenderer
+    public class TestableTabbedPageRenderer : TabbedPageRenderer
     {
-        public TestableEntryRenderer() : base()
+        public TestableTabbedPageRenderer() : base()
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<TabbedPage> e)
         {
             if (!String.IsNullOrEmpty(e.NewElement.AutomationId))
             {

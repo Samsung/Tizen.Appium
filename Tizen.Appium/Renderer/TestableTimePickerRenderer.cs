@@ -3,17 +3,17 @@ using Xamarin.Forms.Platform.Tizen;
 using Xamarin.Forms;
 using Tizen.Appium.Renderer;
 
-[assembly: ExportRenderer(typeof(Entry), typeof(TestableEntryRenderer))]
+[assembly: ExportRenderer(typeof(TimePicker), typeof(TestableTimePickerRenderer))]
 
 namespace Tizen.Appium.Renderer
 {
-    public class TestableEntryRenderer : EntryRenderer
+    public class TestableTimePickerRenderer : TimePickerRenderer
     {
-        public TestableEntryRenderer() : base()
+        public TestableTimePickerRenderer() : base()
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<TimePicker> e)
         {
             if (!String.IsNullOrEmpty(e.NewElement.AutomationId))
             {

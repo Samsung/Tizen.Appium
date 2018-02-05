@@ -3,17 +3,17 @@ using Xamarin.Forms.Platform.Tizen;
 using Xamarin.Forms;
 using Tizen.Appium.Renderer;
 
-[assembly: ExportRenderer(typeof(Entry), typeof(TestableEntryRenderer))]
+[assembly: ExportRenderer(typeof(ScrollView), typeof(TestableScrollViewRenderer))]
 
 namespace Tizen.Appium.Renderer
 {
-    public class TestableEntryRenderer : EntryRenderer
+    public class TestableScrollViewRenderer : ScrollViewRenderer
     {
-        public TestableEntryRenderer() : base()
+        public TestableScrollViewRenderer() : base()
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<ScrollView> e)
         {
             if (!String.IsNullOrEmpty(e.NewElement.AutomationId))
             {

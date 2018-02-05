@@ -1,6 +1,9 @@
 using System;
 using Xamarin.Forms.Platform.Tizen;
 using Xamarin.Forms;
+using Tizen.Appium.Renderer;
+
+[assembly: ExportRenderer(typeof(Button), typeof(TestableButtonRenderer))]
 
 namespace Tizen.Appium.Renderer
 {
