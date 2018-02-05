@@ -159,6 +159,8 @@ Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore
     else
     {
         _D("Invalid Command");
+        string reply = JsonUtils::ActionReply(false);
+        Server::getInstance().SendMessageToAppium(reply);
     }
     return ECORE_CALLBACK_RENEW;
 }
