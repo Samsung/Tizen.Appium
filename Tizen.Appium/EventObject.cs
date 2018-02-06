@@ -119,7 +119,12 @@ namespace Tizen.Appium
             var ve = ElementUtils.GetTestableElement(ElementId) as VisualElement;
             if (ve != null)
             {
-                _eventObj = new EvasObjectEvent(Platform.GetOrCreateRenderer(ve).NativeView, EvasObjectEventType);
+                var evasObj = Platform.GetOrCreateRenderer(ve).NativeView;
+
+                //TBD It conflicts with behavior of renderer.
+                evasObj.PropagateEvents = true;
+
+                _eventObj = new EvasObjectEvent(evasObj, EvasObjectEventType);
                 _eventObj.On += EventHandler;
                 return true;
             }
