@@ -3,17 +3,17 @@ using Xamarin.Forms.Platform.Tizen;
 using Xamarin.Forms;
 using Tizen.Appium.Renderer;
 
-[assembly: ExportRenderer(typeof(Entry), typeof(TestableEntryRenderer))]
+[assembly: ExportRenderer(typeof(SearchBar), typeof(TestableSearchBarRenderer))]
 
 namespace Tizen.Appium.Renderer
 {
-    public class TestableEntryRenderer : EntryRenderer
+    public class TestableSearchBarRenderer : SearchBarRenderer
     {
-        public TestableEntryRenderer() : base()
+        public TestableSearchBarRenderer() : base()
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<SearchBar> e)
         {
             if (!String.IsNullOrEmpty(e.NewElement.AutomationId))
             {

@@ -3,17 +3,17 @@ using Xamarin.Forms.Platform.Tizen;
 using Xamarin.Forms;
 using Tizen.Appium.Renderer;
 
-[assembly: ExportRenderer(typeof(Entry), typeof(TestableEntryRenderer))]
+[assembly: ExportRenderer(typeof(DatePicker), typeof(TestableDatePickerRenderer))]
 
 namespace Tizen.Appium.Renderer
 {
-    public class TestableEntryRenderer : EntryRenderer
+    public class TestableDatePickerRenderer : DatePickerRenderer
     {
-        public TestableEntryRenderer() : base()
+        public TestableDatePickerRenderer() : base()
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<DatePicker> e)
         {
             if (!String.IsNullOrEmpty(e.NewElement.AutomationId))
             {

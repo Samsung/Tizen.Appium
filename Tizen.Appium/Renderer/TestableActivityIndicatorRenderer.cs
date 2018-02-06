@@ -3,17 +3,17 @@ using Xamarin.Forms.Platform.Tizen;
 using Xamarin.Forms;
 using Tizen.Appium.Renderer;
 
-[assembly: ExportRenderer(typeof(Entry), typeof(TestableEntryRenderer))]
+[assembly: ExportRenderer(typeof(ActivityIndicator), typeof(TestableActivityIndicatorRenderer))]
 
 namespace Tizen.Appium.Renderer
 {
-    public class TestableEntryRenderer : EntryRenderer
+    public class TestableActivityIndicatorRenderer : ActivityIndicatorRenderer
     {
-        public TestableEntryRenderer() : base()
+        public TestableActivityIndicatorRenderer() : base()
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<ActivityIndicator> e)
         {
             if (!String.IsNullOrEmpty(e.NewElement.AutomationId))
             {

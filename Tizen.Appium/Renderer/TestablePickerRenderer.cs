@@ -3,17 +3,17 @@ using Xamarin.Forms.Platform.Tizen;
 using Xamarin.Forms;
 using Tizen.Appium.Renderer;
 
-[assembly: ExportRenderer(typeof(Entry), typeof(TestableEntryRenderer))]
+[assembly: ExportRenderer(typeof(Picker), typeof(TestablePickerRenderer))]
 
 namespace Tizen.Appium.Renderer
 {
-    public class TestableEntryRenderer : EntryRenderer
+    public class TestablePickerRenderer : PickerRenderer
     {
-        public TestableEntryRenderer() : base()
+        public TestablePickerRenderer() : base()
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<Picker> e)
         {
             if (!String.IsNullOrEmpty(e.NewElement.AutomationId))
             {

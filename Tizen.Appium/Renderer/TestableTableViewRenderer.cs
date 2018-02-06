@@ -3,17 +3,17 @@ using Xamarin.Forms.Platform.Tizen;
 using Xamarin.Forms;
 using Tizen.Appium.Renderer;
 
-[assembly: ExportRenderer(typeof(ListView), typeof(TestableListViewRenderer))]
+[assembly: ExportRenderer(typeof(TableView), typeof(TestableTableViewRenderer))]
 
 namespace Tizen.Appium.Renderer
 {
-    public class TestableListViewRenderer : ListViewRenderer
+    public class TestableTableViewRenderer : TableViewRenderer
     {
-        public TestableListViewRenderer() : base()
+        public TestableTableViewRenderer() : base()
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<ListView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<TableView> e)
         {
             base.OnElementChanged(e);
 

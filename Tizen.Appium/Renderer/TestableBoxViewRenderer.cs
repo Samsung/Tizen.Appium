@@ -3,17 +3,17 @@ using Xamarin.Forms.Platform.Tizen;
 using Xamarin.Forms;
 using Tizen.Appium.Renderer;
 
-[assembly: ExportRenderer(typeof(Entry), typeof(TestableEntryRenderer))]
+[assembly: ExportRenderer(typeof(BoxView), typeof(TestableBoxViewRenderer))]
 
 namespace Tizen.Appium.Renderer
 {
-    public class TestableEntryRenderer : EntryRenderer
+    public class TestableBoxViewRenderer : BoxViewRenderer
     {
-        public TestableEntryRenderer() : base()
+        public TestableBoxViewRenderer() : base()
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<BoxView> e)
         {
             if (!String.IsNullOrEmpty(e.NewElement.AutomationId))
             {

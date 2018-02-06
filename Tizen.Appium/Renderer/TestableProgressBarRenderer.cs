@@ -3,17 +3,17 @@ using Xamarin.Forms.Platform.Tizen;
 using Xamarin.Forms;
 using Tizen.Appium.Renderer;
 
-[assembly: ExportRenderer(typeof(Entry), typeof(TestableEntryRenderer))]
+[assembly: ExportRenderer(typeof(ProgressBar), typeof(TestableProgressBarRenderer))]
 
 namespace Tizen.Appium.Renderer
 {
-    public class TestableEntryRenderer : EntryRenderer
+    public class TestableProgressBarRenderer : ProgressBarRenderer
     {
-        public TestableEntryRenderer() : base()
+        public TestableProgressBarRenderer() : base()
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<ProgressBar> e)
         {
             if (!String.IsNullOrEmpty(e.NewElement.AutomationId))
             {

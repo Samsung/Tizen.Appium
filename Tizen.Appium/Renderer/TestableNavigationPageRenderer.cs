@@ -3,17 +3,17 @@ using Xamarin.Forms.Platform.Tizen;
 using Xamarin.Forms;
 using Tizen.Appium.Renderer;
 
-[assembly: ExportRenderer(typeof(Entry), typeof(TestableEntryRenderer))]
+[assembly: ExportRenderer(typeof(CarouselPage), typeof(TestableCarouselPageRenderer))]
 
 namespace Tizen.Appium.Renderer
 {
-    public class TestableEntryRenderer : EntryRenderer
+    public class TestableCarouselPageRenderer : CarouselPageRenderer
     {
-        public TestableEntryRenderer() : base()
+        public TestableCarouselPageRenderer() : base()
         {
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<CarouselPage> e)
         {
             if (!String.IsNullOrEmpty(e.NewElement.AutomationId))
             {
