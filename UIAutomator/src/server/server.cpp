@@ -141,6 +141,7 @@ Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore
     char buf[255];
     memset(buf, 0, 255);
     sprintf(buf, "%s", (char*)ev->data);
+    _D("[%s]", buf);
 
     string cmd = JsonUtils::GetCommand(buf);
     if(!cmd.compare(COMMAND_SHUTDOWN))
@@ -158,6 +159,8 @@ Eina_Bool ClientDataCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore
     else
     {
         _D("Invalid Command");
+        string reply = JsonUtils::ActionReply(false);
+        Server::getInstance().SendMessageToAppium(reply);
     }
     return ECORE_CALLBACK_RENEW;
 }
@@ -522,7 +525,7 @@ void Server::GetAttributeHandler(char* buf)
     }
     else
     {
-        string result = ElementGetStringMessage(request.AutomationId, attribute);
+        string result = ElementGetProperty(request.AutomationId, attribute);
         replyMsg = JsonUtils::ActionReply(result);
     }
 
