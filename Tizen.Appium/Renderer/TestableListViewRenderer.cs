@@ -26,10 +26,12 @@ namespace Tizen.Appium.Renderer
             Control.ItemRealized += (sender, arg) =>
             {
                 var text = arg.Item.GetPartText("elm.text");
-                text = text.Substring(text.IndexOf('>') + 1);
-                string key = text.Substring(0, text.IndexOf('<'));
-
-                ElementUtils.AddTestableItem(key, arg.Item);
+                if (!String.IsNullOrEmpty(text))
+                {
+                    text = text.Substring(text.IndexOf('>') + 1);
+                    string key = text.Substring(0, text.IndexOf('<'));
+                    ElementUtils.AddTestableItem(key, arg.Item);
+                }
             };
 
             Control.ItemPressed += (sender, arg) =>
