@@ -29,6 +29,7 @@ namespace Appium.UITests
         public void Up(int x, int y)
         {
             TouchScreen.Up(x, y);
+            System.Threading.Thread.Sleep(3000);
         }
 
         public void Move(int x, int y)
