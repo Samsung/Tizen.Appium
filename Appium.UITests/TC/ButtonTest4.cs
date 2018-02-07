@@ -11,12 +11,12 @@ namespace Appium.UITests
 {
     //[TestFixture("Android")]
     [TestFixture("Tizen")]
-    public class ButonTest4
+    public class ButtonTest4
     {
         string PlatformName;
         AppiumDriver Driver;
 
-        public ButonTest4(string platform)
+        public ButtonTest4(string platform)
         {
             PlatformName = platform;
         }

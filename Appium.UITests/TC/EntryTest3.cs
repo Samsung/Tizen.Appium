@@ -38,10 +38,25 @@ namespace Appium.UITests
         }
 
         [Test]
-        public void GetTextTest()
+        public void TextChangedTest()
         {
+            string add = "ABCDEFG";
+            WebElementUtils.SetText(Driver, "entry2", add);
+
+            var touchScreen = new RemoteTouchScreenUtils(Driver);
+            touchScreen.Down(240, 187);
+            touchScreen.Up(240, 187);
+
             string result = WebElementUtils.GetText(Driver, "entry");
-            Assert.AreEqual("This is Entry", result);
+            Assert.AreEqual("Text changed", result);
+        }
+
+        [Test]
+        public void TextColorTest()
+        {
+            WebElementUtils.Click(Driver, "bt");
+            string result = WebElementUtils.GetAttribute(Driver, "entry2", "TextColor");
+            Assert.AreEqual("[Color: A=1, R=0, G=0.501960813999176, B=0, Hue=0.333333343267441, Saturation=1, Luminosity=0.250980406999588]", result);
         }
     }
 }
