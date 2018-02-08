@@ -16,7 +16,6 @@
 
 #include "server.h"
 #include "common/log.h"
-#include "common/common.h"
 #include "common/dbus_utils.h"
 #include "common/type.h"
 #include "inputgenerator/input_generator.h"
@@ -213,7 +212,7 @@ void Server::FindHandler(char* buf)
     request.AutomationId = JsonUtils::GetStringParam(buf, "selector");
     request.Command = JsonUtils::GetAction(buf);;
 
-    AddRequest(request);  
+    AddRequest(request);
 
     string replyMsg = JsonUtils::FindReply(request.RequestId);
     SendMessageToAppium(replyMsg);
@@ -221,7 +220,7 @@ void Server::FindHandler(char* buf)
 
 bool Server::ElementSubscriveEvent(string automationId, string eventName, string requestId, bool once)
 {
-    _D("Subscribe : automationId=%s, eventName=%s requestId=%s once=%d", 
+    _D("Subscribe : automationId=%s, eventName=%s requestId=%s once=%d",
         automationId.c_str(), eventName.c_str(), requestId.c_str(), once);
     DBusMessage::getInstance()->AddArgument(automationId);
     DBusMessage::getInstance()->AddArgument(eventName);
@@ -302,7 +301,7 @@ void Server::TouchDownHandler(char* buf)
         string reply = JsonUtils::ActionReply(true);
         SendMessageToAppium(reply);
     }
-    else 
+    else
     {
         string action = JsonUtils::GetAction(buf);
         UpdateAction(request.RequestId, action);
@@ -616,7 +615,7 @@ void Server::init()
     AddHandler(ACTION_GET_ATTRIBUTE, std::bind(&Server::GetAttributeHandler, this, std::placeholders::_1));
     AddHandler(ACTION_INPUT_TEXT, std::bind(&Server::InputTextHandler, this, std::placeholders::_1));
     AddHandler(ACTION_PRESS_HARDWARE_KEY, std::bind(&Server::PressHardWareKeyHandler, this, std::placeholders::_1));
-    
+
     Ecore_Con_Server *Server;
     if (!(Server = ecore_con_server_add(ECORE_CON_REMOTE_TCP, "127.0.0.1", 8888, NULL)))
     {
