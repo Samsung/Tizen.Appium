@@ -15,7 +15,6 @@ namespace Appium.UITests
     {
         string PlatformName;
         AppiumDriver Driver;
-        RemoteTouchScreenUtils touchScreen;
 
         public EntryTest4(string platform)
         {
@@ -26,11 +25,7 @@ namespace Appium.UITests
         public void Setup()
         {
             Driver = new AppiumDriver(PlatformName);
-            touchScreen = new RemoteTouchScreenUtils(Driver);
-            touchScreen.Flick(0, -11);
-
-            string testId = WebElementUtils.GetAttribute(Driver, "Content", this.GetType().Name);
-            WebElementUtils.Click(Driver, testId);
+            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
         }
 
         [TestFixtureTearDown]
@@ -58,20 +53,21 @@ namespace Appium.UITests
         [Test]
         public void SecondPageTest()
         {
+            var touchScreen = new RemoteTouchScreenUtils(Driver);
             touchScreen.Down(545, 229);
             touchScreen.Up(545, 229);
 
             Point entryPt = WebElementUtils.GetLocation(Driver, "test1");
-            //Assert.AreEqual(221, entryPt.X);
-            //Assert.AreEqual(419, entryPt.Y);
+            Assert.AreEqual(99, entryPt.X);
+            Assert.AreEqual(419, entryPt.Y);
 
             Point labelPt = WebElementUtils.GetLocation(Driver, "test2");
-            //Assert.AreEqual(355, labelPt.X);
-            //Assert.AreEqual(419, labelPt.Y);
+            Assert.AreEqual(310, labelPt.X);
+            Assert.AreEqual(419, labelPt.Y);
 
             Point buttonPt = WebElementUtils.GetLocation(Driver, "label");
-            //Assert.AreEqual(561, buttonPt.X);
-            //Assert.AreEqual(419, buttonPt.Y);
+            Assert.AreEqual(560, buttonPt.X);
+            Assert.AreEqual(419, buttonPt.Y);
         }
     }
 }

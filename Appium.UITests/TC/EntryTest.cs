@@ -24,11 +24,7 @@ namespace Appium.UITests
         public void Setup()
         {
             Driver = new AppiumDriver(PlatformName);
-            var touchScreen = new RemoteTouchScreenUtils(Driver);
-            touchScreen.Flick(0, -11);
-
-            string testId = WebElementUtils.GetAttribute(Driver, "Content", this.GetType().Name);
-            WebElementUtils.Click(Driver, testId);
+            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
         }
 
         [TestFixtureTearDown]
@@ -44,12 +40,9 @@ namespace Appium.UITests
             string addString = "ABCDEFG";
             WebElementUtils.SetText(Driver, "emptyEntry", addString);
 
-            var touchScreen = new RemoteTouchScreen(Driver.Driver);
-            touchScreen.Down(240, 187);
-            touchScreen.Up(240, 187);
+            EntryUnfocused();
 
             string after = WebElementUtils.GetText(Driver, "emptyEntry");
-
             Assert.AreEqual(before+addString, after);
         }
 
@@ -60,12 +53,9 @@ namespace Appium.UITests
             string addString = "ABCDEFG";
             WebElementUtils.SetText(Driver, "passwdEntry", addString);
 
-            var touchScreen = new RemoteTouchScreen(Driver.Driver);
-            touchScreen.Down(240, 187);
-            touchScreen.Up(240, 187);
+            EntryUnfocused();
 
             string after = WebElementUtils.GetText(Driver, "passwdEntry");
-
             Assert.AreEqual(before + addString, after);
         }
 
@@ -74,6 +64,13 @@ namespace Appium.UITests
         {
             string result = WebElementUtils.GetText(Driver, "longEntry");
             Assert.AreEqual("This is a Entry with very looooooooooooong looooooooooooooong text", result);
+        }
+
+        void EntryUnfocused()
+        {
+            var touchScreen = new RemoteTouchScreen(Driver.Driver);
+            touchScreen.Down(240, 187);
+            touchScreen.Up(240, 187);
         }
     }
 }

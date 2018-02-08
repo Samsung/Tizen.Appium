@@ -15,7 +15,6 @@ namespace Appium.UITests
     {
         string PlatformName;
         AppiumDriver Driver;
-        RemoteTouchScreenUtils touchScreen;
 
         public DatePickerTest(string platform)
         {
@@ -26,16 +25,7 @@ namespace Appium.UITests
         public void Setup()
         {
             Driver = new AppiumDriver(PlatformName);
-
-            touchScreen = new RemoteTouchScreenUtils(Driver);
-            touchScreen.Flick(0, -3);
-
-            string testId = string.Empty;
-            while (testId == string.Empty) {
-                touchScreen.Flick(0, -3);
-                testId = WebElementUtils.GetAttribute(Driver, "Content", this.GetType().Name);
-            }
-            WebElementUtils.Click(Driver, testId);
+            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
         }
 
         [TestFixtureTearDown]
@@ -49,17 +39,7 @@ namespace Appium.UITests
         {
             string before = WebElementUtils.GetAttribute(Driver, "datePicker", "Date");
 
-            // Click DatePicker
-            touchScreen.Down(369, 267);
-            touchScreen.Up(369, 267);
-
-            // Change month
-            touchScreen.Down(361, 811);
-            touchScreen.Up(361, 811);
-
-            // click "Set" button
-            touchScreen.Down(549, 1224);
-            touchScreen.Up(549, 1224);
+            ChangeDate();
 
             string after = WebElementUtils.GetAttribute(Driver, "datePicker", "Date");
             Assert.AreNotEqual(before, after);
@@ -70,6 +50,16 @@ namespace Appium.UITests
         {
             string before = WebElementUtils.GetAttribute(Driver, "datePicker", "Date");
 
+            ChangeDate();
+            WebElementUtils.Click(Driver, "button");
+
+            string after = WebElementUtils.GetAttribute(Driver, "datePicker", "Date");
+            Assert.AreNotEqual(before, after);
+        }
+
+        void ChangeDate()
+        {
+            RemoteTouchScreenUtils touchScreen = new RemoteTouchScreenUtils(Driver);
             // Click DatePicker
             touchScreen.Down(369, 267);
             touchScreen.Up(369, 267);
@@ -81,11 +71,6 @@ namespace Appium.UITests
             // click "Set" button
             touchScreen.Down(549, 1224);
             touchScreen.Up(549, 1224);
-
-            WebElementUtils.Click(Driver, "button");
-
-            string after = WebElementUtils.GetAttribute(Driver, "datePicker", "Date");
-            Assert.AreNotEqual(before, after);
         }
     }
 }

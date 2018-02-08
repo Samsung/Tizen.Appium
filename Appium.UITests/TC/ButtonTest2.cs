@@ -25,12 +25,7 @@ namespace Appium.UITests
         public void Setup()
         {
             Driver = new AppiumDriver(PlatformName);
-
-            var touchScreen = new RemoteTouchScreenUtils(Driver);
-            touchScreen.Flick(0, -7);
-
-            string testId = WebElementUtils.GetAttribute(Driver, "Content", this.GetType().Name);
-            WebElementUtils.Click(Driver, testId);
+            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
         }
 
         [TestFixtureTearDown]

@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppiumDriver.cs" />
+    <Compile Include="FormsTizenGalleryUtils.cs" />
     <Compile Include="RemoteTouchScreenUtils.cs" />
     <Compile Include="TC\DatePickerTest.cs" />
     <Compile Include="TC\ButtonTest6.cs" />
