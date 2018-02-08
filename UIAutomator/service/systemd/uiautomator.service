@@ -1,9 +1,8 @@
 [Unit]
-Description=Restful Service
-Requires=opt-usr-mount
+Description=UI Automator Service
+Requires=graphical.target
 
 [Service]
-#BusName=org.tizen.system.uiautomator
 ExecStart=/usr/bin/uiautomator
 Restart=always
 #RestartSec=1
