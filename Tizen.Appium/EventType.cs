@@ -2,7 +2,7 @@ namespace Tizen.Appium
 {
     public enum EventType
     {
-        SmartEvent = 0,
-        EvasObjectEvent = 1
+        EvasObjectEvent = 0,
+        SmartEvent = 1,
     }
 }

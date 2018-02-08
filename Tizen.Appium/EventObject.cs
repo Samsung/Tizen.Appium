@@ -11,16 +11,15 @@ namespace Tizen.Appium
     {
         static Dictionary<string, EventObject> _eventObjectTable = new Dictionary<string, EventObject>();
 
-        EvasObjectEvent _eventObj = null;
+        EvasObjectEvent _evaObjEvent = null;
+        SmartEvent _smartEvent = null;
         Action _action;
 
         public string Id { get; private set; }
 
         public string ElementId { get; private set; }
 
-        public EventType Type { get; private set; }
-
-        public EvasObjectCallbackType EvasObjectEventType { get; private set; }
+        public EventType EventType { get; private set; }
 
         public string EventName { get; private set; }
 
@@ -35,8 +34,7 @@ namespace Tizen.Appium
 
             try
             {
-                var eventType = EvasObjectCallbackType.Parse<EvasObjectCallbackType>(evtName);
-                var obj = new EventObject(id: id, elementId: elmId, eventType: eventType, once: once, action: action);
+                var obj = new EventObject(id: id, elementId: elmId, eventName: evtName, once: once, action: action);
                 _eventObjectTable.Add(id, obj);
                 return obj;
             }
@@ -88,19 +86,17 @@ namespace Tizen.Appium
             Id = id;
             ElementId = elementId;
             EventName = eventName;
-            Type = EventType.SmartEvent;
             Once = once;
             _action = action;
-        }
 
-        EventObject(string id, string elementId, EvasObjectCallbackType eventType, bool once, Action action)
-        {
-            Id = id;
-            ElementId = elementId;
-            EvasObjectEventType = eventType;
-            Type = EventType.EvasObjectEvent;
-            Once = once;
-            _action = action;
+            if (Enum.GetNames(typeof(EvasObjectCallbackType)).Contains(eventName))
+            {
+                EventType = EventType.EvasObjectEvent;
+            }
+            else
+            {
+                EventType = EventType.SmartEvent;
+            }
         }
 
         void EventHandler(object sender, EventArgs args)
@@ -124,8 +120,18 @@ namespace Tizen.Appium
                 //TBD It conflicts with behavior of renderer.
                 evasObj.PropagateEvents = true;
 
-                _eventObj = new EvasObjectEvent(evasObj, EvasObjectEventType);
-                _eventObj.On += EventHandler;
+                if (EventType == EventType.EvasObjectEvent)
+                {
+                    var type = EvasObjectCallbackType.Parse<EvasObjectCallbackType>(EventName);
+                    _evaObjEvent = new EvasObjectEvent(evasObj, type);
+                    _evaObjEvent.On += EventHandler;
+                }
+                else
+                {
+                    _smartEvent = new SmartEvent(evasObj, EventName);
+                    _smartEvent.On += EventHandler;
+                }
+
                 return true;
             }
 
@@ -152,9 +158,14 @@ namespace Tizen.Appium
         {
             Log.Debug(TizenAppium.Tag, " ### [Unsubscribe] elementId: " + ElementId + ", subscriptionId: " + Id);
 
-            if (_eventObj != null)
+            if (_evaObjEvent != null)
             {
-                _eventObj.On -= EventHandler;
+                _evaObjEvent.On -= EventHandler;
+            }
+
+            if (_smartEvent != null)
+            {
+                _smartEvent.On -= EventHandler;
             }
 
             // TODO : to be removed. It is a temporaty solution for item pressed event. because of bug in TrackObject.
