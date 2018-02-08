@@ -9,20 +9,7 @@ SET(LIBDIR      "${PREFIX}/lib")
 SET(INCLUDEDIR  "/usr/include")
 SET(EXEC_PREFIX "${BINDIR}")
 
-SET(SRCS
-    UIAutomator/src/common/core.cpp
-    UIAutomator/src/common/dbus_utils.cpp
-)
-
-SET(SRCS ${SRCS}
-    UIAutomator/src/server/server.cpp
-    UIAutomator/src/server/request.cpp
-    UIAutomator/src/server/json_utils.cpp
-    UIAutomator/src/inputgenerator/input_generator.cpp
-    UIAutomator/src/inputgenerator/touch.cpp
-    UIAutomator/src/inputgenerator/keyboard.cpp
-    UIAutomator/src/inputgenerator/hardware_key.cpp
-)
+FILE(GLOB_RECURSE SRCS "*.cpp")
 
 # -----------------------------------------------------------------------------
 # Set build type (Release by default)
@@ -41,13 +28,10 @@ INCLUDE(FindPkgConfig)
 SET(PKG_MODULES
     dlog
     glib-2.0
-    ecore
     elementary
     edbus
     jsoncpp 
-    gio-2.0
     dbus-glib-1
-    edbus
 )
 PKG_CHECK_MODULES(pkgs REQUIRED ${PKG_MODULES})
 
@@ -72,8 +56,8 @@ ADD_DEFINITIONS("-DUIAUTOMATOR_DLOG")
 
 ADD_EXECUTABLE(${PROJECT_NAME} ${SRCS})
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${pkgs_LDFLAGS} "-lm -ldl -lrt")
-INSTALL(TARGETS ${PROJECT_NAME} DESTINATION ${BINDIR})
 
+INSTALL(TARGETS ${PROJECT_NAME} DESTINATION ${BINDIR})
 INSTALL(FILES ${PROJECT_BINARY_DIR}/packaging/${PROJECT_NAME}.rule DESTINATION /etc/smack/accesses.d)
 INSTALL(FILES ${PROJECT_BINARY_DIR}/LICENSE DESTINATION share/license RENAME ${PROJECT_NAME})
 

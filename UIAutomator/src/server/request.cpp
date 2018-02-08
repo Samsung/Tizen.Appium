@@ -16,7 +16,6 @@
 
 #include "request.h"
 #include "common/log.h"
-#include "common/common.h"
 
 using namespace std;
 

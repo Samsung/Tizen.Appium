@@ -15,40 +15,17 @@
  */
 
 #include "log.h"
-
-#include <Ecore.h>
-#include <Ecore_Con.h>
-#include <signal.h>
-#include <E_DBus.h>
 #include "server/server.h"
 #include "inputgenerator/input_generator.h"
 
-static void sig_quit(int signo)
-{
-    _D("received SIGTERM signal %d", signo);
-}
-
-static void sig_usr1(int signo)
-{
-    _D("received SIGUSR1 signal %d, service will be finished!", signo);
-
-    ecore_main_loop_quit();
-}
-
-static void sig_usr2(int signo)
-{
-    _D("received SIGUSR2 signal %d,", signo);
-}
+#include <Ecore.h>
+#include <Ecore_Con.h>
 
 static int uiautomator_init(int argc, char **argv)
 {
     _D("Enter");
 
     Server::getInstance().init();
-
-    signal(SIGTERM, sig_quit); // SIGTERM signal termination - 15
-    signal(SIGUSR1, sig_usr1); // SIGUSR1 - 10
-    signal(SIGUSR2, sig_usr2); // SIGUSR2 - 12
 
     ecore_main_loop_begin();
     ecore_shutdown();
