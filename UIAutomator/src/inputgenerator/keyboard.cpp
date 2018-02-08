@@ -50,9 +50,7 @@ bool Keyboard::Initialize() {
     return true;
 }
 
-void Keyboard::PressKeyCode(char key_code) {
-    int key = ConvertKeyCode(key_code);
-
+void Keyboard::Down(int key) {
     if (leftShiftStatus) {
         SendInputEvent(fake_device, EV_KEY, KEY_LEFTSHIFT, 1);
         SendInputEvent(fake_device, EV_SYN, SYN_REPORT, 0);
@@ -60,6 +58,9 @@ void Keyboard::PressKeyCode(char key_code) {
 
     SendInputEvent(fake_device, EV_KEY, key, 1);
     SendInputEvent(fake_device, EV_SYN, SYN_REPORT, 0);
+}
+
+void Keyboard::Up(int key) {
     SendInputEvent(fake_device, EV_KEY, key, 0);
     SendInputEvent(fake_device, EV_SYN, SYN_REPORT, 0);
 
@@ -68,6 +69,13 @@ void Keyboard::PressKeyCode(char key_code) {
         SendInputEvent(fake_device, EV_SYN, SYN_REPORT, 0);
         leftShiftStatus = false;
     }
+}
+
+void Keyboard::PressKeyCode(char key_code) {
+    int key = ConvertKeyCode(key_code);
+
+    Down(key);
+    Up(key);
 }
 
 int Keyboard::ConvertKeyCode(char key_code) {

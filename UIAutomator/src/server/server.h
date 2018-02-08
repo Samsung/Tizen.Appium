@@ -31,6 +31,7 @@
 #include "request.h"
 #include "inputgenerator/touch.h"
 #include "inputgenerator/keyboard.h"
+#include "inputgenerator/hardware_key.h"
 
 using namespace std;
 
@@ -74,6 +75,7 @@ public:
     void TouchLongClickHandler(char* buf);
     void FlickHandler(char* buf);
     void GetLocationHandler(char* buf);
+    void PressHardWareKeyHandler(char* buf);
     std::map<string, CommandHandler> HandlerMap;
 private:
     map<string, Request> RequestMap;
@@ -81,6 +83,7 @@ private:
     Ecore_Con_Client* Appium;
     Touch touch;
     Keyboard keyboard;
+    HardWareKey hardwareKey;
 
     Request GetRequestAfterUpdateAction(char* buf);
 };
