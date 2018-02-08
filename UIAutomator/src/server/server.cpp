@@ -561,6 +561,15 @@ void Server::GetLocationHandler(char* buf)
     SendMessageToAppium(result);
 }
 
+void Server::PressHardWareKeyHandler(char* buf)
+{
+    string keyCode = JsonUtils::GetStringParam(buf, "keyCode");
+    hardwareKey.PressKeyCode(keyCode);
+
+    string reply = JsonUtils::ActionReply(true);
+    SendMessageToAppium(reply);
+}
+
 void Server::ShutDownHandler()
 {
     _D("Enter");
@@ -606,6 +615,7 @@ void Server::init()
     AddHandler(ACTION_GET_LOCATION, std::bind(&Server::GetLocationHandler, this, std::placeholders::_1));
     AddHandler(ACTION_GET_ATTRIBUTE, std::bind(&Server::GetAttributeHandler, this, std::placeholders::_1));
     AddHandler(ACTION_INPUT_TEXT, std::bind(&Server::InputTextHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_PRESS_HARDWARE_KEY, std::bind(&Server::PressHardWareKeyHandler, this, std::placeholders::_1));
     
     Ecore_Con_Server *Server;
     if (!(Server = ecore_con_server_add(ECORE_CON_REMOTE_TCP, "127.0.0.1", 8888, NULL)))

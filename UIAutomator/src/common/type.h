@@ -35,6 +35,8 @@ const std::string ACTION_GET_ATTRIBUTE = "element:getAttribute";
 const std::string ACTION_GET_SIZE = "element:getSize";
 const std::string ACTION_GET_LOCATION = "element:getLocation";
 
+const std::string ACTION_PRESS_HARDWARE_KEY = "pressHardWareKey";
+
 const std::string ATTRIBUTE_TEXT = "text";
 const std::string ATTRIBUTE_ENABLED = "enabled";
 const std::string ATTRIBUTE_NAME = "name";
