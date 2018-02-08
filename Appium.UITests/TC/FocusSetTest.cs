@@ -15,7 +15,6 @@ namespace Appium.UITests
     {
         string PlatformName;
         AppiumDriver Driver;
-        RemoteTouchScreenUtils touchScreen;
 
         public FocusSetTest(string platform)
         {
