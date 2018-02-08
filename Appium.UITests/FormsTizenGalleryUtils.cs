@@ -7,7 +7,6 @@ using NUnit.Framework;
 using OpenQA.Selenium.Appium.MultiTouch;
 using OpenQA.Selenium.Interactions.Internal;
 using System.Drawing;
-using System;
 using System.Threading.Tasks;
 
 namespace Appium.UITests
@@ -25,17 +24,18 @@ namespace Appium.UITests
             string testId = string.Empty;
             touchScreen = new RemoteTouchScreenUtils(driver);
 
+            while (testId == string.Empty)
+            {
+                touchScreen.Flick(0, speed);
+                testId = WebElementUtils.GetAttribute(driver, "Content", testName);
+            }
+
             Task t = Task.Run(() =>
             {
-                while (testId == string.Empty)
-               {
-                   touchScreen.Flick(0, speed);
-                   testId = WebElementUtils.GetAttribute(driver, "Content", testName);
-               }
-               WebElementUtils.Click(driver, testId);
+                WebElementUtils.Click(driver, testId);
             });
 
-            TimeSpan ts = TimeSpan.FromMilliseconds(30000);
+            TimeSpan ts = TimeSpan.FromMilliseconds(4000);
             if (!t.Wait(ts))
             {
                 touchScreen.Flick(0, -1);

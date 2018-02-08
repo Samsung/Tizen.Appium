@@ -5,13 +5,7 @@ VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appium.UITests", "Appium.UITests.csproj", "{A478ED96-BAFF-420E-A904-79E307F9F0C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebDriver", "..\selenium\dotnet\src\webdriver\WebDriver.csproj", "{83C13931-B27C-425C-AAF0-5F96EEA4F173}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebDriver.Support", "..\selenium\dotnet\src\support\WebDriver.Support.csproj", "{A9779443-E254-47E9-B733-8AC6D3662CA6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "appium-dotnet-driver", "..\..\appium-dotnet-driver\appium-dotnet-driver\appium-dotnet-driver.csproj", "{A54D6086-3606-4E81-8B89-5C0F61638DCF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "integration_tests", "..\..\appium-dotnet-driver\integration_tests\integration_tests.csproj", "{0D4A1C2F-D180-4293-AB38-41F685F60B43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,22 +23,6 @@ Global
 		{A478ED96-BAFF-420E-A904-79E307F9F0C0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A478ED96-BAFF-420E-A904-79E307F9F0C0}.Release|x86.ActiveCfg = Release|Any CPU
 		{A478ED96-BAFF-420E-A904-79E307F9F0C0}.Release|x86.Build.0 = Release|Any CPU
-		{83C13931-B27C-425C-AAF0-5F96EEA4F173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{83C13931-B27C-425C-AAF0-5F96EEA4F173}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{83C13931-B27C-425C-AAF0-5F96EEA4F173}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{83C13931-B27C-425C-AAF0-5F96EEA4F173}.Debug|x86.Build.0 = Debug|Any CPU
-		{83C13931-B27C-425C-AAF0-5F96EEA4F173}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{83C13931-B27C-425C-AAF0-5F96EEA4F173}.Release|Any CPU.Build.0 = Release|Any CPU
-		{83C13931-B27C-425C-AAF0-5F96EEA4F173}.Release|x86.ActiveCfg = Release|Any CPU
-		{83C13931-B27C-425C-AAF0-5F96EEA4F173}.Release|x86.Build.0 = Release|Any CPU
-		{A9779443-E254-47E9-B733-8AC6D3662CA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9779443-E254-47E9-B733-8AC6D3662CA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A9779443-E254-47E9-B733-8AC6D3662CA6}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A9779443-E254-47E9-B733-8AC6D3662CA6}.Debug|x86.Build.0 = Debug|Any CPU
-		{A9779443-E254-47E9-B733-8AC6D3662CA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A9779443-E254-47E9-B733-8AC6D3662CA6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A9779443-E254-47E9-B733-8AC6D3662CA6}.Release|x86.ActiveCfg = Release|Any CPU
-		{A9779443-E254-47E9-B733-8AC6D3662CA6}.Release|x86.Build.0 = Release|Any CPU
 		{A54D6086-3606-4E81-8B89-5C0F61638DCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A54D6086-3606-4E81-8B89-5C0F61638DCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A54D6086-3606-4E81-8B89-5C0F61638DCF}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -53,14 +31,6 @@ Global
 		{A54D6086-3606-4E81-8B89-5C0F61638DCF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A54D6086-3606-4E81-8B89-5C0F61638DCF}.Release|x86.ActiveCfg = Release|Any CPU
 		{A54D6086-3606-4E81-8B89-5C0F61638DCF}.Release|x86.Build.0 = Release|Any CPU
-		{0D4A1C2F-D180-4293-AB38-41F685F60B43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0D4A1C2F-D180-4293-AB38-41F685F60B43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0D4A1C2F-D180-4293-AB38-41F685F60B43}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0D4A1C2F-D180-4293-AB38-41F685F60B43}.Debug|x86.Build.0 = Debug|Any CPU
-		{0D4A1C2F-D180-4293-AB38-41F685F60B43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0D4A1C2F-D180-4293-AB38-41F685F60B43}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0D4A1C2F-D180-4293-AB38-41F685F60B43}.Release|x86.ActiveCfg = Release|Any CPU
-		{0D4A1C2F-D180-4293-AB38-41F685F60B43}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
