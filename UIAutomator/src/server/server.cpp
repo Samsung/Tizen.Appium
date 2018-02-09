@@ -185,6 +185,18 @@ string Server::ElementGetProperty(string automationId, string property)
     return ret;
 }
 
+bool Server::ElementSetProperty(string automationId, string property, string value)
+{
+    _D("Set %s of %s to %s", property.c_str(), automationId.c_str(), value.c_str());
+    DBusMessage::getInstance()->AddArgument(automationId);
+    DBusMessage::getInstance()->AddArgument(property);
+    DBusMessage::getInstance()->AddArgument(value);
+    DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("SetProperty");
+    bool ret = false;
+    DBusMessage::getInstance()->GetReplyMessage(reply, &ret);
+    return ret;
+}
+
 int Server::ElementGetIntMessage(string automationId, string method)
 {
     _D("%s of %s", method.c_str(), automationId.c_str());
@@ -533,6 +545,23 @@ void Server::GetAttributeHandler(char* buf)
     Server::getInstance().SendMessageToAppium(replyMsg);
 }
 
+void Server::SetAttributeHandler(char* buf)
+{
+    string attribute = JsonUtils::GetStringParam(buf, "attribute");
+    _D("Attribute : [%s]", attribute.c_str());
+    string elementId = JsonUtils::GetStringParam(buf, "elementId");
+    string value = JsonUtils::GetStringParam(buf, "value");
+    Request request = GetRequest(elementId);
+
+    string replyMsg;
+
+    bool result = ElementSetProperty(request.AutomationId, attribute, value);
+    replyMsg = JsonUtils::ActionReply(result);
+
+    SendMessageToAppium(replyMsg);
+}
+
+
 void Server::GetSizeHandler(char* buf)
 {
     _D("Enter");
@@ -615,6 +644,7 @@ void Server::init()
     AddHandler(ACTION_GET_SIZE, std::bind(&Server::GetSizeHandler, this, std::placeholders::_1));
     AddHandler(ACTION_GET_LOCATION, std::bind(&Server::GetLocationHandler, this, std::placeholders::_1));
     AddHandler(ACTION_GET_ATTRIBUTE, std::bind(&Server::GetAttributeHandler, this, std::placeholders::_1));
+    AddHandler(ACTION_SET_ATTRIBUTE, std::bind(&Server::SetAttributeHandler, this, std::placeholders::_1));
     AddHandler(ACTION_INPUT_TEXT, std::bind(&Server::InputTextHandler, this, std::placeholders::_1));
     AddHandler(ACTION_PRESS_HARDWARE_KEY, std::bind(&Server::PressHardWareKeyHandler, this, std::placeholders::_1));
 
