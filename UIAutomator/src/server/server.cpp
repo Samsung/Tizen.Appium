@@ -15,12 +15,6 @@
  */
 
 #include "server.h"
-#include "common/log.h"
-#include "common/dbus_utils.h"
-#include "common/type.h"
-#include "inputgenerator/input_generator.h"
-#include "json_utils.h"
-#include "request.h"
 
 #include <chrono>
 #include <thread>
@@ -40,6 +34,14 @@
 #include <gio/gio.h>
 #include <Ecore.h>
 #include <Ecore_Con.h>
+
+#include "utils/dbus_utils.h"
+#include "utils/log.h"
+#include "utils/type.h"
+#include "input_generator/input_generator.h"
+#include "utils/json_utils.h"
+#include "request.h"
+
 
 using namespace std;
 

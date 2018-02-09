@@ -27,11 +27,11 @@
 #include <Ecore_Con.h>
 #include <tgmath.h>
 
-#include "common/dbus_utils.h"
+#include "utils/dbus_utils.h"
+#include "input_generator/hardware_key.h"
+#include "input_generator/keyboard.h"
+#include "input_generator/touch.h"
 #include "request.h"
-#include "inputgenerator/touch.h"
-#include "inputgenerator/keyboard.h"
-#include "inputgenerator/hardware_key.h"
 
 using namespace std;
 

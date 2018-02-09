@@ -15,7 +15,8 @@
  */
 
 #include "request.h"
-#include "common/log.h"
+
+#include "utils/log.h"
 
 using namespace std;
 

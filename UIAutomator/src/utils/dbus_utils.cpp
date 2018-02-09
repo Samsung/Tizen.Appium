@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "dbus_utils.h"
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -28,9 +30,8 @@
 #include <E_DBus.h>
 
 #include "log.h"
-#include "dbus_utils.h"
-#include "server/json_utils.h"
 #include "server/server.h"
+#include "json_utils.h"
 
 #define DBUS_REPLY_TIMEOUT (-1)
 
@@ -45,20 +46,20 @@ DBusArgument::~DBusArgument()
 {
 }
 
-DBusMessage* DBusMessage::getInstance() 
+DBusMessage* DBusMessage::getInstance()
 {
     static DBusMessage instance;
     return &instance;
 }
 
-DBusMessage::DBusMessage() 
-: DBusDestination("org.tizen.appium"), DBusPath("/org/tizen/appium"),DBusInterface("org.tizen.appium"), DbusConnection(nullptr) 
+DBusMessage::DBusMessage()
+: DBusDestination("org.tizen.appium"), DBusPath("/org/tizen/appium"),DBusInterface("org.tizen.appium"), DbusConnection(nullptr)
 {
 }
 
 DBusMessage::~DBusMessage()
 {
-    if (DbusConnection) 
+    if (DbusConnection)
     {
         dbus_connection_close(DbusConnection);
         dbus_connection_unref(DbusConnection);
@@ -67,26 +68,26 @@ DBusMessage::~DBusMessage()
 
 void DBusMessage::CheckConnection()
 {
-    if (!DbusConnection) 
+    if (!DbusConnection)
     {
         DBusError err;
         dbus_error_init(&err);
 
         DbusConnection = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
-        if (dbus_error_is_set(&err)) 
+        if (dbus_error_is_set(&err))
         {
             _D("dbus_bus_get error [%s, %s]", err.name, err.message);
         }
     }
 
-    if (!DbusConnection) 
+    if (!DbusConnection)
     {
         return;
     }
 }
 
 void DBusMessage::AddArgument(bool data)
-{   
+{
     DBusArgument arg;
     arg.Type = TypeBool;
     arg.DataBool = data;
@@ -94,7 +95,7 @@ void DBusMessage::AddArgument(bool data)
 }
 
 void DBusMessage::AddArgument(int data)
-{   
+{
     DBusArgument arg;
     arg.Type = TypeInt;
     arg.DataInt = data;
@@ -102,7 +103,7 @@ void DBusMessage::AddArgument(int data)
 }
 
 void DBusMessage::AddArgument(char* data)
-{   
+{
     DBusArgument arg;
     arg.Type = TypeString;
     arg.DataString = data;
@@ -110,7 +111,7 @@ void DBusMessage::AddArgument(char* data)
 }
 
 void DBusMessage::AddArgument(string data)
-{   
+{
     DBusArgument arg;
     arg.Type = TypeString;
     arg.DataString = data;
@@ -130,7 +131,7 @@ void DBusMessage::GetReplyMessage(DBusMessage* reply, char** value)
 
     dbus_bool_t ret = dbus_message_get_args(reply, &err, DBUS_TYPE_STRING, value, DBUS_TYPE_INVALID);
     dbus_message_unref(reply);
-    if (!ret) 
+    if (!ret)
     {
         _D("dbus_message_get_args error %s: %s", err.name, err.message);
         dbus_error_free(&err);
@@ -152,7 +153,7 @@ void DBusMessage::GetReplyMessage(DBusMessage* reply, int* value)
 
     dbus_bool_t ret = dbus_message_get_args(reply, &err, DBUS_TYPE_INT32, value, DBUS_TYPE_INVALID);
     dbus_message_unref(reply);
-    if (!ret) 
+    if (!ret)
     {
         _D("dbus_message_get_args error %s: %s", err.name, err.message);
         dbus_error_free(&err);
@@ -174,7 +175,7 @@ void DBusMessage::GetReplyMessage(DBusMessage* reply, bool* value)
 
     dbus_bool_t ret = dbus_message_get_args(reply, &err, DBUS_TYPE_BOOLEAN, value, DBUS_TYPE_INVALID);
     dbus_message_unref(reply);
-    if (!ret) 
+    if (!ret)
     {
         _D("dbus_message_get_args error %s: %s", err.name, err.message);
         dbus_error_free(&err);
@@ -183,7 +184,7 @@ void DBusMessage::GetReplyMessage(DBusMessage* reply, bool* value)
     return;
 }
 
-DBusMessage* DBusMessage::SendSyncMessage(string method) 
+DBusMessage* DBusMessage::SendSyncMessage(string method)
 {
     _D("%s", method.c_str());
     CheckConnection();
@@ -208,7 +209,7 @@ DBusMessage* DBusMessage::SendSyncMessage(string method)
             int temp = (*cur).DataInt;
             _D("argument : %d", temp);
             dbus_message_iter_append_basic(&args, DBUS_TYPE_INT32, &temp);
-        }        
+        }
         else if((*cur).Type == TypeBool)
         {
             bool temp = (*cur).DataBool;
@@ -231,7 +232,7 @@ DBusMessage* DBusMessage::SendSyncMessage(string method)
     DBusMessage* reply = dbus_connection_send_with_reply_and_block(DbusConnection, msg, DBUS_REPLY_TIMEOUT, &err);
     dbus_message_unref(msg);
 
-    if (!reply) 
+    if (!reply)
     {
         _E("dbus_connection_send_with_reply_and_block error %s: %s", err.name, err.message);
         dbus_error_free(&err);
@@ -242,13 +243,13 @@ DBusMessage* DBusMessage::SendSyncMessage(string method)
 
 vector<SignalHandler> DBusSignal::SignalVector;
 
-DBusSignal::DBusSignal() : EdbusConnection(NULL), EdbusHandler(NULL)  
+DBusSignal::DBusSignal() : EdbusConnection(NULL), EdbusHandler(NULL)
 {
 }
 
-DBusSignal::~DBusSignal() 
+DBusSignal::~DBusSignal()
 {
-    if (EdbusHandler != NULL) 
+    if (EdbusHandler != NULL)
     {
         e_dbus_signal_handler_del(EdbusConnection, EdbusHandler);
         EdbusHandler = NULL;
@@ -261,7 +262,7 @@ DBusSignal::~DBusSignal()
     }
 }
 
-DBusSignal* DBusSignal::getInstance() 
+DBusSignal* DBusSignal::getInstance()
 {
   static DBusSignal instance;
   return &instance;
@@ -272,14 +273,14 @@ int DBusSignal::InitConnection()
     _D("Enter");
     e_dbus_init();
     EdbusConnection = e_dbus_bus_get(DBUS_BUS_SYSTEM);
-    if (EdbusConnection == NULL) 
+    if (EdbusConnection == NULL)
     {
         _E("noti register : failed to get dbus bus");
         return -1;
     }
 
-    string method = "Event";    
-    EdbusHandler = e_dbus_signal_handler_add(EdbusConnection, NULL, 
+    string method = "Event";
+    EdbusHandler = e_dbus_signal_handler_add(EdbusConnection, NULL,
                      ObjectPath.c_str(), InterfaceName.c_str(), method.c_str(), DBusSignalHandler, 0);
     if (EdbusHandler == NULL)
     {
@@ -292,7 +293,7 @@ int DBusSignal::InitConnection()
 void DBusSignal::DBusSignalHandler(void *data, DBusMessage *msg)
 {
     _D("Enter");
-    if (NULL == msg) 
+    if (NULL == msg)
     {
         _E("Message Null");
         return;
@@ -305,13 +306,13 @@ void DBusSignal::DBusSignalHandler(void *data, DBusMessage *msg)
     return;
 }
 
-int DBusSignal::RegisterSignal(SignalHandler callback) 
+int DBusSignal::RegisterSignal(SignalHandler callback)
 {
     _D("Enter");
     if(nullptr == EdbusConnection)
     {
         InitConnection();
-    
+
     }
     SignalHandler _handler = std::move(callback);
     SignalVector.push_back(_handler);

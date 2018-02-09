@@ -15,12 +15,14 @@
  */
 
 #include "json_utils.h"
-#include "common/log.h"
+
 #include <json/json.h>
 #include <glib.h>
 #include <gio/gio.h>
 #include <Ecore.h>
 #include <Ecore_Con.h>
+
+#include "log.h"
 
 using namespace std;
 
@@ -134,7 +136,7 @@ string JsonUtils::GetCommand(char* data)
     string buf = data;
     Json::Value root;
     Json::Reader reader;
-    
+
     reader.parse(buf, root);
     string command = root.get("cmd","").asString();
     return command;
@@ -145,7 +147,7 @@ string JsonUtils::GetAction(char* data)
     string buf = data;
     Json::Value root;
     Json::Reader reader;
-    
+
     reader.parse(buf, root);
     string action = root.get("action","").asString();
     return action;

@@ -16,34 +16,42 @@
 
 #include "input_generator.h"
 
-/*
-0 : Home Button
-1 : Back Button
-2 : Phone Button
-3 : Power Button
-4 : Volume down Button
-5 : Volume up Button
-*/
-enum KeyCodes {
-    HOME = 0,
-    BACK,
-    PHONE,
-    POWER,
-    VOLUME_DOWN,
-    VOLUME_UP
-};
+#include <tgmath.h>
+#include <algorithm>
 
-class HardWareKey : InputGenerator {
+#define TRACKING_ID_MAX 65535
+
+class Touch : InputGenerator
+{
 public:
-    HardWareKey();
-    ~HardWareKey();
-    void Down(int key);
-    void Up(int key);
-    void PressKeyCode(KeyCodes keyCode);
-    void PressKeyCode(string keyCode);
+    Touch();
+    ~Touch();
+    void Click(int x, int y);
+    void Up(int x, int y);
+    void Down(int x, int y);
+    void Move(int x, int y);
+    void LongPress(int x, int y, int duration);
+    void Flick(int xSpeed, int ySpeed);
+    void Swipe(int xDown, int yDown, int xUp, int yUp, int steps);
+
 protected:
     virtual bool Initialize();
     virtual bool SetInputCodes();
     virtual void SetDeviceInformation();
 
+private:
+    struct Point
+    {
+        int x;
+        int y;
+    };
+    const int ABS_X_MID = 359;
+    const int ABS_X_MAX = 639;
+    const int ABS_Y_MID = 719;
+    const int ABS_Y_MAX = 1279;
+    int tracking_id;
+
+    int GetCurrentTrackingId();
+    Point GetEndPoint(int xStart, int yStart, int xSpeed, int ySpeed);
+    int SigNumber(int number);
 };
