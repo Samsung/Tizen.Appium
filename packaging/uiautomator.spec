@@ -49,16 +49,18 @@ ln -s ../uiautomator.service %{buildroot}%{_libdir}/systemd/system/graphical.tar
 
 #mkdir -p %{buildroot}%{_datadir}/license
 
-%post
-systemctl daemon-reload
-if [ $1 == 1 ]; then
-    systemctl restart uiautomator.service
+%pre
+systemctl stop uiautomator.service
+if [ $? -eq 0 ]; then
+  systemctl daemon-reload
 fi
 
+%post
+systemctl daemon-reload
+systemctl restart uiautomator.service
+
 %preun
-if [ $1 == 0 ]; then
-    systemctl stop uiautomator.service
-fi
+systemctl stop uiautomator.service
 
 %postun
 systemctl daemon-reload
@@ -67,10 +69,7 @@ systemctl daemon-reload
 %{_bindir}/uiautomator
 %{_libdir}/systemd/system/uiautomator.service
 %{_libdir}/systemd/system/graphical.target.wants/uiautomator.service
-#%{_datadir}/dbus-1/services/org.tizen.system.uiautomator.service
 %{_datadir}/license/uiautomator
 %{_sysconfdir}/smack/accesses.d/uiautomator.rule
 
 %manifest uiautomator.manifest
-#%defattr(-,root,root,-)
-#%{_bindir}/uiautomator
