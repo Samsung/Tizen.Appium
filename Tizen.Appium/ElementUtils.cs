@@ -12,7 +12,7 @@ namespace Tizen.Appium
 
         public static object GetTestableElement(string id)
         {
-            Log.Debug(TizenAppium.Tag, "#### _testObjects.ContainsKey?" + _testObjects.ContainsKey(id) + ", _testObjects.Count=" + _testObjects.Count);
+            Log.Debug(TizenAppium.Tag, "_testObjects.ContainsKey?" + _testObjects.ContainsKey(id) + ", _testObjects.Count=" + _testObjects.Count);
             WeakReference value;
             _testObjects.TryGetValue(id, out value);
             if (value != null && value.IsAlive)
@@ -27,7 +27,7 @@ namespace Tizen.Appium
 
         public static void AddTestableElement(string id, object element)
         {
-            Log.Debug(TizenAppium.Tag, "#### add object=" + id + ", type=" + element.GetType());
+            Log.Debug(TizenAppium.Tag, "add object=" + id + ", type=" + element.GetType());
             if (!String.IsNullOrEmpty(id))
             {
                 _testObjects[id] = new WeakReference(element);
@@ -36,7 +36,7 @@ namespace Tizen.Appium
 
         public static void AddTestableItem(string key, ItemObject item)
         {
-            Log.Debug(TizenAppium.Tag, "#### add cell=" + key);
+            Log.Debug(TizenAppium.Tag, "add cell=" + key);
             if (!String.IsNullOrEmpty(key))
             {
                 _testItems[key] = new WeakReference(item);
@@ -46,7 +46,7 @@ namespace Tizen.Appium
 
         public static ItemObject GetTestableItem(string id)
         {
-            Log.Debug(TizenAppium.Tag, "#### _testCells.ContainsKey?" + _testItems.ContainsKey(id) + ", _testCells.Count=" + _testItems.Count);
+            Log.Debug(TizenAppium.Tag, "_testCells.ContainsKey?" + _testItems.ContainsKey(id) + ", _testCells.Count=" + _testItems.Count);
             WeakReference value;
             _testItems.TryGetValue(id, out value);
             if (value != null && value.IsAlive)

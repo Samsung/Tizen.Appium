@@ -74,7 +74,7 @@ namespace Tizen.Appium.Dbus
 
         public static Arguments MessageToArguments(IntPtr message, params string[] parameters)
         {
-            Log.Debug(TizenAppium.Tag, "#### required args: " + parameters);
+            Log.Debug(TizenAppium.Tag, "required args: " + parameters);
 
             Arguments args = new Arguments();
 
@@ -109,7 +109,7 @@ namespace Tizen.Appium.Dbus
                 }
                 else
                 {
-                    Log.Debug(TizenAppium.Tag, "#### No more items in the message");
+                    Log.Debug(TizenAppium.Tag, "No more items in the message");
                     break;
                 }
             }
@@ -168,7 +168,7 @@ namespace Tizen.Appium.Dbus
                 }
                 else
                 {
-                    Log.Debug(TizenAppium.Tag, "#### No more items in the arguments");
+                    Log.Debug(TizenAppium.Tag, "No more items in the arguments");
                     break;
                 }
             }

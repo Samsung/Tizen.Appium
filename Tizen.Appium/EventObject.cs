@@ -110,7 +110,7 @@ namespace Tizen.Appium
 
         public bool Subscribe()
         {
-            Log.Debug(TizenAppium.Tag, " ### [Subscribe] elementId: " + ElementId + ", subscriptionId: " + Id);
+            Log.Debug(TizenAppium.Tag, "[Subscribe] elementId: " + ElementId + ", subscriptionId: " + Id);
 
             var ve = ElementUtils.GetTestableElement(ElementId) as VisualElement;
             if (ve != null)
@@ -150,13 +150,13 @@ namespace Tizen.Appium
                 return true;
             }
 
-            Log.Debug(TizenAppium.Tag, "### Not Found Element");
+            Log.Debug(TizenAppium.Tag, "Not Found Element");
             return false;
         }
 
         public bool Unsubscribe()
         {
-            Log.Debug(TizenAppium.Tag, " ### [Unsubscribe] elementId: " + ElementId + ", subscriptionId: " + Id);
+            Log.Debug(TizenAppium.Tag, "[Unsubscribe] elementId: " + ElementId + ", subscriptionId: " + Id);
 
             if (_evaObjEvent != null)
             {

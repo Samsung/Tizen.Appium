@@ -18,7 +18,7 @@ namespace Tizen.Appium
 
         public Arguments Run(Arguments args)
         {
-            Log.Debug(TizenAppium.Tag, "#### ResetService");
+            Log.Debug(TizenAppium.Tag, "ResetService");
 
             var ret = new Arguments();
 

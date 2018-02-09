@@ -17,6 +17,7 @@ namespace Tizen.Appium
         public static readonly string GetHeight = "GetHeight";
         public static readonly string GetText = "GetText";
         public static readonly string GetProperty = "GetProperty";
+        public static readonly string SetProperty = "SetProperty";
         public static readonly string SubscribeEvent = "SubscribeEvent";
         public static readonly string UnsubscribeEvent = "UnsubscribeEvent";
         public static readonly string ResetEvent = "ResetEvent";
@@ -33,6 +34,7 @@ namespace Tizen.Appium
         public static readonly string PropertyName = "propertyName";
         public static readonly string EventName = "eventName";
         public static readonly string SubscriptionId = "subscriptionId";
+        public static readonly string Value = "value";
         public static readonly string Once = "once";
         public static readonly string Return = "return";
     }
