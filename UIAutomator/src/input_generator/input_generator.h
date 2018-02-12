@@ -22,7 +22,6 @@
 #include <memory>
 #include <mutex>
 #include <condition_variable>
-
 #include <glib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,11 +36,11 @@
 #include <signal.h>
 #include <assert.h>
 #include <math.h>
-#include <tizen_error.h>
-#include <common/log.h>
-
 #include <linux/input.h>
 #include <linux/uinput.h>
+#include <tizen_error.h>
+
+#include "utils/log.h"
 
 using namespace std;
 

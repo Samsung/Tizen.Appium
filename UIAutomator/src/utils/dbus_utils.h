@@ -24,6 +24,7 @@
 #include <functional>
 #include <dbus/dbus.h>
 #include <E_DBus.h>
+
 #include "type.h"
 
 using namespace std;
@@ -48,7 +49,7 @@ public:
     int DataBool;
 };
 
-class DBusMessage 
+class DBusMessage
 {
 public:
     DBusMessage();
@@ -67,7 +68,7 @@ private:
     void CheckConnection();
     string DBusDestination;
     string DBusPath;
-    string DBusInterface; 
+    string DBusInterface;
     DBusConnection* DbusConnection;
     vector<DBusArgument> Arguments;
 };

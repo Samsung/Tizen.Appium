@@ -27,11 +27,11 @@
 #include <Ecore_Con.h>
 #include <tgmath.h>
 
-#include "common/dbus_utils.h"
+#include "utils/dbus_utils.h"
+#include "input_generator/hardware_key.h"
+#include "input_generator/keyboard.h"
+#include "input_generator/touch.h"
 #include "request.h"
-#include "inputgenerator/touch.h"
-#include "inputgenerator/keyboard.h"
-#include "inputgenerator/hardware_key.h"
 
 using namespace std;
 
@@ -54,8 +54,9 @@ public:
     void SetPosition(string requestId, int X, int Y);
     void SetAppSocket(Ecore_Con_Client* socket);
     void SendMessageToAppium(string msg);
-    
+
     string ElementGetProperty(string automationId, string property);
+    bool ElementSetProperty(string automationId, string property, string value);
     string ElementGetStringMessage(string automationId, string method);
     int ElementGetIntMessage(string automationId, string method);
     bool ElementSubscriveEvent(string automationId, string eventName, string requestId, bool once);
@@ -63,10 +64,11 @@ public:
     void AddHandler(string action, CommandHandler function);
     void EventHandler(void *data, DBusMessage *msg);
     void ShutDownHandler();
-    
+
     void FindHandler(char* buf);
     void InputTextHandler(char* buf);
     void GetAttributeHandler(char* buf);
+    void SetAttributeHandler(char* buf);
     void GetSizeHandler(char* buf);
     void ClickHandler(char* buf);
     void TouchDownHandler(char* buf);

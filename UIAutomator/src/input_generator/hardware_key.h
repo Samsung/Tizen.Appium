@@ -15,29 +15,35 @@
 */
 
 #include "input_generator.h"
-#include <map>
 
-using std::map;
+/*
+0 : Home Button
+1 : Back Button
+2 : Phone Button
+3 : Power Button
+4 : Volume down Button
+5 : Volume up Button
+*/
+enum KeyCodes {
+    HOME = 0,
+    BACK,
+    PHONE,
+    POWER,
+    VOLUME_DOWN,
+    VOLUME_UP
+};
 
-class Keyboard : InputGenerator {
+class HardWareKey : InputGenerator {
 public:
-    Keyboard();
-    ~Keyboard();
-    void PressKeyCode(char key_code);
+    HardWareKey();
+    ~HardWareKey();
     void Down(int key);
     void Up(int key);
+    void PressKeyCode(KeyCodes keyCode);
+    void PressKeyCode(string keyCode);
 protected:
     virtual bool Initialize();
     virtual bool SetInputCodes();
     virtual void SetDeviceInformation();
 
-private:
-    bool leftShiftStatus;
-    map<char, int> keyMap;
-    map<char, char> keyMapSecondary;
-
-    int ConvertKeyCode(char key_code);
-
-    bool SetKeyCodes();
-    void SetKeyMaps();
 };

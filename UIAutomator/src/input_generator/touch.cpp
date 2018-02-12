@@ -74,7 +74,7 @@ void Touch::Down(int x, int y) {
 void Touch::Up(int x, int y) {
     struct timespec sleeptime = { 0, 50 }; //speed (low value: fast, high value: slow)
     _D("X = %d,  Y = %d", x, y);
-     
+
     SendInputEvent(fake_device, EV_ABS, ABS_MT_TRACKING_ID, -1);
     SendInputEvent(fake_device, EV_KEY, BTN_TOUCH, 0);
     SendInputEvent(fake_device, EV_SYN, SYN_REPORT, 0);
@@ -121,7 +121,7 @@ void Touch::Swipe(int xDown, int yDown, int xUp, int yUp, int steps) {
     if (swipeSteps == 0) {
         swipeSteps = 1;
     }
-    
+
     xStep = ((double)(xUp - xDown)) / swipeSteps;
     yStep = ((double)(yUp - yDown)) / swipeSteps;
     Down(xDown, yDown);
@@ -230,7 +230,7 @@ bool Touch::SetInputCodes() {
         _D("Fail ioctl method");
         return false;
     }
-    if (ioctl(fake_device, UI_SET_ABSBIT, ABS_MT_POSITION_Y) < 0) {  // MT Position Y 
+    if (ioctl(fake_device, UI_SET_ABSBIT, ABS_MT_POSITION_Y) < 0) {  // MT Position Y
         _D("Fail ioctl method");
         return false;
     }

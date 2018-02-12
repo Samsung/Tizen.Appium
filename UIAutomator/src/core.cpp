@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include "log.h"
-#include "server/server.h"
-#include "inputgenerator/input_generator.h"
-
 #include <Ecore.h>
 #include <Ecore_Con.h>
+
+#include "utils/log.h"
+#include "input_generator/input_generator.h"
+#include "server/server.h"
 
 static int uiautomator_init(int argc, char **argv)
 {

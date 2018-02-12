@@ -16,7 +16,6 @@
 
 #include "keyboard.h"
 
-
 Keyboard::Keyboard() {
     leftShiftStatus = false;
     Initialize();

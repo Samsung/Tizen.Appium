@@ -15,42 +15,30 @@
 */
 
 #include "input_generator.h"
-#include <tgmath.h>
-#include <algorithm>
 
-#define TRACKING_ID_MAX 65535
+#include <map>
 
-class Touch : InputGenerator
-{
+using std::map;
+
+class Keyboard : InputGenerator {
 public:
-    Touch();
-    ~Touch();
-    void Click(int x, int y);
-    void Up(int x, int y);
-    void Down(int x, int y);
-    void Move(int x, int y);
-    void LongPress(int x, int y, int duration);
-    void Flick(int xSpeed, int ySpeed);
-    void Swipe(int xDown, int yDown, int xUp, int yUp, int steps);
-
+    Keyboard();
+    ~Keyboard();
+    void PressKeyCode(char key_code);
+    void Down(int key);
+    void Up(int key);
 protected:
     virtual bool Initialize();
     virtual bool SetInputCodes();
     virtual void SetDeviceInformation();
 
 private:
-    struct Point
-    {
-        int x;
-        int y;
-    };
-    const int ABS_X_MID = 359;
-    const int ABS_X_MAX = 639;
-    const int ABS_Y_MID = 719;
-    const int ABS_Y_MAX = 1279;
-    int tracking_id;
+    bool leftShiftStatus;
+    map<char, int> keyMap;
+    map<char, char> keyMapSecondary;
 
-    int GetCurrentTrackingId();
-    Point GetEndPoint(int xStart, int yStart, int xSpeed, int ySpeed);
-    int SigNumber(int number);
+    int ConvertKeyCode(char key_code);
+
+    bool SetKeyCodes();
+    void SetKeyMaps();
 };
