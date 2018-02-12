@@ -341,6 +341,8 @@ void Server::TouchDownHandler(char* buf)
             int X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
             int Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
             touch.Down(X, Y);
+
+            SubscribeTimer = ecore_timer_loop_add(SUBSCRIBE_TIMEOUT, SubscribeTimeout, 0);
         }
         else
         {
@@ -377,6 +379,8 @@ void Server::TouchUpHandler(char* buf)
             int X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
             int Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
             touch.Up(X, Y);
+
+            SubscribeTimer = ecore_timer_loop_add(SUBSCRIBE_TIMEOUT, SubscribeTimeout, 0);
         }
         else
         {
@@ -413,6 +417,8 @@ void Server::TouchMoveHandler(char* buf)
             int X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
             int Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
             touch.Move(X, Y);
+
+            SubscribeTimer = ecore_timer_loop_add(SUBSCRIBE_TIMEOUT, SubscribeTimeout, 0);
         }
         else
         {
