@@ -32,7 +32,7 @@ const std::string ACTION_TOUCH_UP = "touchUp";
 const std::string ACTION_TOUCH_MOVE = "touchMove";
 const std::string ACTION_TOUCH_LONG_CLICK = "touchLongClick";
 const std::string ACTION_GET_ATTRIBUTE = "element:getAttribute";
-const std::string ACTION_SET_ATTRIBUTE = "element:SetAttribute";
+const std::string ACTION_SET_ATTRIBUTE = "element:setAttribute";
 const std::string ACTION_GET_SIZE = "element:getSize";
 const std::string ACTION_GET_LOCATION = "element:getLocation";
 

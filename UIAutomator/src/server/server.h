@@ -25,6 +25,7 @@
 #include <functional>
 #include <condition_variable>
 #include <Ecore_Con.h>
+#include <Ecore.h>
 #include <tgmath.h>
 
 #include "utils/dbus_utils.h"
@@ -64,6 +65,7 @@ public:
     void AddHandler(string action, CommandHandler function);
     void EventHandler(void *data, DBusMessage *msg);
     void ShutDownHandler();
+    void DeleteTimer();
 
     void FindHandler(char* buf);
     void InputTextHandler(char* buf);
@@ -83,6 +85,7 @@ private:
     map<string, Request> RequestMap;
     int RequestCnt;
     Ecore_Con_Client* Appium;
+    Ecore_Timer* SubscribeTimer;
     Touch touch;
     Keyboard keyboard;
     HardWareKey hardwareKey;

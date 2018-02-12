@@ -34,6 +34,7 @@
 #include <gio/gio.h>
 #include <Ecore.h>
 #include <Ecore_Con.h>
+#include <Elementary.h>
 
 #include "utils/dbus_utils.h"
 #include "utils/log.h"
@@ -46,11 +47,14 @@
 using namespace std;
 
 const int SERVER_TIMEOUT = 30000;
+const double SUBSCRIBE_TIMEOUT = 5;
+
 
 Server::Server()
 {
     _D("Enter");
     RequestCnt = 1;
+    SubscribeTimer = 0;
 }
 
 void Server::AddHandler(string action, CommandHandler function)
@@ -118,6 +122,15 @@ string Server::GetRequestId()
 void Server::SetAppSocket(Ecore_Con_Client* socket)
 {
     Appium = socket;
+}
+
+Eina_Bool SubscribeTimeout(void* data)
+{
+    _D("Subscribe Timeout");
+    Server::getInstance().DeleteTimer();
+    string reply = JsonUtils::ActionReply(false);
+    Server::getInstance().SendMessageToAppium(reply);
+    return EINA_FALSE;
 }
 
 Eina_Bool ClientAddCallback(void *data EINA_UNUSED, int type EINA_UNUSED, Ecore_Con_Event_Client_Add *ev)
@@ -290,6 +303,8 @@ void Server::ClickHandler(char* buf)
             int X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
             int Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
             touch.Click(X, Y);
+
+            SubscribeTimer = ecore_timer_loop_add(SUBSCRIBE_TIMEOUT, SubscribeTimeout, 0);
         }
         else
         {
@@ -326,6 +341,8 @@ void Server::TouchDownHandler(char* buf)
             int X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
             int Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
             touch.Down(X, Y);
+
+            SubscribeTimer = ecore_timer_loop_add(SUBSCRIBE_TIMEOUT, SubscribeTimeout, 0);
         }
         else
         {
@@ -362,6 +379,8 @@ void Server::TouchUpHandler(char* buf)
             int X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
             int Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
             touch.Up(X, Y);
+
+            SubscribeTimer = ecore_timer_loop_add(SUBSCRIBE_TIMEOUT, SubscribeTimeout, 0);
         }
         else
         {
@@ -398,6 +417,8 @@ void Server::TouchMoveHandler(char* buf)
             int X = ElementGetIntMessage(request.AutomationId, "GetCenterX");
             int Y = ElementGetIntMessage(request.AutomationId, "GetCenterY");
             touch.Move(X, Y);
+
+            SubscribeTimer = ecore_timer_loop_add(SUBSCRIBE_TIMEOUT, SubscribeTimeout, 0);
         }
         else
         {
@@ -610,6 +631,8 @@ void Server::ShutDownHandler()
 void Server::EventHandler(void *data, DBusMessage *msg)
 {
     _D("Enter");
+    DeleteTimer();
+
     DBusMessageIter args;
     char* elementId = NULL;
     char* eventName = NULL;
@@ -627,6 +650,15 @@ void Server::EventHandler(void *data, DBusMessage *msg)
     string reply = JsonUtils::ActionReply(true);
     SendMessageToAppium(reply);
     return;
+}
+
+void Server::DeleteTimer()
+{
+    if(SubscribeTimer != 0){
+        ecore_timer_del(SubscribeTimer);
+        SubscribeTimer = 0;
+        _D("Timer deleted");
+    }    
 }
 
 void Server::init()
