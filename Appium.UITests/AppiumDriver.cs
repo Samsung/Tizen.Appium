@@ -52,6 +52,7 @@ namespace Appium.UITests
             capabillities.SetCapability("platformName", "Tizen");
             //capabillities.SetCapability("appPackage", "org.tizen.example.Calculator.Tizen.Mobile");
             capabillities.SetCapability("appPackage", "org.tizen.example.FormsTizenGallery.Tizen");
+            capabillities.SetCapability("app", "FormsTizenGallery.Tizen-1.0.0.tpk");
             var driver = new TizenDriver<AppiumWebElement>(new Uri("http://10.113.62.173:8080/wd/hub"), capabillities);
             return driver;
         }

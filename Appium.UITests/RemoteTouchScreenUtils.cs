@@ -40,7 +40,7 @@ namespace Appium.UITests
         public void Flick(int speedX, int speedY)
         {
             TouchScreen.Flick(speedX, speedY);
-            System.Threading.Thread.Sleep(3000);
+            System.Threading.Thread.Sleep(1000);
         }
     }
 }
