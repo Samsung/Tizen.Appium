@@ -54,12 +54,12 @@ Server::Server()
 {
     _D("Enter");
     RequestCnt = 1;
+    SubscribeTimer = 0;
 }
 
 void Server::AddHandler(string action, CommandHandler function)
 {
     HandlerMap[action] = std::move(function);
-    SubscribeTimer = 0;
 }
 
 Server::~Server()
@@ -617,7 +617,7 @@ void Server::PressHardWareKeyHandler(char* buf)
 
 void Server::ShutDownHandler()
 {
-    _D("Shutdown");
+    _D("Enter");
     string reply = JsonUtils::ActionReply("Shutdown");
     SendMessageToAppium(reply);
 }
