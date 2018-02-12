@@ -15,7 +15,7 @@ namespace Tizen.Appium
 
         public Arguments Run(Arguments args)
         {
-            Log.Debug(TizenAppium.Tag, "#### GetText");
+            Log.Debug(TizenAppium.Tag, "GetText");
 
             var elementId = (string)args[Params.ElementId];
             var textProperty = "Text";
@@ -26,7 +26,7 @@ namespace Tizen.Appium
             var element = ElementUtils.GetTestableElement(elementId);
             if (element == null)
             {
-                Log.Debug(TizenAppium.Tag, "### Not Found Element");
+                Log.Debug(TizenAppium.Tag, "Not Found Element");
                 ret.SetArgument(Params.Return, string.Empty);
                 return ret;
             }

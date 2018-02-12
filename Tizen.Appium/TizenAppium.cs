@@ -20,7 +20,7 @@ namespace Tizen.Appium
 
         public static void StartService()
         {
-            Log.Debug(TizenAppium.Tag, "#### StartService : initialize dbus");
+            Log.Debug(TizenAppium.Tag, "StartService : initialize dbus");
             if (IsInitialized)
                 return;
 
@@ -31,7 +31,7 @@ namespace Tizen.Appium
 
         public static void StopService()
         {
-            Log.Debug(TizenAppium.Tag, "#### StopService");
+            Log.Debug(TizenAppium.Tag, "StopService");
             _dbus.Dispose();
             IsInitialized = false;
         }

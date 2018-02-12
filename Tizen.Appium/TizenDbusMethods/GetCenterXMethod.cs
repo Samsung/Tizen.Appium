@@ -17,7 +17,7 @@ namespace Tizen.Appium
 
         public Arguments Run(Arguments args)
         {
-            Log.Debug(TizenAppium.Tag, "#### GetCenterX");
+            Log.Debug(TizenAppium.Tag, "GetCenterX");
 
             var elementId = (string)args[Params.ElementId];
             var ret = new Arguments();
@@ -39,7 +39,7 @@ namespace Tizen.Appium
                 return ret;
             }
 
-            Log.Debug(TizenAppium.Tag, "#### Not Found Element");
+            Log.Debug(TizenAppium.Tag, "Not Found Element");
             ret.SetArgument(Params.Return, -1);
             return ret;
         }

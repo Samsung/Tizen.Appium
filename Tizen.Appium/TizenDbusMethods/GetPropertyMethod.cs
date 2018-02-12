@@ -14,7 +14,7 @@ namespace Tizen.Appium
 
         public Arguments Run(Arguments args)
         {
-            Log.Debug(TizenAppium.Tag, "#### GetProperty");
+            Log.Debug(TizenAppium.Tag, "GetProperty");
 
             var elementId = (string)args[Params.ElementId];
             var propertyName = (string)args[Params.PropertyName];
@@ -24,7 +24,7 @@ namespace Tizen.Appium
             var element = ElementUtils.GetTestableElement(elementId);
             if (element == null)
             {
-                Log.Debug(TizenAppium.Tag, "### Not Found Element");
+                Log.Debug(TizenAppium.Tag, "Not Found Element");
                 ret.SetArgument(Params.Return, string.Empty);
                 return ret;
             }
@@ -46,7 +46,7 @@ namespace Tizen.Appium
                 return ret;
             }
 
-            Log.Debug(TizenAppium.Tag, "### " + elementId + " element does not have " + propertyName + " property.");
+            Log.Debug(TizenAppium.Tag, elementId + " element does not have " + propertyName + " property.");
             retVal = string.Empty;
             ret.SetArgument(Params.Return, retVal.ToString());
 

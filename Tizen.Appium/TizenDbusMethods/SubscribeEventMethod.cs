@@ -15,7 +15,7 @@ namespace Tizen.Appium
 
         public Arguments Run(Arguments args)
         {
-            Log.Debug(TizenAppium.Tag, "#### SubscribeEvent");
+            Log.Debug(TizenAppium.Tag, "SubscribeEvent");
 
             var elementId = (string)args[Params.ElementId];
             var eventName = (string)args[Params.EventName];
@@ -23,7 +23,7 @@ namespace Tizen.Appium
             var once = (bool)args[Params.Once];
             var ret = new Arguments();
 
-            Log.Debug(TizenAppium.Tag, "#### elementId:" + elementId + ", eventName:" + eventName + ", id:" + id + ", once:" + once);
+            Log.Debug(TizenAppium.Tag, "elementId:" + elementId + ", eventName:" + eventName + ", id:" + id + ", once:" + once);
 
             var evtObj = EventObject.CreateEventObject(id, elementId, eventName, once, () =>
             {
@@ -32,7 +32,7 @@ namespace Tizen.Appium
 
             if (evtObj == null)
             {
-                Log.Debug(TizenAppium.Tag, "#### Not available ID:" + id + ". it is already used for other event.");
+                Log.Debug(TizenAppium.Tag, "Not available ID:" + id + ". it is already used for other event.");
                 ret.SetArgument(Params.Return, false);
             }
             else

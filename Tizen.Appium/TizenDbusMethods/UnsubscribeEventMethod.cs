@@ -14,7 +14,7 @@ namespace Tizen.Appium
 
         public Arguments Run(Arguments args)
         {
-            Log.Debug(TizenAppium.Tag, "#### Unsubscribe");
+            Log.Debug(TizenAppium.Tag, "Unsubscribe");
 
             var id = (string)args[Params.SubscriptionId];
             var ret = new Arguments();
@@ -23,7 +23,7 @@ namespace Tizen.Appium
 
             if (evtObj == null)
             {
-                Log.Debug(TizenAppium.Tag, "#### Not available ID:" + id + ". There is no subscriber for this id.");
+                Log.Debug(TizenAppium.Tag, "Not available ID:" + id + ". There is no subscriber for this id.");
                 ret.SetArgument(Params.Return, false);
             }
             else
