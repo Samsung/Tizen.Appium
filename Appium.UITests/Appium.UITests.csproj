@@ -97,6 +97,9 @@
     <Compile Include="TC\ButtonTest2.cs" />
     <Compile Include="TC\EditorTest2.cs" />
     <Compile Include="TC\EditorTest1.cs" />
+    <Compile Include="TC\GridTest5.cs" />
+    <Compile Include="TC\GridTest4.cs" />
+    <Compile Include="TC\GridTest3.cs" />
     <Compile Include="TC\GridTest2.cs" />
     <Compile Include="TC\GridTest.cs" />
     <Compile Include="TC\FrameTest1.cs" />
