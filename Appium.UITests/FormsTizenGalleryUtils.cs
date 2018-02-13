@@ -15,6 +15,8 @@ namespace Appium.UITests
     {
         static RemoteTouchScreenUtils touchScreen;
 
+        public const string Platform = "Tizen";
+
         public FormsTizenGalleryUtils(AppiumDriver driver)
         {
         }
