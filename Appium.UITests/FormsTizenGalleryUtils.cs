@@ -23,9 +23,9 @@ namespace Appium.UITests
 
         public static void FindTC(AppiumDriver driver, string testName, int speed = -3)
         {
-            string testId = string.Empty;
             touchScreen = new RemoteTouchScreenUtils(driver);
 
+            string testId = WebElementUtils.GetAttribute(driver, "Content", testName);
             while (testId == string.Empty)
             {
                 touchScreen.Flick(0, speed);
