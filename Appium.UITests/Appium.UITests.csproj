@@ -89,6 +89,10 @@
     <Compile Include="AppiumDriver.cs" />
     <Compile Include="FormsTizenGalleryUtils.cs" />
     <Compile Include="RemoteTouchScreenUtils.cs" />
+    <Compile Include="TC\ActivityIndicatorTest.cs" />
+    <Compile Include="TC\AnimationTest3.cs" />
+    <Compile Include="TC\AnimationTest2.cs" />
+    <Compile Include="TC\AnimationTest1.cs" />
     <Compile Include="TC\DatePickerTest.cs" />
     <Compile Include="TC\ButtonTest6.cs" />
     <Compile Include="TC\ButtonTest5.cs" />
@@ -97,6 +101,14 @@
     <Compile Include="TC\ButtonTest2.cs" />
     <Compile Include="TC\EditorTest2.cs" />
     <Compile Include="TC\EditorTest1.cs" />
+    <Compile Include="TC\HelloWorld.cs" />
+    <Compile Include="TC\GridTest6.cs" />
+    <Compile Include="TC\GridTest5.cs" />
+    <Compile Include="TC\GridTest4.cs" />
+    <Compile Include="TC\GridTest3.cs" />
+    <Compile Include="TC\GridTest2.cs" />
+    <Compile Include="TC\GridTest.cs" />
+    <Compile Include="TC\FrameTest1.cs" />
     <Compile Include="TC\FrameLayoutTest4.cs" />
     <Compile Include="TC\FrameLayoutTest3.cs" />
     <Compile Include="TC\FrameLayoutTest2.cs" />

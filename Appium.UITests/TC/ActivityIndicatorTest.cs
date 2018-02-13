@@ -10,12 +10,12 @@ using OpenQA.Selenium.Interactions.Internal;
 namespace Appium.UITests
 {
     [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class ButtonTest4
+    public class ActivityIndicatorTest
     {
         string PlatformName;
         AppiumDriver Driver;
 
-        public ButtonTest4(string platform)
+        public ActivityIndicatorTest(string platform)
         {
             PlatformName = platform;
         }
@@ -34,15 +34,12 @@ namespace Appium.UITests
         }
 
         [Test]
-        public void ClickTest()
+        public void ColorTest()
         {
-            WebElementUtils.Click(Driver, "button1");
-            WebElementUtils.Click(Driver, "button2");
-            var touchScreen = new RemoteTouchScreenUtils(Driver);
-            touchScreen.Flick(0, -3);
-            WebElementUtils.Click(Driver, "button3");
-            WebElementUtils.Click(Driver, "button4");
-            touchScreen.Flick(0, -7);
+            string color = WebElementUtils.GetAttribute(Driver, "ai", "Color");
+            WebElementUtils.Click(Driver, "button");
+            string color2 = WebElementUtils.GetAttribute(Driver, "ai", "Color");
+            Assert.AreNotEqual(color, color2);
         }
     }
 }

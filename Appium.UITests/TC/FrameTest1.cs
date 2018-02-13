@@ -6,16 +6,17 @@ using OpenQA.Selenium.Remote;
 using NUnit.Framework;
 using OpenQA.Selenium.Appium.MultiTouch;
 using OpenQA.Selenium.Interactions.Internal;
+using System.Drawing;
 
 namespace Appium.UITests
 {
     [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class EntryTest3
+    public class FrameTest1
     {
         string PlatformName;
         AppiumDriver Driver;
 
-        public EntryTest3(string platform)
+        public FrameTest1(string platform)
         {
             PlatformName = platform;
         }
@@ -34,25 +35,19 @@ namespace Appium.UITests
         }
 
         [Test]
-        public void TextChangedTest()
+        public void HasShowdowTest()
         {
-            string add = "ABCDEFG";
-            WebElementUtils.SetText(Driver, "entry2", add);
-
-            var touchScreen = new RemoteTouchScreenUtils(Driver);
-            touchScreen.Down(240, 187);
-            touchScreen.Up(240, 187);
-
-            string result = WebElementUtils.GetText(Driver, "entry");
-            Assert.AreEqual("Text changed", result);
+            WebElementUtils.Click(Driver, "btnHasShadow");
+            string result = WebElementUtils.GetAttribute(Driver, "_frame", "HasShadow");
+            Assert.AreEqual("True", result);
         }
 
         [Test]
-        public void TextColorTest()
+        public void HasNoShowdowTest()
         {
-            WebElementUtils.Click(Driver, "bt");
-            string result = WebElementUtils.GetAttribute(Driver, "entry2", "TextColor");
-            Assert.AreEqual("[Color: A=1, R=0, G=0.501960813999176, B=0, Hue=0.333333343267441, Saturation=1, Luminosity=0.250980406999588]", result);
+            WebElementUtils.Click(Driver, "btnHasNoShadow");
+            string result = WebElementUtils.GetAttribute(Driver, "_frame", "HasShadow");
+            Assert.AreEqual("False", result);
         }
     }
 }

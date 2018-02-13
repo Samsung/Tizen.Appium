@@ -6,16 +6,17 @@ using OpenQA.Selenium.Remote;
 using NUnit.Framework;
 using OpenQA.Selenium.Appium.MultiTouch;
 using OpenQA.Selenium.Interactions.Internal;
+using System.Drawing;
 
 namespace Appium.UITests
 {
     [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class ButtonTest4
+    public class HelloWorld
     {
         string PlatformName;
         AppiumDriver Driver;
 
-        public ButtonTest4(string platform)
+        public HelloWorld(string platform)
         {
             PlatformName = platform;
         }
@@ -34,15 +35,10 @@ namespace Appium.UITests
         }
 
         [Test]
-        public void ClickTest()
+        public void TextTest()
         {
-            WebElementUtils.Click(Driver, "button1");
-            WebElementUtils.Click(Driver, "button2");
-            var touchScreen = new RemoteTouchScreenUtils(Driver);
-            touchScreen.Flick(0, -3);
-            WebElementUtils.Click(Driver, "button3");
-            WebElementUtils.Click(Driver, "button4");
-            touchScreen.Flick(0, -7);
+            string result = WebElementUtils.GetText(Driver, "label");
+            Assert.AreEqual("Hello Xamarin for Tizen", result);
         }
     }
 }

@@ -4,18 +4,17 @@ using OpenQA.Selenium.Appium.Tizen;
 using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Remote;
 using NUnit.Framework;
-using OpenQA.Selenium.Appium.MultiTouch;
-using OpenQA.Selenium.Interactions.Internal;
+using System.Drawing;
 
 namespace Appium.UITests
 {
     [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class ButtonTest4
+    public class AnimationTest3
     {
         string PlatformName;
         AppiumDriver Driver;
 
-        public ButtonTest4(string platform)
+        public AnimationTest3(string platform)
         {
             PlatformName = platform;
         }
@@ -36,13 +35,10 @@ namespace Appium.UITests
         [Test]
         public void ClickTest()
         {
-            WebElementUtils.Click(Driver, "button1");
-            WebElementUtils.Click(Driver, "button2");
-            var touchScreen = new RemoteTouchScreenUtils(Driver);
-            touchScreen.Flick(0, -3);
-            WebElementUtils.Click(Driver, "button3");
-            WebElementUtils.Click(Driver, "button4");
-            touchScreen.Flick(0, -7);
+            Point point = WebElementUtils.GetLocation(Driver, "imgTest");
+            WebElementUtils.Click(Driver, "btnStartAnim");
+            Point point2 = WebElementUtils.GetLocation(Driver, "imgTest");
+            Assert.AreNotEqual(point, point2);
         }
     }
 }
