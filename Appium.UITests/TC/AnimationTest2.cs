@@ -33,12 +33,9 @@ namespace Appium.UITests
         }
 
         [Test]
-        public void ClickTest()
+        public void AnimationTest()
         {
-            Point point = WebElementUtils.GetLocation(Driver, "imgTest");
             WebElementUtils.Click(Driver, "btnStartAnim");
-            Point point2 = WebElementUtils.GetLocation(Driver, "imgTest");
-            Assert.AreNotEqual(point, point2);
         }
     }
 }
