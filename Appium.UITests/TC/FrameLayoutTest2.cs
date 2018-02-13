@@ -10,7 +10,7 @@ using System.Drawing;
 
 namespace Appium.UITests
 {
-    [TestFixture("Tizen")]
+    [TestFixture(FormsTizenGalleryUtils.Platform)]
     public class FrameLayoutTest2
     {
         string PlatformName;

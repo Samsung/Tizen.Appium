@@ -9,8 +9,7 @@ using OpenQA.Selenium.Interactions.Internal;
 
 namespace Appium.UITests
 {
-    //[TestFixture("Android")]
-    [TestFixture("Tizen")]
+    [TestFixture(FormsTizenGalleryUtils.Platform)]
     public class DatePickerTest
     {
         string PlatformName;

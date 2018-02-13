@@ -9,7 +9,7 @@ using OpenQA.Selenium.Interactions.Internal;
 
 namespace Appium.UITests
 {
-    [TestFixture("Tizen")]
+    [TestFixture(FormsTizenGalleryUtils.Platform)]
     public class EntryTest3
     {
         string PlatformName;
