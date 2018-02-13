@@ -20,7 +20,9 @@ namespace Appium.UITests
         public static void Click(AppiumDriver driver, string automationId)
         {
             AppiumWebElement element = driver.GetWebElement(automationId);
-            element.Click();
+            var touch = new RemoteTouchScreen(driver.Driver);
+            touch.Down(element.Location.X, element.Location.Y);
+            touch.Up(element.Location.X, element.Location.Y);
             System.Threading.Thread.Sleep(3000);
             return;
         }
