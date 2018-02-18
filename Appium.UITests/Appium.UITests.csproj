@@ -90,6 +90,10 @@
     <Compile Include="FormsTizenGalleryUtils.cs" />
     <Compile Include="RemoteTouchScreenUtils.cs" />
     <Compile Include="TC\ActivityIndicatorTest.cs" />
+    <Compile Include="TC\BindingTest4.cs" />
+    <Compile Include="TC\BindingTest3.cs" />
+    <Compile Include="TC\BindingTest2.cs" />
+    <Compile Include="TC\BindingTest1.cs" />
     <Compile Include="TC\BackgroundImageTest.cs" />
     <Compile Include="TC\BackgroundColorTest5.cs" />
     <Compile Include="TC\BackgroundColorTest4.cs" />
