@@ -107,6 +107,12 @@
     <Compile Include="TC\BoxViewTest3.cs" />
     <Compile Include="TC\BoxViewTest2.cs" />
     <Compile Include="TC\BoxViewTest1.cs" />
+    <Compile Include="TC\ContentPageTest2.cs" />
+    <Compile Include="TC\ContentPageTest.cs" />
+    <Compile Include="TC\CarouselPageTest1.cs" />
+    <Compile Include="TC\DisplayAlertTest.cs" />
+    <Compile Include="TC\DensityIndependentTest2.cs" />
+    <Compile Include="TC\DensityIndependentTest.cs" />
     <Compile Include="TC\DatePickerTest.cs" />
     <Compile Include="TC\ButtonTest6.cs" />
     <Compile Include="TC\ButtonTest5.cs" />
