@@ -39,6 +39,7 @@ namespace Tizen.Appium
             Log.Debug(TizenAppium.Tag, "add cell=" + key);
             if (!String.IsNullOrEmpty(key))
             {
+                key = key.TrimStart().TrimEnd();
                 _testItems[key] = new WeakReference(item);
                 AddTestableElement(item.GetHashCode().ToString(), item);
             }
@@ -47,6 +48,7 @@ namespace Tizen.Appium
         public static ItemObject GetTestableItem(string id)
         {
             Log.Debug(TizenAppium.Tag, "_testCells.ContainsKey?" + _testItems.ContainsKey(id) + ", _testCells.Count=" + _testItems.Count);
+
             WeakReference value;
             _testItems.TryGetValue(id, out value);
             if (value != null && value.IsAlive)
