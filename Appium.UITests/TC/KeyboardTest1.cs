@@ -37,6 +37,7 @@ namespace Appium.UITests
         [Test]
         public void ChatKeyboardTest()
         {
+            WebElementUtils.Click(Driver, "btnDefault");
             WebElementUtils.Click(Driver, "btnKeyBorChat");
             var touch = new RemoteTouchScreenUtils(Driver);
             touch.Down(326, 283);
@@ -55,6 +56,7 @@ namespace Appium.UITests
         [Test]
         public void EmailKeyboardTest()
         {
+            WebElementUtils.Click(Driver, "btnDefault");
             WebElementUtils.Click(Driver, "btnEmail");
             var touch = new RemoteTouchScreenUtils(Driver);
             touch.Down(326, 283);
@@ -64,6 +66,7 @@ namespace Appium.UITests
         [Test]
         public void NumericKeyboardTest()
         {
+            WebElementUtils.Click(Driver, "btnDefault");
             WebElementUtils.Click(Driver, "btnNumeric");
             var touch = new RemoteTouchScreenUtils(Driver);
             touch.Down(326, 283);
@@ -73,6 +76,7 @@ namespace Appium.UITests
         [Test]
         public void PlainKeyboardTest()
         {
+            WebElementUtils.Click(Driver, "btnDefault");
             WebElementUtils.Click(Driver, "btnPlain");
             var touch = new RemoteTouchScreenUtils(Driver);
             touch.Down(326, 283);
@@ -82,6 +86,7 @@ namespace Appium.UITests
         [Test]
         public void TelephoneKeyboardTest()
         {
+            WebElementUtils.Click(Driver, "btnDefault");
             WebElementUtils.Click(Driver, "btnTelephone");
             var touch = new RemoteTouchScreenUtils(Driver);
             touch.Down(326, 283);
@@ -91,6 +96,7 @@ namespace Appium.UITests
         [Test]
         public void TextKeyboardTest()
         {
+            WebElementUtils.Click(Driver, "btnDefault");
             WebElementUtils.Click(Driver, "btnText");
             var touch = new RemoteTouchScreenUtils(Driver);
             touch.Down(326, 283);
@@ -100,6 +106,7 @@ namespace Appium.UITests
         [Test]
         public void UrlKeyboardTest()
         {
+            WebElementUtils.Click(Driver, "btnDefault");
             WebElementUtils.Click(Driver, "btnUrl");
             var touch = new RemoteTouchScreenUtils(Driver);
             touch.Down(326, 283);
