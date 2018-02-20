@@ -1,5 +1,6 @@
 using System;
 using Tizen.Appium.Dbus;
+using ElmSharp;
 
 namespace Tizen.Appium
 {
@@ -30,6 +31,8 @@ namespace Tizen.Appium
                 ret.SetArgument(Params.Return, false);
                 return ret;
             }
+
+            element = (element is ItemObject) ? ((ItemObject)element).TrackObject : element;
 
             var property = element.GetType().GetProperty(propertyName);
             if (property == null)
