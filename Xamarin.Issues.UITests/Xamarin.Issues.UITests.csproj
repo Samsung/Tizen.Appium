@@ -87,6 +87,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppiumDriver.cs" />
+    <Compile Include="TC\ButtonTests_FontAttributes_Button_BHBH.cs" />
+    <Compile Include="TC\ButtonTests_FontSize_Button_BHBH.cs" />
+    <Compile Include="TC\ButtonTests_Image_Button_BHBH.cs" />
+    <Compile Include="TC\ButtonTests_Font_Button_BHBH.cs" />
+    <Compile Include="TC\ButtonTests_Button_BHLK_FULL.cs" />
+    <Compile Include="TC\ButtonTests_BackgroundColor_COLOR_CHANGE.cs" />
+    <Compile Include="TC\ActivityIndicatorTest_ActivityIndicator_Rotation_UILK.cs" />
+    <Compile Include="TC\ActivityIndicatorTest_ActivityIndicator_Opacity_UILK.cs" />
     <Compile Include="TestScriptUtils.cs" />
     <Compile Include="RemoteTouchScreenUtils.cs" />
     <Compile Include="TC\ActivityIndicatorTest_ActivityIndicator_IsVisible_UIBH.cs" />
