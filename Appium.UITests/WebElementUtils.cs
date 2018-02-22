@@ -1,11 +1,5 @@
-﻿using System;
 using OpenQA.Selenium.Appium;
-using OpenQA.Selenium.Appium.Tizen;
-using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Remote;
-using NUnit.Framework;
-using OpenQA.Selenium.Appium.MultiTouch;
-using OpenQA.Selenium.Interactions.Internal;
 using System.Drawing;
 
 namespace Appium.UITests
@@ -21,9 +15,22 @@ namespace Appium.UITests
         {
             AppiumWebElement element = driver.GetWebElement(automationId);
             var touch = new RemoteTouchScreen(driver.Driver);
-            touch.Down(element.Location.X, element.Location.Y);
-            touch.Up(element.Location.X, element.Location.Y);
+            int X = element.Location.X;
+            int Y = element.Location.Y;
+            touch.Down(X, Y);
+            touch.Up(X, Y);
             System.Threading.Thread.Sleep(3000);
+            return;
+        }
+
+        public static void ClickWithoutSleep(AppiumDriver driver, string automationId)
+        {
+            AppiumWebElement element = driver.GetWebElement(automationId);
+            var touch = new RemoteTouchScreen(driver.Driver);
+            int X = element.Location.X;
+            int Y = element.Location.Y;
+            touch.Down(X, Y);
+            touch.Up(X, Y);
             return;
         }
 
@@ -42,8 +49,22 @@ namespace Appium.UITests
 
         public static void SetText(AppiumDriver driver, string automationId, string inputText)
         {
+            //AppiumWebElement element = driver.GetWebElement(automationId);
+            //element.SetImmediateValue(inputText);
             AppiumWebElement element = driver.GetWebElement(automationId);
-            element.SetImmediateValue(inputText);
+            var touch = new RemoteTouchScreen(driver.Driver);
+            int X = element.Location.X;
+            int Y = element.Location.Y;
+            touch.Down(X, Y);
+            touch.Up(X, Y);
+            driver.Driver.Keyboard.SendKeys(inputText);
+            return;
+        }
+
+        public static void ClearText(AppiumDriver driver, string automationId)
+        {
+            AppiumWebElement element = driver.GetWebElement(automationId);
+            element.Clear();
             return;
         }
 

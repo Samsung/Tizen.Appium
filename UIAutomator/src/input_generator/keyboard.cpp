@@ -50,6 +50,7 @@ bool Keyboard::Initialize() {
 }
 
 void Keyboard::Down(int key) {
+    struct timespec sleeptime = { 0, 1000 };
     if (leftShiftStatus) {
         SendInputEvent(fake_device, EV_KEY, KEY_LEFTSHIFT, 1);
         SendInputEvent(fake_device, EV_SYN, SYN_REPORT, 0);
@@ -57,11 +58,15 @@ void Keyboard::Down(int key) {
 
     SendInputEvent(fake_device, EV_KEY, key, 1);
     SendInputEvent(fake_device, EV_SYN, SYN_REPORT, 0);
+    nanosleep(&sleeptime, NULL);
+    
 }
 
 void Keyboard::Up(int key) {
+    struct timespec sleeptime = { 0, 1000 };
     SendInputEvent(fake_device, EV_KEY, key, 0);
     SendInputEvent(fake_device, EV_SYN, SYN_REPORT, 0);
+    nanosleep(&sleeptime, NULL);
 
     if (leftShiftStatus) {
         SendInputEvent(fake_device, EV_KEY, KEY_LEFTSHIFT, 0);
