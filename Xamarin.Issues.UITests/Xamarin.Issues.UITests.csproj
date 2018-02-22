@@ -79,6 +79,13 @@
     <Compile Include="TC\ButtonTests_BackgroundColor_COLOR_CHANGE.cs" />
     <Compile Include="TC\ActivityIndicatorTest_ActivityIndicator_Rotation_UILK.cs" />
     <Compile Include="TC\ActivityIndicatorTest_ActivityIndicator_Opacity_UILK.cs" />
+    <Compile Include="TC\DatePickerTest_TextColor_UILK.cs" />
+    <Compile Include="TC\DatePickerTest_MinimumDate_UIBH.cs" />
+    <Compile Include="TC\DatePickerTest_MaximumDate_UIBH.cs" />
+    <Compile Include="TC\DatePickerTest_DatePicker_UIBH.cs" />
+    <Compile Include="TC\DatePickerTest_Date_UILK.cs" />
+    <Compile Include="TC\ContentPageTest_ToolbarItems_UIBH.cs" />
+    <Compile Include="TC\ContentPageTest_Content_UIBH.cs" />
     <Compile Include="TC\ButtonTests_TextColor_Button_BHBH.cs" />
     <Compile Include="TC\ButtonTests_Image_ICON_CHANGE.cs" />
     <Compile Include="TestScriptUtils.cs" />
