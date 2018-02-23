@@ -44,10 +44,21 @@ namespace Tizen.Appium
 
             try
             {
-                var valueType = property.GetValue(element).GetType();
-                var value = Convert.ChangeType(newValue, valueType);
-                Log.Debug(TizenAppium.Tag, newValue + " is converted to " + value + "(" + value.GetType() + ")");
-                property.SetValue(element, value);
+                if (property.GetValue(element) is Xamarin.Forms.Element)
+                {
+                    var obj = ElementUtils.GetTestableElement(newValue);
+                    if (obj != null)
+                    {
+                        property.SetValue(element, obj);
+                    }
+                }
+                else
+                {
+                    var valueType = property.GetValue(element).GetType();
+                    var value = Convert.ChangeType(newValue, valueType);
+                    Log.Debug(TizenAppium.Tag, newValue + " is converted to " + value + "(" + value.GetType() + ")");
+                    property.SetValue(element, value);
+                }
 
                 ret.SetArgument(Params.Return, true);
                 return ret;

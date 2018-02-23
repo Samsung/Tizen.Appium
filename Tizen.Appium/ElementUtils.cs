@@ -25,6 +25,21 @@ namespace Tizen.Appium
             }
         }
 
+        public static string GetTestableElementId(object obj)
+        {
+            Log.Debug(TizenAppium.Tag, "_testObjects.Count = " + _testObjects.Count);
+            foreach (var p in _testObjects)
+            {
+                if (p.Value.Target == obj && p.Value.IsAlive)
+                {
+                    Log.Debug(TizenAppium.Tag, "element id: " + p.Key);
+                    return p.Key;
+                }
+            }
+            Log.Debug(TizenAppium.Tag, "Not Found ID: ");
+            return String.Empty;
+        }
+
         public static void AddTestableElement(string id, object element)
         {
             Log.Debug(TizenAppium.Tag, "add object=" + id + ", type=" + element.GetType());
