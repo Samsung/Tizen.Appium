@@ -2,3 +2,4 @@ bin
 obj
 .vs
 Appium.UITests/packages/
+Xamarin.Issues.UITests/packages/
