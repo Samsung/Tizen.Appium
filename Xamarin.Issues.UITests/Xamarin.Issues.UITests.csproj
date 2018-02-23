@@ -79,6 +79,16 @@
     <Compile Include="TC\ButtonTests_BackgroundColor_COLOR_CHANGE.cs" />
     <Compile Include="TC\ActivityIndicatorTest_ActivityIndicator_Rotation_UILK.cs" />
     <Compile Include="TC\ActivityIndicatorTest_ActivityIndicator_Opacity_UILK.cs" />
+    <Compile Include="TC\MasterDetailPageTests_MasterBehavior_UIBH.cs" />
+    <Compile Include="TC\MasterDetailPageTests_Detail_UILK.cs" />
+    <Compile Include="TC\LabelTests_WidthRequest_UIBH.cs" />
+    <Compile Include="TC\GridTests_RowSpacing_UIBH.cs" />
+    <Compile Include="TC\GridTests_ColumnSpacing_UIBH.cs" />
+    <Compile Include="TC\EntryCellTests_Keyboard_UILK.cs" />
+    <Compile Include="TC\EntryCellTests_IsEnabled_UILK.cs" />
+    <Compile Include="TC\EditorTests_TextChanged_CHECK_EVENT.cs" />
+    <Compile Include="TC\EditorTests_FontFamily_Editor_UIBH.cs" />
+    <Compile Include="TC\EditorTests_Completed_CHECK_EVENT.cs" />
     <Compile Include="TC\DatePickerTest_TextColor_UILK.cs" />
     <Compile Include="TC\DatePickerTest_MinimumDate_UIBH.cs" />
     <Compile Include="TC\DatePickerTest_MaximumDate_UIBH.cs" />

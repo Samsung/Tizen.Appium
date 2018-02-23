@@ -23,7 +23,7 @@ namespace Xamarin.Issues.UITests
             var touch = new RemoteTouchScreen(driver.Driver);
             touch.Down(element.Location.X, element.Location.Y);
             touch.Up(element.Location.X, element.Location.Y);
-            System.Threading.Thread.Sleep(3000);
+            System.Threading.Thread.Sleep(1000);
             return;
         }
 
@@ -44,19 +44,20 @@ namespace Xamarin.Issues.UITests
         {
             AppiumWebElement element = driver.GetWebElement(automationId);
             element.SetImmediateValue(inputText);
+            System.Threading.Thread.Sleep(1000);
             return;
         }
 
         public static string GetText(AppiumDriver driver, string automationId)
         {
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(1000);
             AppiumWebElement element = driver.GetWebElement(automationId);
             return element.Text;
         }
 
         public static string GetAttribute(AppiumDriver driver, string automationId, string attribute)
         {
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(1000);
             AppiumWebElement element = driver.GetWebElement(automationId);
             return element.GetAttribute(attribute);
         }
