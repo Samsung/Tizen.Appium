@@ -4,12 +4,12 @@ using NUnit.Framework;
 namespace Appium.UITests
 {
     [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class LayoutAddRemoveTest2
+    public class PageDisplayActionSheetTest1
     {
         string PlatformName;
         AppiumDriver Driver;
 
-        public LayoutAddRemoveTest2(string platform)
+        public PageDisplayActionSheetTest1(string platform)
         {
             PlatformName = platform;
         }
@@ -28,35 +28,40 @@ namespace Appium.UITests
         }
 
         [Test]
-        public void AddTest()
+        public void ViewTest()
         {
-            var btnId = "addbtn";
+            var btnId = "button";
 
             WebElementUtils.Click(Driver, btnId);
 
             //screenshot
+
+            Driver.Driver.Navigate().Back();
+            System.Threading.Thread.Sleep(1000);
         }
 
         [Test]
-        public void AddTaskTest()
+        public void ViewTest2()
         {
-            var btnId = "addtaskbtn";
+            var btnId = "button1";
 
             WebElementUtils.Click(Driver, btnId);
 
             //screenshot
+            Driver.Driver.Navigate().Back();
+            System.Threading.Thread.Sleep(1000);
         }
 
         [Test]
-        public void RemoveTest()
+        public void ViewTest3()
         {
-            var addBtnId = "addbtn";
-            var removeBtnId = "removebtn";
+            var btnId = "button2";
 
-            WebElementUtils.Click(Driver, addBtnId);
-            WebElementUtils.Click(Driver, removeBtnId);
+            WebElementUtils.Click(Driver, btnId);
 
             //screenshot
+            Driver.Driver.Navigate().Back();
+            System.Threading.Thread.Sleep(1000);
         }
     }
 }

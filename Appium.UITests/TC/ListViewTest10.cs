@@ -4,12 +4,12 @@ using NUnit.Framework;
 namespace Appium.UITests
 {
     [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class LayoutAddRemoveTest
+    public class ListViewTest10
     {
         string PlatformName;
         AppiumDriver Driver;
 
-        public LayoutAddRemoveTest(string platform)
+        public ListViewTest10(string platform)
         {
             PlatformName = platform;
         }
@@ -28,23 +28,13 @@ namespace Appium.UITests
         }
 
         [Test]
-        public void AddTest()
+        public void HeightTest()
         {
-            var addBtnId = "addbtn";
+            var listId = "listView";
+            var itemString = "Height 100";
+            var itemString2 = "Height 400";
 
-            WebElementUtils.Click(Driver, addBtnId);
-
-            // screenshot
-        }
-
-        [Test]
-        public void AddRemoveTest()
-        {
-            var addBtnId = "addbtn";
-            var removeBtnId = "removebtn";
-
-            WebElementUtils.Click(Driver, addBtnId);
-            WebElementUtils.Click(Driver, removeBtnId);
+            // viewcell is not supported
 
             //screenshot
         }

@@ -4,12 +4,12 @@ using NUnit.Framework;
 namespace Appium.UITests
 {
     [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class LayoutAddRemoveTest
+    public class ListViewTest2
     {
         string PlatformName;
         AppiumDriver Driver;
 
-        public LayoutAddRemoveTest(string platform)
+        public ListViewTest2(string platform)
         {
             PlatformName = platform;
         }
@@ -28,23 +28,16 @@ namespace Appium.UITests
         }
 
         [Test]
-        public void AddTest()
+        public void ViewTest()
         {
-            var addBtnId = "addbtn";
+            var listId = "listView";
+            var itemString = "Lee";
 
-            WebElementUtils.Click(Driver, addBtnId);
+            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
+            Assert.False(String.IsNullOrEmpty(itemId), itemId + "should not be empty or null, but got " + itemId);
 
-            // screenshot
-        }
-
-        [Test]
-        public void AddRemoveTest()
-        {
-            var addBtnId = "addbtn";
-            var removeBtnId = "removebtn";
-
-            WebElementUtils.Click(Driver, addBtnId);
-            WebElementUtils.Click(Driver, removeBtnId);
+            var isVisible = WebElementUtils.GetAttribute(Driver, itemId, "IsVisible");
+            Assert.True(Convert.ToBoolean(isVisible), itemId + ".IsVisible should be true, but got " + isVisible);
 
             //screenshot
         }

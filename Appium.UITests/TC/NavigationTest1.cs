@@ -4,12 +4,12 @@ using NUnit.Framework;
 namespace Appium.UITests
 {
     [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class LayoutAddRemoveTest
+    public class NavigationTest1
     {
         string PlatformName;
         AppiumDriver Driver;
 
-        public LayoutAddRemoveTest(string platform)
+        public NavigationTest1(string platform)
         {
             PlatformName = platform;
         }
@@ -28,24 +28,20 @@ namespace Appium.UITests
         }
 
         [Test]
-        public void AddTest()
+        public void BarColorChangeTest()
         {
-            var addBtnId = "addbtn";
+            var btnId = "barColorChanged";
 
-            WebElementUtils.Click(Driver, addBtnId);
-
-            // screenshot
+            WebElementUtils.Click(Driver, btnId);
+            //screenshot
         }
 
         [Test]
-        public void AddRemoveTest()
+        public void BarVisibleTest()
         {
-            var addBtnId = "addbtn";
-            var removeBtnId = "removebtn";
+            var btnId = "BarVisible";
 
-            WebElementUtils.Click(Driver, addBtnId);
-            WebElementUtils.Click(Driver, removeBtnId);
-
+            WebElementUtils.Click(Driver, btnId);
             //screenshot
         }
     }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Tizen;
 using OpenQA.Selenium.Appium.Android;
@@ -35,6 +35,21 @@ namespace Appium.UITests
         public void Move(int x, int y)
         {
             TouchScreen.Move(x, y);
+        }
+
+        public void Drag(int startX, int startY, int endX, int endY, int delayTime)
+        {
+            TouchScreen.Down(startX, startY);
+            System.Threading.Thread.Sleep(delayTime);
+            TouchScreen.Move(endX, endX);
+            System.Threading.Thread.Sleep(delayTime);
+            TouchScreen.Up(endX, endX);
+        }
+
+        public void Drag(int startX, int startY, int endX, int endY)
+        {
+            var delayTime = 500;
+            Drag(startX, startY, endX, endY, delayTime);
         }
 
         public void Flick(int speedX, int speedY)

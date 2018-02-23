@@ -1,15 +1,14 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
     [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class LayoutAddRemoveTest
+    public class LabelTest3
     {
         string PlatformName;
         AppiumDriver Driver;
 
-        public LayoutAddRemoveTest(string platform)
+        public LabelTest3(string platform)
         {
             PlatformName = platform;
         }
@@ -28,24 +27,8 @@ namespace Appium.UITests
         }
 
         [Test]
-        public void AddTest()
+        public void ViewTest()
         {
-            var addBtnId = "addbtn";
-
-            WebElementUtils.Click(Driver, addBtnId);
-
-            // screenshot
-        }
-
-        [Test]
-        public void AddRemoveTest()
-        {
-            var addBtnId = "addbtn";
-            var removeBtnId = "removebtn";
-
-            WebElementUtils.Click(Driver, addBtnId);
-            WebElementUtils.Click(Driver, removeBtnId);
-
             //screenshot
         }
     }
