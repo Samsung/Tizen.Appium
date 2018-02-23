@@ -1,3 +1,4 @@
+using System;
 using Tizen.Appium.Dbus;
 using ElmSharp;
 
@@ -33,25 +34,30 @@ namespace Tizen.Appium
             element = (element is ItemObject) ? ((ItemObject)element).TrackObject : element;
 
             var value = element.GetType().GetProperty(propertyName)?.GetValue(element);
-            object retVal = new object();
             if (value != null)
             {
-                retVal = value;
-                ret.SetArgument(Params.Return, retVal.ToString());
+                if (value is Xamarin.Forms.Element)
+                {
+                    var id = ElementUtils.GetTestableElementId(value);
+                    if (!String.IsNullOrEmpty(id))
+                    {
+                        value = id;
+                    }
+                }
+
+                ret.SetArgument(Params.Return, value.ToString());
                 return ret;
             }
 
             var item = ElementUtils.GetTestableItem(propertyName);
             if (item != null)
             {
-                retVal = item.GetHashCode();
-                ret.SetArgument(Params.Return, retVal.ToString());
+                ret.SetArgument(Params.Return, item.GetHashCode().ToString());
                 return ret;
             }
 
             Log.Debug(TizenAppium.Tag, elementId + " element does not have " + propertyName + " property.");
-            retVal = string.Empty;
-            ret.SetArgument(Params.Return, retVal.ToString());
+            ret.SetArgument(Params.Return, String.Empty);
 
             return ret;
         }
