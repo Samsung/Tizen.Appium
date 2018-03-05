@@ -52,7 +52,7 @@ namespace Xamarin.Issues.UITests
             capabillities.SetCapability("appPackage", "org.tizen.xamarin.forms.issues.tizen");
             capabillities.SetCapability("app", "Xamarin.Forms.Tizen.Issues-1.0.0.tpk");
 
-            var driver = new TizenDriver<AppiumWebElement>(new Uri("http://10.113.62.173:8080/wd/hub"), capabillities);
+            var driver = new TizenDriver<AppiumWebElement>(new Uri("http://10.113.111.163:8080/wd/hub"), capabillities);
             return driver;
         }
 

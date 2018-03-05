@@ -42,5 +42,12 @@ namespace Xamarin.Issues.UITests
             TouchScreen.Flick(speedX, speedY);
             System.Threading.Thread.Sleep(1000);
         }
+        static public void Click(AppiumDriver driver, Point point)
+        {
+            RemoteTouchScreen touch = new RemoteTouchScreen(driver.Driver);
+            touch.Down(point.X, point.Y);
+            touch.Up(point.X, point.Y);
+            System.Threading.Thread.Sleep(3000);
+        }
     }
 }
