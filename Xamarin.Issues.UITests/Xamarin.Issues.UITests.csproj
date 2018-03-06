@@ -79,6 +79,14 @@
     <Compile Include="TC\ButtonTests_BackgroundColor_COLOR_CHANGE.cs" />
     <Compile Include="TC\ActivityIndicatorTest_ActivityIndicator_Rotation_UILK.cs" />
     <Compile Include="TC\ActivityIndicatorTest_ActivityIndicator_Opacity_UILK.cs" />
+    <Compile Include="TC\ToolbarItemTests_Activated_EVENT.cs" />
+    <Compile Include="TC\TimePickerTests_TimePicker_Time_UILK.cs" />
+    <Compile Include="TC\TimePickerTests_TimePicker_TextColor_UILK.cs" />
+    <Compile Include="TC\TimePickerTests_Height_TimePicker_CHANGE_SIZE.cs" />
+    <Compile Include="TC\TimePickerTests_BackgroundColor_TimePicker_COLOR_CHANGE.cs" />
+    <Compile Include="TC\SwitchTests_BackgroundColor_Switch_COLOR_CHANGE.cs" />
+    <Compile Include="TC\StepperTests_Stepper_Width_CHANGE_SIZE.cs" />
+    <Compile Include="TC\StepperTests_BackgroundColor_Stepper_COLOR_CHANGE.cs" />
     <Compile Include="TC\StackLayoutTests_Scale_StackLayout_UILK.cs" />
     <Compile Include="TC\StackLayoutTests_Rotation_StackLayout_UILK.cs" />
     <Compile Include="TC\StackLayoutTests_Margin_StackLayout_UILK.cs" />
