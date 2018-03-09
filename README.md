@@ -1,10 +1,19 @@
-# Tizen.Appium
+# Tizen Appium 
+
+## Tizen.Appium
 Tizen.Appium interacts with UIAutomator. Test App should include this library. This library passes the elements information of the app to uiautomator.
 
-# UIAutomator
+## UIAutomator
 UIAutomator interacts and transmits data between appium server and app. The `Input-Generator` included in UIAutomator generates a touch or keyboard event on the device according to the requested command.
 
-## Milestone
+## Appium.UITests
+Appium.UITests is test suite for checking automatically whether Xamarin.Forms works properly or not with the [FormsTizenGallery](https://github.sec.samsung.net/dotnet/xamarin-forms-apps/tree/master/FormsTizenGallery). 
+
+## Xamarin.Issues.UITests
+Xamarin.Issues.UITests is test suite for checking automatically whether Xamarin.Forms works properly or not with the [Xamarin.Forms.Tizen.Issues](https://github.sec.samsung.net/dotnet/xamarin-forms-apps/tree/master/Xamarin.Forms.Tizen.Issues). 
+
+
+### Milestone
 <table>
   <tr>
     <th>Projects</th>
@@ -29,3 +38,7 @@ UIAutomator interacts and transmits data between appium server and app. The `Inp
         Add function to Xamarin-Tizen-Renderer for Tizen-Appium </td>
   </tr>
 </table>
+
+
+### Tizen Appium Limitation
+A list of limitations is available at [Tizen Appium Limitation](Limitation.md).
