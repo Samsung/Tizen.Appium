@@ -10,8 +10,11 @@
 
   <ItemGroup>
     <PackageReference Include="Tizen.NET" Version="4.0.0" />
-    <PackageReference Include="Xamarin.Forms" Version="2.5.0.77107" />
-    <PackageReference Include="Xamarin.Forms.Platform.Tizen" Version="2.5.0.77107" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Xamarin.Forms\Xamarin.Forms.Core\Xamarin.Forms.Core.csproj" />
+    <ProjectReference Include="..\..\Xamarin.Forms\Xamarin.Forms.Platform.Tizen\Xamarin.Forms.Platform.Tizen.csproj" />
   </ItemGroup>
 
 </Project>
