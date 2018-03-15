@@ -1,8 +1,6 @@
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.Tizen;
-using Tizen.Appium.Dbus;
-using ElmSharp;
 using System;
+using ElmSharp;
+using Tizen.Appium.Dbus;
 using TSystemInfo = Tizen.System.Information;
 
 namespace Tizen.Appium
@@ -22,34 +20,28 @@ namespace Tizen.Appium
 
         public Arguments Run(Arguments args)
         {
-            Log.Debug(TizenAppium.Tag, "GetCenterX");
+            Log.Debug("GetCenterX");
 
             var elementId = (string)args[Params.ElementId];
             var ret = new Arguments();
 
-            var element = ElementUtils.GetTestableElement(elementId);
-            if (element == null)
+            var nativeView = ElementUtils.GetElementWrapper(elementId)?.NativeView;
+            if (nativeView == null)
             {
-                Log.Debug(TizenAppium.Tag, "Not Found Element");
+                Log.Debug("Not Found Element");
                 ret.SetArgument(Params.Return, -1);
                 return ret;
             }
 
-            EvasObject nativeView;
-            if (element is VisualElement)
-            {
-                nativeView = Platform.GetOrCreateRenderer(element as VisualElement).NativeView;
-            }
-            else
-            {
-                nativeView = (element as ItemObject).TrackObject;
-            }
             ret.SetArgument(Params.Return, GetCenterX(nativeView));
             return ret;
         }
 
         int GetCenterX(EvasObject obj)
         {
+            if (obj == null)
+                return -1;
+
             int screenWidth;
             TSystemInfo.TryGetValue("http://tizen.org/feature/screen.width", out screenWidth);
 

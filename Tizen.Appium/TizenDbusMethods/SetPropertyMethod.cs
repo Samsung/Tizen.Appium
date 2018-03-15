@@ -1,6 +1,6 @@
 using System;
+using Xamarin.Forms;
 using Tizen.Appium.Dbus;
-using ElmSharp;
 
 namespace Tizen.Appium
 {
@@ -16,7 +16,7 @@ namespace Tizen.Appium
 
         public Arguments Run(Arguments args)
         {
-            Log.Debug(TizenAppium.Tag, "SetProperty");
+            Log.Debug("SetProperty");
 
             var elementId = (string)args[Params.ElementId];
             var propertyName = (string)args[Params.PropertyName];
@@ -24,29 +24,27 @@ namespace Tizen.Appium
 
             var ret = new Arguments();
 
-            var element = ElementUtils.GetTestableElement(elementId);
+            var element = ElementUtils.GetElementWrapper(elementId)?.Element;
             if (element == null)
             {
-                Log.Debug(TizenAppium.Tag, "Not Found Element");
+                Log.Debug("Not Found Element");
                 ret.SetArgument(Params.Return, false);
                 return ret;
             }
 
-            element = (element is ItemObject) ? ((ItemObject)element).TrackObject : element;
-
             var property = element.GetType().GetProperty(propertyName);
             if (property == null)
             {
-                Log.Debug(TizenAppium.Tag, elementId + " element does not have " + propertyName + " property.");
+                Log.Debug(elementId + " element does not have " + propertyName + " property.");
                 ret.SetArgument(Params.Return, false);
                 return ret;
             }
 
             try
             {
-                if (property.GetValue(element) is Xamarin.Forms.Element)
+                if (property.GetValue(element) is Element)
                 {
-                    var obj = ElementUtils.GetTestableElement(newValue);
+                    var obj = ElementUtils.GetElementWrapper(newValue).Element;
                     if (obj != null)
                     {
                         property.SetValue(element, obj);
@@ -56,7 +54,7 @@ namespace Tizen.Appium
                 {
                     var valueType = property.GetValue(element).GetType();
                     var value = Convert.ChangeType(newValue, valueType);
-                    Log.Debug(TizenAppium.Tag, newValue + " is converted to " + value + "(" + value.GetType() + ")");
+                    Log.Debug(newValue + " is converted to " + value + "(" + value.GetType() + ")");
                     property.SetValue(element, value);
                 }
 
@@ -65,7 +63,7 @@ namespace Tizen.Appium
             }
             catch (Exception e)
             {
-                Log.Debug(TizenAppium.Tag, e.ToString());
+                Log.Debug(e.ToString());
                 ret.SetArgument(Params.Return, false);
                 return ret;
             }

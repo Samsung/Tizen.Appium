@@ -1,6 +1,6 @@
 using System;
+using Xamarin.Forms;
 using Tizen.Appium.Dbus;
-using ElmSharp;
 
 namespace Tizen.Appium
 {
@@ -16,29 +16,27 @@ namespace Tizen.Appium
 
         public Arguments Run(Arguments args)
         {
-            Log.Debug(TizenAppium.Tag, "GetProperty");
+            Log.Debug("GetProperty");
 
             var elementId = (string)args[Params.ElementId];
             var propertyName = (string)args[Params.PropertyName];
 
             var ret = new Arguments();
 
-            var element = ElementUtils.GetTestableElement(elementId);
+            var element = ElementUtils.GetElementWrapper(elementId)?.Element;
             if (element == null)
             {
-                Log.Debug(TizenAppium.Tag, "Not Found Element");
+                Log.Debug("Not Found Element");
                 ret.SetArgument(Params.Return, string.Empty);
                 return ret;
             }
 
-            element = (element is ItemObject) ? ((ItemObject)element).TrackObject : element;
-
             var value = element.GetType().GetProperty(propertyName)?.GetValue(element);
             if (value != null)
             {
-                if (value is Xamarin.Forms.Element)
+                if (value is Element)
                 {
-                    var id = ElementUtils.GetTestableElementId(value);
+                    var id = ElementUtils.GetIdByElement((Element)value);
                     if (!String.IsNullOrEmpty(id))
                     {
                         value = id;
@@ -49,14 +47,7 @@ namespace Tizen.Appium
                 return ret;
             }
 
-            var item = ElementUtils.GetTestableItem(propertyName);
-            if (item != null)
-            {
-                ret.SetArgument(Params.Return, item.GetHashCode().ToString());
-                return ret;
-            }
-
-            Log.Debug(TizenAppium.Tag, elementId + " element does not have " + propertyName + " property.");
+            Log.Debug(elementId + " element does not have " + propertyName + " property.");
             ret.SetArgument(Params.Return, String.Empty);
 
             return ret;

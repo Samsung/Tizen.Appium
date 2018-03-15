@@ -1,6 +1,3 @@
-using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.Tizen;
 using Tizen.Appium.Dbus;
 
 namespace Tizen.Appium
@@ -18,7 +15,7 @@ namespace Tizen.Appium
 
         public Arguments Run(Arguments args)
         {
-            Log.Debug(TizenAppium.Tag, "ResetService");
+            Log.Debug("ResetService");
 
             var ret = new Arguments();
 
