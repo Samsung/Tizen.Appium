@@ -1,78 +1,141 @@
-using ElmSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Tizen;
+using ItemContext = Xamarin.Forms.Platform.Tizen.Native.ListView.ItemContext;
+using EvasObject = ElmSharp.EvasObject;
 
 namespace Tizen.Appium
 {
     public class ElementUtils
     {
-        static IDictionary<string, WeakReference> _testObjects = new Dictionary<string, WeakReference>();
+        static IDictionary<string, ElementWrapper> _elements = new Dictionary<string, ElementWrapper>();
 
-        static IDictionary<string, WeakReference> _testItems = new Dictionary<string, WeakReference>();
-
-        public static object GetTestableElement(string id)
+        internal static void AddElement(Element element)
         {
-            Log.Debug(TizenAppium.Tag, "_testObjects.ContainsKey?" + _testObjects.ContainsKey(id) + ", _testObjects.Count=" + _testObjects.Count);
-            WeakReference value;
-            _testObjects.TryGetValue(id, out value);
-            if (value != null && value.IsAlive)
+            if (!String.IsNullOrEmpty(element.AutomationId))
             {
-                return value.Target;
-            }
-            else
-            {
-                return null;
+                _elements[element.AutomationId] = new ElementWrapper(element);
+                Log.Debug("[Added] id=" + element.AutomationId + ", element=" + element.GetType() + ", _elements.Count=" + _elements.Count);
             }
         }
 
-        public static string GetTestableElementId(object obj)
+        internal static void AddItemContext(ItemContext item)
         {
-            Log.Debug(TizenAppium.Tag, "_testObjects.Count = " + _testObjects.Count);
-            foreach (var p in _testObjects)
+            if (!String.IsNullOrEmpty(item.Cell.AutomationId))
             {
-                if (p.Value.Target == obj && p.Value.IsAlive)
+                _elements[item.Cell.AutomationId] = new ElementWrapper(item);
+                Log.Debug("[Added] id=" + item.Cell.AutomationId + ", item.Cell=" + item.Cell.GetType() + ", _elements.Count=" + _elements.Count);
+            }
+        }
+
+        internal static void RemoveElementById(string id)
+        {
+            if (_elements.ContainsKey(id))
+            {
+                _elements.Remove(id);
+                Log.Debug("[Removed] id=" + id + ", _elements.Count=" + _elements.Count);
+            }
+        }
+
+        internal static void RemoveElement(Element element)
+        {
+            if (!String.IsNullOrEmpty(element.AutomationId) && _elements.ContainsKey(element.AutomationId))
+            {
+                _elements.Remove(element.AutomationId);
+                Log.Debug("[Removed] id=" + element.AutomationId + ", element=" + element.GetType() + ", _elements.Count=" + _elements.Count);
+            }
+        }
+
+        internal static void RemoveItemContext(ItemContext item)
+        {
+            RemoveElement(item.Cell);
+        }
+
+        internal static void ResetToolbarItems()
+        {
+            var oldItemKeys = _elements.Where(kv => kv.Value.Element is ToolbarItem).Select(kv => kv.Key).ToList();
+
+            Log.Debug("[Reset toolbar] oldKeys= " + oldItemKeys);
+
+            foreach (var key in oldItemKeys)
+            {
+                _elements.Remove(key);
+            }
+            Log.Debug("[Reset toolbar] _elements.Count=" + _elements.Count);
+        }
+
+        public static ElementWrapper GetElementWrapper(string id)
+        {
+            Log.Debug("[GetElement] _elements.ContainsKey? " + _elements.ContainsKey(id) + ", _elements.Count=" + _elements.Count);
+
+            ElementWrapper value = null;
+            _elements.TryGetValue(id, out value);
+
+            return value;
+        }
+
+        public static string GetIdByElement(object element)
+        {
+            return _elements.FirstOrDefault(kv => kv.Value.Element == element).Key;
+        }
+
+        public class ElementWrapper
+        {
+            WeakReference _element;
+            string _id;
+
+            public Element Element
+            {
+                get
                 {
-                    Log.Debug(TizenAppium.Tag, "element id: " + p.Key);
-                    return p.Key;
+                    if (_element.IsAlive)
+                    {
+                        if (_element.Target is VisualElement)
+                        {
+                            return (VisualElement)_element.Target;
+                        }
+                        else if (_element.Target is ItemContext)
+                        {
+                            return ((ItemContext)_element.Target).Cell;
+                        }
+                    }
+                    else
+                    {
+                        ElementUtils.RemoveElementById(_id);
+                    }
+                    return null;
                 }
             }
-            Log.Debug(TizenAppium.Tag, "Not Found ID: ");
-            return String.Empty;
-        }
 
-        public static void AddTestableElement(string id, object element)
-        {
-            Log.Debug(TizenAppium.Tag, "add object=" + id + ", type=" + element.GetType());
-            if (!String.IsNullOrEmpty(id))
+            public EvasObject NativeView
             {
-                _testObjects[id] = new WeakReference(element);
+                get
+                {
+                    if (_element.IsAlive)
+                    {
+                        if (_element.Target is VisualElement)
+                        {
+                            return Platform.GetOrCreateRenderer((VisualElement)_element.Target).NativeView;
+                        }
+                        else if (_element.Target is ItemContext)
+                        {
+                            return ((ItemContext)_element.Target).Item.TrackObject;
+                        }
+                    }
+                    else
+                    {
+                        ElementUtils.RemoveElementById(_id);
+                    }
+                    return null;
+                }
             }
-        }
 
-        public static void AddTestableItem(string key, ItemObject item)
-        {
-            Log.Debug(TizenAppium.Tag, "add cell=" + key);
-            if (!String.IsNullOrEmpty(key))
+            public ElementWrapper(object obj)
             {
-                key = key.TrimStart().TrimEnd();
-                _testItems[key] = new WeakReference(item);
-                AddTestableElement(item.GetHashCode().ToString(), item);
-            }
-        }
-
-        public static ItemObject GetTestableItem(string id)
-        {
-            Log.Debug(TizenAppium.Tag, "_testCells.ContainsKey?" + _testItems.ContainsKey(id) + ", _testCells.Count=" + _testItems.Count);
-
-            WeakReference value;
-            _testItems.TryGetValue(id, out value);
-            if (value != null && value.IsAlive)
-            {
-                return value.Target as ItemObject;
-            }
-            else
-            {
-                return null;
+                _id = (obj as Element)?.AutomationId;
+                _element = new WeakReference(obj);
             }
         }
     }

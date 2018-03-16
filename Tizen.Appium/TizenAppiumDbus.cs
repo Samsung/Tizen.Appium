@@ -24,7 +24,7 @@ namespace Tizen.Appium
 
         public TizenAppiumDbus()
         {
-            Log.Debug(TizenAppium.Tag, "TizenAppiumDbus");
+            Log.Debug("TizenAppiumDbus");
 
             InitializeDbus();
         }
@@ -40,7 +40,7 @@ namespace Tizen.Appium
 
             foreach (var method in methods)
             {
-                Log.Debug(TizenAppium.Tag, "method:" + method);
+                Log.Debug("method:" + method);
                 Connection.AddMethod(method);
             }
         }

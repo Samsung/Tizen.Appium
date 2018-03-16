@@ -1,9 +1,7 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using ElmSharp;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.Tizen;
-using System.Linq;
 
 namespace Tizen.Appium
 {
@@ -40,12 +38,12 @@ namespace Tizen.Appium
             }
             catch (ArgumentException)
             {
-                Log.Debug(TizenAppium.Tag, "Not available event name");
+                Log.Debug("Not available event name");
                 return null;
             }
             catch (Exception e)
             {
-                Log.Debug(TizenAppium.Tag, "It is failed to create event object" + e);
+                Log.Debug("It is failed to create event object" + e);
                 return null;
             }
         }
@@ -58,7 +56,7 @@ namespace Tizen.Appium
                 (item.Value as EventObject)?.Unsubscribe();
             }
             _eventObjectTable.Clear();
-            Log.Debug(TizenAppium.Tag, " _eventObjectTable.count: " + _eventObjectTable.Count);
+            Log.Debug(" _eventObjectTable.count: " + _eventObjectTable.Count);
         }
 
         public static EventObject GetEventObject(string id)
@@ -110,53 +108,36 @@ namespace Tizen.Appium
 
         public bool Subscribe()
         {
-            Log.Debug(TizenAppium.Tag, "[Subscribe] elementId: " + ElementId + ", subscriptionId: " + Id);
+            Log.Debug("[Subscribe] elementId: " + ElementId + ", subscriptionId: " + Id);
 
-            var ve = ElementUtils.GetTestableElement(ElementId) as VisualElement;
-            if (ve != null)
+            var nativeView = ElementUtils.GetElementWrapper(ElementId)?.NativeView;
+            if (nativeView == null)
             {
-                var evasObj = Platform.GetOrCreateRenderer(ve).NativeView;
-
-                //TBD It conflicts with behavior of renderer.
-                evasObj.PropagateEvents = true;
-
-                if (EventType == EventType.EvasObjectEvent)
-                {
-                    var type = EvasObjectCallbackType.Parse<EvasObjectCallbackType>(EventName);
-                    _evaObjEvent = new EvasObjectEvent(evasObj, type);
-                    _evaObjEvent.On += EventHandler;
-                }
-                else
-                {
-                    _smartEvent = new SmartEvent(evasObj, EventName);
-                    _smartEvent.On += EventHandler;
-                }
-
-                return true;
+                Log.Debug("Not Supported Element");
+                return false;
             }
 
-            var item = ElementUtils.GetTestableElement(ElementId) as ItemObject;
-            if (item != null)
-            {
-                // TODO
-                //Log.Debug(TizenAppium.Tag, "evas object: " + ElementId);
-                //_eventObj = new EvasObjectEvent(evasObj, EvasObjectEventType);
-                //_eventObj.On += EventHandler;
-                //return true;
+            //TBD It conflicts with behavior of renderer.
+            nativeView.PropagateEvents = true;
 
-                // TODO : to be removed. It is a temporaty solution for item pressed event. because of bug in TrackObject.
-                Log.Debug(TizenAppium.Tag, "evas object: " + ElementId);
-                item.SetPressCallback(ElementId, EventHandler);
-                return true;
+            if (EventType == EventType.EvasObjectEvent)
+            {
+                var type = EvasObjectCallbackType.Parse<EvasObjectCallbackType>(EventName);
+                _evaObjEvent = new EvasObjectEvent(nativeView, type);
+                _evaObjEvent.On += EventHandler;
+            }
+            else
+            {
+                _smartEvent = new SmartEvent(nativeView, EventName);
+                _smartEvent.On += EventHandler;
             }
 
-            Log.Debug(TizenAppium.Tag, "Not Found Element");
-            return false;
+            return true;
         }
 
         public bool Unsubscribe()
         {
-            Log.Debug(TizenAppium.Tag, "[Unsubscribe] elementId: " + ElementId + ", subscriptionId: " + Id);
+            Log.Debug("[Unsubscribe] elementId: " + ElementId + ", subscriptionId: " + Id);
 
             if (_evaObjEvent != null)
             {
@@ -166,13 +147,6 @@ namespace Tizen.Appium
             if (_smartEvent != null)
             {
                 _smartEvent.On -= EventHandler;
-            }
-
-            // TODO : to be removed. It is a temporaty solution for item pressed event. because of bug in TrackObject.
-            var item = ElementUtils.GetTestableElement(ElementId) as ItemObject;
-            if (item != null)
-            {
-                item.UnsetPressCallback(ElementId);
             }
 
             EventObject.RemoveEventObject(Id);

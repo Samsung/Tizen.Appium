@@ -1,4 +1,4 @@
-namespace Tizen.Appium
+namespace Tizen.Appium.Dbus
 {
     public class DbusNames
     {
