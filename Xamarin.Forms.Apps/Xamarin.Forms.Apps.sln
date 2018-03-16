@@ -3,23 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.Core", "Z:\CSharp\SecGithub\Xamarin.Forms\Xamarin.Forms.Core\Xamarin.Forms.Core.csproj", "{E9B9083F-EC13-413A-8C4E-3196481868FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.Core", "..\..\Xamarin.Forms\Xamarin.Forms.Core\Xamarin.Forms.Core.csproj", "{E9B9083F-EC13-413A-8C4E-3196481868FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.Platform", "Z:\CSharp\SecGithub\Xamarin.Forms\Xamarin.Forms.Platform\Xamarin.Forms.Platform.csproj", "{01EC5D9D-DAEC-404E-8B96-590ECB94B62E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.Platform", "..\..\Xamarin.Forms\Xamarin.Forms.Platform\Xamarin.Forms.Platform.csproj", "{01EC5D9D-DAEC-404E-8B96-590ECB94B62E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.Maps", "Z:\CSharp\SecGithub\Xamarin.Forms\Xamarin.Forms.Maps\Xamarin.Forms.Maps.csproj", "{D0ABD102-124A-4432-8B90-3D26C454F56C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.Maps", "..\..\Xamarin.Forms\Xamarin.Forms.Maps\Xamarin.Forms.Maps.csproj", "{D0ABD102-124A-4432-8B90-3D26C454F56C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.Platform.Tizen", "Z:\CSharp\SecGithub\Xamarin.Forms\Xamarin.Forms.Platform.Tizen\Xamarin.Forms.Platform.Tizen.csproj", "{D458B463-8A0C-4480-8454-D20102304E28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.Platform.Tizen", "..\..\Xamarin.Forms\Xamarin.Forms.Platform.Tizen\Xamarin.Forms.Platform.Tizen.csproj", "{D458B463-8A0C-4480-8454-D20102304E28}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.Xaml", "Z:\CSharp\SecGithub\Xamarin.Forms\Xamarin.Forms.Xaml\Xamarin.Forms.Xaml.csproj", "{3EB0A40C-4858-4472-8014-ED2F00C8F1A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.Xaml", "..\..\Xamarin.Forms\Xamarin.Forms.Xaml\Xamarin.Forms.Xaml.csproj", "{3EB0A40C-4858-4472-8014-ED2F00C8F1A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.Maps.Tizen", "Z:\CSharp\SecGithub\Xamarin.Forms\Xamarin.Forms.Maps.Tizen\Xamarin.Forms.Maps.Tizen.csproj", "{AC01030D-37DF-4D5E-A7AE-4A613C6564B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.Maps.Tizen", "..\..\Xamarin.Forms\Xamarin.Forms.Maps.Tizen\Xamarin.Forms.Maps.Tizen.csproj", "{AC01030D-37DF-4D5E-A7AE-4A613C6564B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormsTizenGallery", "Z:\CSharp\SecGithub\xamarin-forms-apps\FormsTizenGallery\FormsTizenGallery\FormsTizenGallery.csproj", "{0728D932-FB56-447F-9BFD-437D0E89FFF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormsTizenGallery", "..\..\xamarin-forms-apps\FormsTizenGallery\FormsTizenGallery\FormsTizenGallery.csproj", "{0728D932-FB56-447F-9BFD-437D0E89FFF5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormsTizenGallery.Tizen", "Z:\CSharp\SecGithub\xamarin-forms-apps\FormsTizenGallery\FormsTizenGallery.Tizen\FormsTizenGallery.Tizen.csproj", "{D4BAED43-B00D-4C71-9CFE-6C383E91AED1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormsTizenGallery.Tizen", "..\..\xamarin-forms-apps\FormsTizenGallery\FormsTizenGallery.Tizen\FormsTizenGallery.Tizen.csproj", "{D4BAED43-B00D-4C71-9CFE-6C383E91AED1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tizen.Appium", "Z:\CSharp\SecGithub\Tizen.Appium\Tizen.Appium\Tizen.Appium.csproj", "{A3DA4B05-AA49-4EE9-8886-9A44DB4E0DC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tizen.Appium", "..\..\Tizen.Appium\Tizen.Appium\Tizen.Appium.csproj", "{A3DA4B05-AA49-4EE9-8886-9A44DB4E0DC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

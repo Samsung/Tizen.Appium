@@ -94,12 +94,6 @@ namespace Appium.UITests
             return element.Location;
         }
 
-        public static void Tap(AppiumDriver driver, string automationId, int fingers, int duration)
-        {
-            AppiumWebElement element = driver.GetWebElement(automationId);
-            element.Tap(fingers, duration);
-        }
-
         public static bool GetSelected(AppiumDriver driver, string automationId)
         {
             AppiumWebElement element = driver.GetWebElement(automationId);
