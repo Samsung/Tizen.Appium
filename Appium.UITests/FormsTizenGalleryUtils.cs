@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Tizen;
 using OpenQA.Selenium.Appium.Android;
@@ -25,25 +25,16 @@ namespace Appium.UITests
         {
             touchScreen = new RemoteTouchScreenUtils(driver);
 
-            string testId = WebElementUtils.GetAttribute(driver, "Content", testName);
-            while (testId == string.Empty)
+            bool enabled = WebElementUtils.GetAttribute<bool>(driver, testName, "IsEnabled");
+
+            while (!enabled)
             {
                 touchScreen.Flick(0, speed);
-                testId = WebElementUtils.GetAttribute(driver, "Content", testName);
+                System.Threading.Thread.Sleep(1000);
+                enabled = WebElementUtils.GetAttribute<bool>(driver, testName, "IsEnabled");
             }
 
-            Task t = Task.Run(() =>
-            {
-                WebElementUtils.Click(driver, testId);
-            });
-
-            TimeSpan ts = TimeSpan.FromMilliseconds(4000);
-            if (!t.Wait(ts))
-            {
-                touchScreen.Flick(0, -1);
-                WebElementUtils.Click(driver, testId);
-            }
-            return;
+            WebElementUtils.Click(driver, testName);
         }
     }
 }

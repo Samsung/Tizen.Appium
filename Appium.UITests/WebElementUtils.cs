@@ -1,3 +1,4 @@
+using System;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Remote;
 using System.Drawing;
@@ -80,6 +81,18 @@ namespace Appium.UITests
             System.Threading.Thread.Sleep(2000);
             AppiumWebElement element = driver.GetWebElement(automationId);
             return element.GetAttribute(attribute);
+        }
+
+        public static T GetAttribute<T>(AppiumDriver driver, string automationId, string attribute)
+        {
+            var stringValue = WebElementUtils.GetAttribute(driver, automationId, attribute);
+            if (!String.IsNullOrEmpty(stringValue))
+            {
+                T value = (T)Convert.ChangeType(stringValue, typeof(T));
+                return value;
+            }
+
+            return default(T);
         }
 
         public static bool GetEnabled(AppiumDriver driver, string automationId)
