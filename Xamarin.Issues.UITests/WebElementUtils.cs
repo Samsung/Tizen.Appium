@@ -1,11 +1,6 @@
-﻿using System;
+using System;
 using OpenQA.Selenium.Appium;
-using OpenQA.Selenium.Appium.Tizen;
-using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Remote;
-using NUnit.Framework;
-using OpenQA.Selenium.Appium.MultiTouch;
-using OpenQA.Selenium.Interactions.Internal;
 using System.Drawing;
 
 namespace Xamarin.Issues.UITests
@@ -62,6 +57,17 @@ namespace Xamarin.Issues.UITests
             return element.GetAttribute(attribute);
         }
 
+        public static T GetAttribute<T>(AppiumDriver driver, string automationId, string attribute)
+        {
+            var stringValue = WebElementUtils.GetAttribute(driver, automationId, attribute);
+            if (!String.IsNullOrEmpty(stringValue))
+            {
+                T value = (T)Convert.ChangeType(stringValue, typeof(T));
+                return value;
+            }
+            return default(T);
+        }
+
         public static bool GetEnabled(AppiumDriver driver, string automationId)
         {
             AppiumWebElement element = driver.GetWebElement(automationId);
@@ -72,6 +78,12 @@ namespace Xamarin.Issues.UITests
         {
             AppiumWebElement element = driver.GetWebElement(automationId);
             return element.Location;
+        }
+
+        public static void Tap(AppiumDriver driver, string automationId, int fingers, int duration)
+        {
+            AppiumWebElement element = driver.GetWebElement(automationId);
+            element.Tap(fingers, duration);
         }
 
         public static bool GetSelected(AppiumDriver driver, string automationId)
