@@ -31,7 +31,12 @@ namespace Appium.UITests
         public void Enable1Test()
         {
             var btnId = "enable1";
+            var listId = "list";
+
             WebElementUtils.Click(Driver, btnId);
+
+            var displayBinding = WebElementUtils.GetAttribute<string>(Driver, listId, "GroupDisplayBinding");
+            var shortBinding = WebElementUtils.GetAttribute<string>(Driver, listId, "GroupDisplayBinding");
 
             //screenshot for checking index on the listview
         }
@@ -40,7 +45,12 @@ namespace Appium.UITests
         public void Enable2Test()
         {
             var btnId = "enable2";
+            var listId = "list";
+
             WebElementUtils.Click(Driver, btnId);
+
+            var displayBinding = WebElementUtils.GetAttribute<string>(Driver, listId, "GroupDisplayBinding");
+            var shortBinding = WebElementUtils.GetAttribute<string>(Driver, listId, "GroupDisplayBinding");
 
             //screenshot for checking index on the listview
         }
@@ -49,7 +59,12 @@ namespace Appium.UITests
         public void Enable3Test()
         {
             var btnId = "enable3";
+            var listId = "list";
+
             WebElementUtils.Click(Driver, btnId);
+
+            var displayBinding = WebElementUtils.GetAttribute<string>(Driver, listId, "GroupDisplayBinding");
+            var shortBinding = WebElementUtils.GetAttribute<string>(Driver, listId, "GroupDisplayBinding");
 
             //screenshot for checking index on the listview
         }

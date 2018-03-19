@@ -36,8 +36,8 @@ namespace Appium.UITests
 
             WebElementUtils.Click(Driver, checkId);
 
-            var hasUnevenRows = WebElementUtils.GetAttribute(Driver, listId, "HasUnevenRows");
-            if (!Convert.ToBoolean(hasUnevenRows))
+            var hasUnevenRows = WebElementUtils.GetAttribute<bool>(Driver, listId, "HasUnevenRows");
+            if (!hasUnevenRows)
             {
                 WebElementUtils.Click(Driver, checkId);
             }
@@ -57,8 +57,8 @@ namespace Appium.UITests
 
             WebElementUtils.Click(Driver, checkId);
 
-            var hasUnevenRows = WebElementUtils.GetAttribute(Driver, listId, "HasUnevenRows");
-            if (Convert.ToBoolean(hasUnevenRows))
+            var hasUnevenRows = WebElementUtils.GetAttribute<bool>(Driver, listId, "HasUnevenRows");
+            if (hasUnevenRows)
             {
                 WebElementUtils.Click(Driver, checkId);
             }

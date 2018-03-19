@@ -29,7 +29,7 @@ namespace Appium.UITests
         public void Up(int x, int y)
         {
             TouchScreen.Up(x, y);
-            System.Threading.Thread.Sleep(3000);
+            System.Threading.Thread.Sleep(1000);
         }
 
         public void Move(int x, int y)
@@ -48,7 +48,7 @@ namespace Appium.UITests
 
         public void Drag(int startX, int startY, int endX, int endY)
         {
-            var delayTime = 500;
+            var delayTime = 1000;
             Drag(startX, startY, endX, endY, delayTime);
         }
 

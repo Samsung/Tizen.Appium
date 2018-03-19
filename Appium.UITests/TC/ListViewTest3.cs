@@ -30,15 +30,6 @@ namespace Appium.UITests
         [Test]
         public void ViewTest()
         {
-            var listId = "listView";
-            var itemString = "[Color: A=1, R=0, G=0, B=0, Hue=0, Saturation=0, Luminosity=0]";
-
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            Assert.False(String.IsNullOrEmpty(itemId), itemId + "should not be empty or null, but got " + itemId);
-
-            var isVisible = WebElementUtils.GetAttribute(Driver, itemId, "IsVisible");
-            Assert.True(Convert.ToBoolean(isVisible), itemId + ".IsVisible should be true, but got " + isVisible);
-
             // screenshot
         }
     }

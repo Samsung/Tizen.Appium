@@ -30,23 +30,22 @@ namespace Appium.UITests
         [Test]
         public void SelectItemTest()
         {
-            var listId = "list";
             var selectLabelId = "label";
             var pressLabelId = "pressLabel";
-            var itemString = "item1-1";
+            var itemId = "item1-1";
 
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            Assert.False(String.IsNullOrEmpty(itemId), itemId + "should not be empty or null, but got " + itemId);
+            var isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "IsEnabled");
+            Assert.True(isEnabled, itemId + ".IsVisible should be true, but got " + isEnabled);
 
             WebElementUtils.Click(Driver, itemId);
 
-            var selected = WebElementUtils.GetAttribute(Driver, selectLabelId, "Text");
+            var selected = WebElementUtils.GetAttribute<string>(Driver, selectLabelId, "Text");
             selected = selected.Substring(selected.IndexOf(":") + 1).TrimStart().TrimEnd();
-            Assert.True((itemString == selected), itemString + " is expected, but got " + selected);
+            Assert.True((itemId == selected), itemId + " is expected, but got " + selected);
 
-            var pressed = WebElementUtils.GetAttribute(Driver, pressLabelId, "Text");
+            var pressed = WebElementUtils.GetAttribute<string>(Driver, pressLabelId, "Text");
             pressed = pressed.Substring(pressed.IndexOf(":") + 1).TrimStart().TrimEnd();
-            Assert.True((itemString == pressed), itemString + " is expected, but got " + pressed);
+            Assert.True((itemId == pressed), itemId + " is expected, but got " + pressed);
         }
     }
 }

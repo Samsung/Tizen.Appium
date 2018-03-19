@@ -71,14 +71,14 @@ namespace Appium.UITests
 
         public static string GetText(AppiumDriver driver, string automationId)
         {
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(1000);
             AppiumWebElement element = driver.GetWebElement(automationId);
             return element.Text;
         }
 
         public static string GetAttribute(AppiumDriver driver, string automationId, string attribute)
         {
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(1000);
             AppiumWebElement element = driver.GetWebElement(automationId);
             return element.GetAttribute(attribute);
         }

@@ -35,6 +35,7 @@ namespace Appium.UITests
             }
 
             WebElementUtils.Click(driver, testName);
+            System.Threading.Thread.Sleep(2000);
         }
     }
 }

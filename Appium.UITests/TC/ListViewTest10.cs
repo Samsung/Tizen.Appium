@@ -30,11 +30,10 @@ namespace Appium.UITests
         [Test]
         public void HeightTest()
         {
-            var listId = "listView";
-            var itemString = "Height 100";
-            var itemString2 = "Height 400";
+            var item100Id = "Height 100";
 
-            // viewcell is not supported
+            var height = WebElementUtils.GetAttribute<double>(Driver, item100Id, "Height");
+            Assert.True(height == 100, item100Id + ".Height should be 100, but got " + height);
 
             //screenshot
         }

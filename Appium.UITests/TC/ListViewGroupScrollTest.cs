@@ -31,45 +31,36 @@ namespace Appium.UITests
         public void Move1Test()
         {
             var btnId = "move1";
-            var listId = "list";
-            var itemString = "Item 0_0";
+            var itemId = "Item 0_0";
+
             WebElementUtils.Click(Driver, btnId);
 
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            Assert.False(String.IsNullOrEmpty(itemId), itemId + "should not be empty or null, but got " + itemId);
-
-            var isVisible = WebElementUtils.GetAttribute(Driver, itemId, "IsVisible");
-            Assert.True(Convert.ToBoolean(isVisible), itemId + ".IsVisible should be true, but got " + isVisible);
+            var isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "IsEnabled");
+            Assert.True(isEnabled, itemId + ".IsVisible should be true, but got " + isEnabled);
         }
 
         [Test]
         public void Move2Test()
         {
             var btnId = "move2";
-            var listId = "list";
-            var itemString = "Item 3_0";
+            var itemId = "Item 3_0";
+
             WebElementUtils.Click(Driver, btnId);
 
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            Assert.False(String.IsNullOrEmpty(itemId), itemId + "should not be empty or null, but got " + itemId);
-
-            var isVisible = WebElementUtils.GetAttribute(Driver, itemId, "IsVisible");
-            Assert.True(Convert.ToBoolean(isVisible), itemId + ".IsVisible should be true, but got " + isVisible);
+            var isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "IsEnabled");
+            Assert.True(isEnabled, itemId + ".IsVisible should be true, but got " + isEnabled);
         }
 
         [Test]
         public void Move3Test()
         {
             var btnId = "move3";
-            var listId = "list";
-            var itemString = "Item 9_9";
+            var itemId = "Item 9_9";
+
             WebElementUtils.Click(Driver, btnId);
 
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            Assert.False(String.IsNullOrEmpty(itemId), itemId + "should not be empty or null, but got " + itemId);
-
-            var isVisible = WebElementUtils.GetAttribute(Driver, itemId, "IsVisible");
-            Assert.True(Convert.ToBoolean(isVisible), itemId + ".IsVisible should be true, but got " + isVisible);
+            var isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "IsEnabled");
+            Assert.True(isEnabled, itemId + ".IsVisible should be true, but got " + isEnabled);
         }
     }
 }

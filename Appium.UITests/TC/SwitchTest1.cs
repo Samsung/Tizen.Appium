@@ -32,11 +32,11 @@ namespace Appium.UITests
         {
             var switchId = "switch";
 
-            var toggledBefore = Convert.ToBoolean(WebElementUtils.GetAttribute(Driver, switchId, "IsToggled"));
+            var toggledBefore = WebElementUtils.GetAttribute<bool>(Driver, switchId, "IsToggled");
 
             WebElementUtils.Click(Driver, switchId);
 
-            var toggledAfter = Convert.ToBoolean(WebElementUtils.GetAttribute(Driver, switchId, "IsToggled"));
+            var toggledAfter = WebElementUtils.GetAttribute<bool>(Driver, switchId, "IsToggled");
 
             Assert.True((toggledBefore != toggledAfter), "IsToggled should be changed, but got before: " + toggledBefore + ", after: " + toggledAfter);
             //screenshot

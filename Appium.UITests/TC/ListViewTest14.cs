@@ -30,33 +30,27 @@ namespace Appium.UITests
         [Test]
         public void DisableTest()
         {
-            var listId = "list";
             var enableBtnId = "disableButton";
-            var itemString = "1 Item";
-
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            Assert.False(String.IsNullOrEmpty(itemId), itemId + "should not be empty or null, but got " + itemId);
+            var itemId = "1 item";
 
             WebElementUtils.Click(Driver, itemId);
             WebElementUtils.Click(Driver, enableBtnId);
 
-            //screenshot for checking disabled cell
+            var isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "IsEnabled");
+            Assert.False(isEnabled, itemId + ".IsVisible should be true, but got " + isEnabled);
         }
 
         [Test]
         public void EnableTest()
         {
-            var listId = "list";
             var enableBtnId = "enableButton";
-            var itemString = "0 Item";
-
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            Assert.False(String.IsNullOrEmpty(itemId), itemId + "should not be empty or null, but got " + itemId);
+            var itemId = "0 item";
 
             WebElementUtils.Click(Driver, itemId);
             WebElementUtils.Click(Driver, enableBtnId);
 
-            //screenshot for checking enabled cell
+            var isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "IsEnabled");
+            Assert.True(isEnabled, itemId + ".IsVisible should be true, but got " + isEnabled);
         }
     }
 }

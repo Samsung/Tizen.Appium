@@ -30,17 +30,9 @@ namespace Appium.UITests
         [Test]
         public void SelectItemTest()
         {
-            var listId = "list";
             var btnId = "setButton";
-            var itemString = "item1-3";
 
             WebElementUtils.Click(Driver, btnId);
-
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            Assert.False(String.IsNullOrEmpty(itemId), itemId + "should not be empty or null, but got " + itemId);
-
-            var isVisible = WebElementUtils.GetAttribute(Driver, itemId, "IsVisible");
-            Assert.True(Convert.ToBoolean(isVisible), itemId + ".IsVisible should be true, but got " + isVisible);
 
             // screenshot
         }
@@ -57,17 +49,9 @@ namespace Appium.UITests
         [Test]
         public void SelectGroupItemTest()
         {
-            var listId = "list";
             var btnId = "setButton3";
-            var itemString = "item2-1";
 
             WebElementUtils.Click(Driver, btnId);
-
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            Assert.False(String.IsNullOrEmpty(itemId), itemId + "should not be empty or null, but got " + itemId);
-
-            var isVisible = WebElementUtils.GetAttribute(Driver, itemId, "IsVisible");
-            Assert.True(Convert.ToBoolean(isVisible), itemId + ".IsVisible should be true, but got " + isVisible);
 
             // screenshot
         }

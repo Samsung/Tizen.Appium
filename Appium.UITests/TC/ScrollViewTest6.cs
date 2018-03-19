@@ -70,11 +70,11 @@ namespace Appium.UITests
 
             var remoteTouch = new RemoteTouchScreenUtils(Driver);
 
-            var orientation = WebElementUtils.GetAttribute(Driver, scrollViewId, "Orientation");
+            var orientation = WebElementUtils.GetAttribute<string>(Driver, scrollViewId, "Orientation");
             while (orientation != "Both")
             {
                 WebElementUtils.Click(Driver, scrollOrientationBtnId);
-                orientation = WebElementUtils.GetAttribute(Driver, scrollViewId, "Orientation");
+                orientation = WebElementUtils.GetAttribute<string>(Driver, scrollViewId, "Orientation");
             }
 
             remoteTouch.Drag(150, 150, 100, 100);
@@ -93,11 +93,11 @@ namespace Appium.UITests
 
             var remoteTouch = new RemoteTouchScreenUtils(Driver);
 
-            var orientation = WebElementUtils.GetAttribute(Driver, scrollViewId, "Orientation");
+            var orientation = WebElementUtils.GetAttribute<string>(Driver, scrollViewId, "Orientation");
             while (orientation != "Vertical")
             {
                 WebElementUtils.Click(Driver, scrollOrientationBtnId);
-                orientation = WebElementUtils.GetAttribute(Driver, scrollViewId, "Orientation");
+                orientation = WebElementUtils.GetAttribute<string>(Driver, scrollViewId, "Orientation");
             }
 
             remoteTouch.Drag(150, 150, 100, 100);
@@ -116,11 +116,11 @@ namespace Appium.UITests
 
             var remoteTouch = new RemoteTouchScreenUtils(Driver);
 
-            var orientation = WebElementUtils.GetAttribute(Driver, scrollViewId, "Orientation");
+            var orientation = WebElementUtils.GetAttribute<string>(Driver, scrollViewId, "Orientation");
             while (orientation != "Horizontal")
             {
                 WebElementUtils.Click(Driver, scrollOrientationBtnId);
-                orientation = WebElementUtils.GetAttribute(Driver, scrollViewId, "Orientation");
+                orientation = WebElementUtils.GetAttribute<string>(Driver, scrollViewId, "Orientation");
             }
 
             remoteTouch.Drag(150, 150, 100, 100);

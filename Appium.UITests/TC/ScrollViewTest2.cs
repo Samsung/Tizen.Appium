@@ -33,13 +33,13 @@ namespace Appium.UITests
             var scrollViewId = "scrollView";
             var remoteTouch = new RemoteTouchScreenUtils(Driver);
 
-            var xBefore = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollX");
+            var xBefore = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollX");
 
             remoteTouch.Flick(-3, 0);
 
-            var xAfter = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollX");
+            var xAfter = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollX");
 
-            Assert.True((Convert.ToDouble(xBefore) < Convert.ToDouble(xAfter)), "X value should be increased, but got before: " + xBefore + ", after: " + xAfter);
+            Assert.True((xBefore < xAfter), "X value should be increased, but got before: " + xBefore + ", after: " + xAfter);
 
             //screenshot
         }

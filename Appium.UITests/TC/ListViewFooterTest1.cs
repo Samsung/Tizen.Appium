@@ -30,21 +30,24 @@ namespace Appium.UITests
         [Test]
         public void FooterTest()
         {
-            var listId = "list";
-            var itemString = "20th list item";
+            // issue
 
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            var touchScreen = new RemoteTouchScreenUtils(Driver);
-            while (itemId == string.Empty)
-            {
-                touchScreen.Flick(0, -3);
-                itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            }
+            //var itemId = "20th list item";
 
-            WebElementUtils.Click(Driver, itemId);
-            touchScreen.Flick(0, -3);
+            //var remoteTouch = new RemoteTouchScreenUtils(Driver);
+            //var isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "IsEnabled");
 
-            //screenshot for checking footer of the listview
+            //while (!isEnabled)
+            //{
+            //    remoteTouch.Flick(0, -10);
+            //    isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "IsEnabled");
+            //}
+
+            //WebElementUtils.Click(Driver, itemId);
+            //remoteTouch.Flick(0, -3);
+
+            //isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "IsEnabled");
+            //Assert.True(isEnabled, itemId + ".isEnabled should be true, but got " + isEnabled);
         }
     }
 }

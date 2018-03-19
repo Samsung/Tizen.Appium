@@ -33,13 +33,13 @@ namespace Appium.UITests
             var scrollView = "scrollView";
             var remoteTouch = new RemoteTouchScreenUtils(Driver);
 
-            var yBefore = WebElementUtils.GetAttribute(Driver, scrollView, "ScrollY");
+            var yBefore = WebElementUtils.GetAttribute<double>(Driver, scrollView, "ScrollY");
 
             remoteTouch.Flick(0, -3);
 
-            var yAfter = WebElementUtils.GetAttribute(Driver, scrollView, "ScrollY");
+            var yAfter = WebElementUtils.GetAttribute<double>(Driver, scrollView, "ScrollY");
 
-            Assert.True((Convert.ToDouble(yBefore) < Convert.ToDouble(yAfter)), "Y value should be increased, but got before: " + yBefore + ", after: " + yAfter);
+            Assert.True((yBefore < yAfter), "Y value should be increased, but got before: " + yBefore + ", after: " + yAfter);
 
             //screenshot
         }
