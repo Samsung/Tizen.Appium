@@ -30,20 +30,20 @@ namespace Appium.UITests
         [Test]
         public void ViewTest()
         {
-            var listId = "listView";
-            var itemString = "99 List Item";
+            var itemId = "99 List Item";
 
             var touchScreen = new RemoteTouchScreenUtils(Driver);
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            while (itemId == string.Empty)
+
+            var isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "IsEnabled");
+
+            while (!isEnabled)
             {
                 touchScreen.Flick(0, -10);
-                itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
+                isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "IsEnabled");
             }
-            Assert.False(String.IsNullOrEmpty(itemId), itemId + "should not be empty or null, but got " + itemId);
 
-            var isVisible = WebElementUtils.GetAttribute(Driver, itemId, "IsVisible");
-            Assert.True(Convert.ToBoolean(isVisible), itemId + ".IsVisible should be true, but got " + isVisible);
+            isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "IsEnabled");
+            Assert.True(isEnabled, itemId + ".isEnabled should be true, but got " + isEnabled);
         }
     }
 }

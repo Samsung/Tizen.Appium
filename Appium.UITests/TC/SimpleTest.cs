@@ -36,7 +36,7 @@ namespace Appium.UITests
 
             WebElementUtils.Click(Driver, btnId);
 
-            var text = WebElementUtils.GetAttribute(Driver, labelId, "Text");
+            var text = WebElementUtils.GetAttribute<string>(Driver, labelId, "Text");
 
             Assert.True((text == expected), "expected: " + expected + ", but got " + text);
         }

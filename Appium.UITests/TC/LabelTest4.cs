@@ -39,7 +39,7 @@ namespace Appium.UITests
         public void CharacterWrapTest()
         {
             WebElementUtils.Click(Driver, "characterWrapButton");
-            var expected = "WordWrap";
+            var expected = "CharacterWrap";
             string result = WebElementUtils.GetText(Driver, "label2");
             Assert.AreEqual(result, expected, "Expected: " + expected + ",but got: " + result);
         }

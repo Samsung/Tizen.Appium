@@ -34,23 +34,23 @@ namespace Appium.UITests
             var scrollViewId = "scrollView";
             var remoteTouch = new RemoteTouchScreenUtils(Driver);
 
-            var layout = WebElementUtils.GetAttribute(Driver, scrollViewId, "Content");
+            var layout = WebElementUtils.GetAttribute<string>(Driver, scrollViewId, "Content");
             while (layout != "vLayout")
             {
                 WebElementUtils.Click(Driver, btnId);
-                layout = WebElementUtils.GetAttribute(Driver, scrollViewId, "Content");
+                layout = WebElementUtils.GetAttribute<string>(Driver, scrollViewId, "Content");
             }
 
-            var xBefore = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollX");
-            var yBefore = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollY");
+            var xBefore = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollX");
+            var yBefore = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
 
             remoteTouch.Flick(0, -3);
 
-            var xAfter = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollX");
-            var yAfter = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollY");
+            var xAfter = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollX");
+            var yAfter = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
 
-            Assert.True((Convert.ToDouble(xBefore) == Convert.ToDouble(xAfter)), "X value should not be changed, but got before: " + xBefore + ", after: " + xAfter);
-            Assert.True((Convert.ToDouble(yBefore) < Convert.ToDouble(yAfter)), "Y value should be changed, but got before: " + yBefore + ", after: " + yAfter);
+            Assert.True((xBefore == xAfter), "X value should not be changed, but got before: " + xBefore + ", after: " + xAfter);
+            Assert.True((yBefore < yAfter), "Y value should be changed, but got before: " + yBefore + ", after: " + yAfter);
             //screenshot
         }
 
@@ -61,23 +61,23 @@ namespace Appium.UITests
             var scrollViewId = "scrollView";
             var remoteTouch = new RemoteTouchScreenUtils(Driver);
 
-            var layout = WebElementUtils.GetAttribute(Driver, scrollViewId, "Content");
+            var layout = WebElementUtils.GetAttribute<string>(Driver, scrollViewId, "Content");
             while (layout != "hLayout")
             {
                 WebElementUtils.Click(Driver, btnId);
-                layout = WebElementUtils.GetAttribute(Driver, scrollViewId, "Content");
+                layout = WebElementUtils.GetAttribute<string>(Driver, scrollViewId, "Content");
             }
 
-            var xBefore = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollX");
-            var yBefore = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollY");
+            var xBefore = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollX");
+            var yBefore = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
 
             remoteTouch.Flick(-3, 0);
 
-            var xAfter = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollX");
-            var yAfter = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollY");
+            var xAfter = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollX");
+            var yAfter = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
 
-            Assert.True((Convert.ToDouble(xBefore) < Convert.ToDouble(xAfter)), "X value should be changed, but got before: " + xBefore + ", after: " + xAfter);
-            Assert.True((Convert.ToDouble(yBefore) == Convert.ToDouble(yAfter)), "Y value should not be changed, but got before: " + yBefore + ", after: " + yAfter);
+            Assert.True((xBefore < xAfter), "X value should be changed, but got before: " + xBefore + ", after: " + xAfter);
+            Assert.True((yBefore == yAfter), "Y value should not be changed, but got before: " + yBefore + ", after: " + yAfter);
 
             //screenshot
         }

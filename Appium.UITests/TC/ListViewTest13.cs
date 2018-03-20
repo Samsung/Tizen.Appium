@@ -30,43 +30,33 @@ namespace Appium.UITests
         [Test]
         public void DisableTest()
         {
-            var listId = "list";
-            var enableBtnId = "disableButton";
-            var itemString = "1 item";
+            var disableBtnId = "disableButton";
+            var itemId = "1 item";
 
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            Assert.False(String.IsNullOrEmpty(itemId), itemString + "should not be empty or null, but got " + itemId);
+            var isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "On");
+            Assert.True(isEnabled, itemId + ".IsVisible should be true, but got " + isEnabled);
 
             WebElementUtils.Click(Driver, itemId);
-            WebElementUtils.Click(Driver, enableBtnId);
+            WebElementUtils.Click(Driver, disableBtnId);
 
-            //evas object does not provide IsEnabled, it is a ItemObject's property
-
-            //var enabled = WebElementUtils.GetAttribute(Driver, itemId, "IsEnabled");
-            //Assert.False(Convert.ToBoolean(enabled), itemString + "should be false, but got " + enabled);
-
-            //screenshot for checking disabled cell
+            isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "On");
+            Assert.False(isEnabled, itemId + ".IsVisible should be false, but got " + isEnabled);
         }
 
         [Test]
         public void EnableTest()
         {
-            var listId = "list";
             var enableBtnId = "enableButton";
-            var itemString = "0 item";
+            var itemId = "0 item";
 
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            Assert.False(String.IsNullOrEmpty(itemId), itemId + "should not be empty or null, but got " + itemId);
+            var isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "On");
+            Assert.True(isEnabled, itemId + ".IsVisible should be true, but got " + isEnabled);
 
             WebElementUtils.Click(Driver, itemId);
             WebElementUtils.Click(Driver, enableBtnId);
 
-            //evas object does not provide IsEnabled, it is a ItemObject's property
-
-            //var enabled = WebElementUtils.GetAttribute(Driver, itemId, "IsEnabled");
-            //Assert.True(Convert.ToBoolean(enabled), itemString + "should be true, but got " + enabled);
-
-            //screenshot for checking enabled cell
+            isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "On");
+            Assert.True(isEnabled, itemId + ".IsVisible should be true, but got " + isEnabled);
         }
     }
 }

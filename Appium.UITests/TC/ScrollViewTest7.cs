@@ -33,13 +33,13 @@ namespace Appium.UITests
             var randomScrollBtnId = "button";
             var scrollViewId = "scrollView";
 
-            var yBefore = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollY");
+            var yBefore = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
 
             WebElementUtils.Click(Driver, randomScrollBtnId);
 
-            var yAfter = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollY");
+            var yAfter = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
 
-            Assert.True((Convert.ToDouble(yBefore) < Convert.ToDouble(yAfter)), "Y value should be incresed, but got before: " + yBefore + ", after: " + yAfter);
+            Assert.True((yBefore < yAfter), "Y value should be incresed, but got before: " + yBefore + ", after: " + yAfter);
             //screenshot
         }
     }

@@ -32,15 +32,15 @@ namespace Appium.UITests
         {
             var scrollViewId = "scrollView";
             var remoteTouch = new RemoteTouchScreenUtils(Driver);
-            var yBefore = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollY");
+            var yBefore = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
 
             remoteTouch.Flick(0, -3);
 
-            var yAfter = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollY");
+            var yAfter = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
 
             //screenshot
 
-            Assert.True((Convert.ToDouble(yBefore) < Convert.ToDouble(yAfter)), "y value should be increased, but got before: " + yBefore + ", after: " + yAfter);
+            Assert.True((yBefore < yAfter), "y value should be increased, but got before: " + yBefore + ", after: " + yAfter);
         }
 
         [Test]
@@ -49,14 +49,14 @@ namespace Appium.UITests
             var scrollViewId = "scrollView";
             var remoteTouch = new RemoteTouchScreenUtils(Driver);
 
-            var xBefore = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollX");
+            var xBefore = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollX");
 
             remoteTouch.Flick(-3, 0);
 
-            var xAfter = WebElementUtils.GetAttribute(Driver, scrollViewId, "ScrollX");
+            var xAfter = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollX");
             //screenshot
 
-            Assert.True((Convert.ToDouble(xBefore) < Convert.ToDouble(xAfter)), "x value should be increased, but got before: " + xBefore + ", after: " + xAfter);
+            Assert.True((xBefore < xAfter), "x value should be increased, but got before: " + xBefore + ", after: " + xAfter);
         }
     }
 }

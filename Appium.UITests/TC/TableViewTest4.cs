@@ -36,8 +36,8 @@ namespace Appium.UITests
             var setMinus1BtnId = "btnSet_minus1";
             var sliderId = "slider";
 
-            var hasUnevenCell = WebElementUtils.GetAttribute(Driver, tableViewId, "HasUnevenRows");
-            if (!Convert.ToBoolean(hasUnevenCell))
+            var hasUnevenCell = WebElementUtils.GetAttribute<bool>(Driver, tableViewId, "HasUnevenRows");
+            if (!hasUnevenCell)
             {
                 WebElementUtils.Click(Driver, checkId);
             }

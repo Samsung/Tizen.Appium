@@ -33,10 +33,10 @@ namespace Appium.UITests
             var listId = "listView";
             var checkId = "check";
             var sliderId = "slider";
-            var itemString = "item list 1";
+            var itemId = "item list 1";
 
-            var hasUnevenRows = WebElementUtils.GetAttribute(Driver, listId, "HasUnevenRows");
-            if (!Convert.ToBoolean(hasUnevenRows))
+            var hasUnevenRows = WebElementUtils.GetAttribute<bool>(Driver, listId, "HasUnevenRows");
+            if (!hasUnevenRows)
             {
                 WebElementUtils.Click(Driver, checkId);
             }
@@ -44,9 +44,8 @@ namespace Appium.UITests
             //set value 300
             //WebElementUtils.SetAttribute(Driver, sliderId, "Value", 300);
 
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            var height = WebElementUtils.GetAttribute(Driver, itemId, "Height");
-            Assert.False((Convert.ToDouble(height) == 300), itemString + ".Height should not be 300");
+            var height = WebElementUtils.GetAttribute<double>(Driver, itemId, "Height");
+            Assert.True((height != 300), "item's Height should not be 300");
         }
 
         [Test]
@@ -55,10 +54,10 @@ namespace Appium.UITests
             var listId = "listView";
             var checkId = "check";
             var sliderId = "slider";
-            var itemString = "item list 1";
+            var itemId = "item list 1";
 
-            var hasUnevenRows = WebElementUtils.GetAttribute(Driver, listId, "HasUnevenRows");
-            if (!Convert.ToBoolean(hasUnevenRows))
+            var hasUnevenRows = WebElementUtils.GetAttribute<bool>(Driver, listId, "HasUnevenRows");
+            if (hasUnevenRows)
             {
                 WebElementUtils.Click(Driver, checkId);
             }
@@ -66,9 +65,8 @@ namespace Appium.UITests
             //set value 300
             //WebElementUtils.SetAttribute(Driver, sliderId, "Value", 300);
 
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            var height = WebElementUtils.GetAttribute(Driver, itemId, "Height");
-            Assert.True((Convert.ToDouble(height) == 300), itemString + ".Height should be 300");
+            var height = WebElementUtils.GetAttribute<double>(Driver, itemId, "Height");
+            Assert.True((height == 300), "item's .Height should be 300");
         }
     }
 }
