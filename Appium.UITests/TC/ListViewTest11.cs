@@ -33,7 +33,7 @@ namespace Appium.UITests
             var listId = "listView";
             var checkId = "check";
             var sliderId = "slider";
-            var itemId = "item list 1";
+            var itemId = "list item 1";
 
             var hasUnevenRows = WebElementUtils.GetAttribute<bool>(Driver, listId, "HasUnevenRows");
             if (!hasUnevenRows)
@@ -41,11 +41,10 @@ namespace Appium.UITests
                 WebElementUtils.Click(Driver, checkId);
             }
 
-            //set value 300
-            //WebElementUtils.SetAttribute(Driver, sliderId, "Value", 300);
+            WebElementUtils.SetAttribute(Driver, sliderId, "Value", 300);
 
             var height = WebElementUtils.GetAttribute<double>(Driver, itemId, "Height");
-            Assert.True((height != 300), "item's Height should not be 300");
+            Assert.True((height == 300), "Height value should not be 300");
         }
 
         [Test]
@@ -54,7 +53,7 @@ namespace Appium.UITests
             var listId = "listView";
             var checkId = "check";
             var sliderId = "slider";
-            var itemId = "item list 1";
+            var itemId = "list item 1";
 
             var hasUnevenRows = WebElementUtils.GetAttribute<bool>(Driver, listId, "HasUnevenRows");
             if (hasUnevenRows)
@@ -62,11 +61,10 @@ namespace Appium.UITests
                 WebElementUtils.Click(Driver, checkId);
             }
 
-            //set value 300
-            //WebElementUtils.SetAttribute(Driver, sliderId, "Value", 300);
+            WebElementUtils.SetAttribute(Driver, sliderId, "Value", 300);
 
             var height = WebElementUtils.GetAttribute<double>(Driver, itemId, "Height");
-            Assert.True((height == 300), "item's .Height should be 300");
+            Assert.True((height != 300), "Height value should be 300");
         }
     }
 }

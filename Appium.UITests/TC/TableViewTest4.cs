@@ -43,9 +43,8 @@ namespace Appium.UITests
             }
 
             WebElementUtils.Click(Driver, set0BtnId);
-            //screenshot
 
-            //set slider value 100
+            WebElementUtils.SetAttribute(Driver, sliderId, "Value", 100);
 
             WebElementUtils.Click(Driver, setMinus1BtnId);
             //screenshot

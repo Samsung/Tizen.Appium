@@ -41,42 +41,17 @@ namespace Appium.UITests
         }
 
         [Test]
-        public void PaddingTest()
+        public void ViewTest()
         {
-            var sliderId = "sliderPadding";
-            var resetBtnId = "buttonReset";
+            var paddingSlider = "sliderPadding";
+            var spacingSlider = "sliderSpacing";
+            var marginSlider = "sliderMargin";
 
-            //set sliderPadding
+            WebElementUtils.SetAttribute(Driver, paddingSlider, "Value", 100);
+            WebElementUtils.SetAttribute(Driver, spacingSlider, "Value", 100);
+            WebElementUtils.SetAttribute(Driver, marginSlider, "Value", 100);
 
             //screenshot
-
-            WebElementUtils.Click(Driver, resetBtnId);
-        }
-
-        [Test]
-        public void SpacingTest()
-        {
-            var sliderId = "sliderSpacing";
-            var resetBtnId = "buttonReset";
-
-            //set sliderSpacing
-
-            //screenshot
-
-            WebElementUtils.Click(Driver, resetBtnId);
-        }
-
-        [Test]
-        public void MarginTest()
-        {
-            var btnId = "sliderMargin";
-            var resetBtnId = "buttonReset";
-
-            WebElementUtils.Click(Driver, btnId);
-
-            //screenshot
-
-            WebElementUtils.Click(Driver, resetBtnId);
         }
     }
 }

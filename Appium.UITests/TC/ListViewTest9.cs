@@ -33,6 +33,7 @@ namespace Appium.UITests
             var listId = "listView";
             var checkId = "check";
             var sliderId = "slider";
+            var itemId = "list item #1";
 
             WebElementUtils.Click(Driver, checkId);
 
@@ -42,10 +43,10 @@ namespace Appium.UITests
                 WebElementUtils.Click(Driver, checkId);
             }
 
-            //set value 300
-            //WebElementUtils.SetAttribute(Driver, sliderId, "Value", 300);
+            WebElementUtils.SetAttribute(Driver, sliderId, "Value", 300);
 
-            //screenshot
+            var height = WebElementUtils.GetAttribute<double>(Driver, itemId, "Height");
+            Assert.True((height == 300), "Height value should not be 300");
         }
 
         [Test]
@@ -54,6 +55,7 @@ namespace Appium.UITests
             var listId = "listView";
             var checkId = "check";
             var sliderId = "slider";
+            var itemId = "list item #1";
 
             WebElementUtils.Click(Driver, checkId);
 
@@ -62,10 +64,11 @@ namespace Appium.UITests
             {
                 WebElementUtils.Click(Driver, checkId);
             }
-            //set value 300
-            //WebElementUtils.SetAttribute(Driver, sliderId, "Value", 300);
 
-            //screenshot
+            WebElementUtils.SetAttribute(Driver, sliderId, "Value", 300);
+
+            var height = WebElementUtils.GetAttribute<double>(Driver, itemId, "Height");
+            Assert.True((height != 300), "Height value should be 300");
         }
     }
 }
