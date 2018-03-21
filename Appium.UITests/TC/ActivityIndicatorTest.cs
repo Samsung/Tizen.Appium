@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Tizen;
 using OpenQA.Selenium.Appium.Android;
@@ -40,6 +40,15 @@ namespace Appium.UITests
             WebElementUtils.Click(Driver, "button");
             string color2 = WebElementUtils.GetAttribute(Driver, "ai", "Color");
             Assert.AreNotEqual(color, color2);
+
+            //TEST
+            WebElementUtils.SetAttribute(Driver, "ai", "IsRunning", "true");
+            var isRunning = WebElementUtils.GetAttribute<bool>(Driver, "ai", "IsRunning");
+            Console.WriteLine("### isRunning? " + isRunning);
+
+            WebElementUtils.SetAttribute(Driver, "ai", "IsRunning", "false");
+            isRunning = WebElementUtils.GetAttribute<bool>(Driver, "ai", "IsRunning");
+            Console.WriteLine("### isRunning? " + isRunning);
         }
     }
 }

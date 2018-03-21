@@ -54,8 +54,8 @@ namespace Appium.UITests
 
             var remoteTouch = new RemoteTouchScreenUtils(Driver);
 
-            //setvalue paddingSlider
-            //setvalue spacingSlider
+            WebElementUtils.SetAttribute(Driver, paddingSliderId, "Value", 100);
+            WebElementUtils.SetAttribute(Driver, spacingSliderId, "Value", 100);
 
             //screenshot
         }

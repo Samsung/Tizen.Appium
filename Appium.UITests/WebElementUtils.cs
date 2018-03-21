@@ -2,6 +2,7 @@ using System;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Remote;
 using System.Drawing;
+using OpenQA.Selenium.Appium.Tizen;
 
 namespace Appium.UITests
 {
@@ -93,6 +94,16 @@ namespace Appium.UITests
             }
 
             return default(T);
+        }
+
+        public static void SetAttribute(AppiumDriver driver, string automationId, string attribute, object value)
+        {
+            TizenElement element = driver.GetWebElement(automationId) as TizenElement;
+            if (element != null)
+            {
+                element.SetAttribute(attribute, value.ToString());
+                System.Threading.Thread.Sleep(1000);
+            }
         }
 
         public static bool GetEnabled(AppiumDriver driver, string automationId)

@@ -30,21 +30,28 @@ namespace Appium.UITests
         [Test]
         public void ViewTest()
         {
-            var pickerid = "playAnimation";
+            var pregressbarId = "progressBar";
+            var btnid = "playAnimation";
+            var value = 1;
 
-            WebElementUtils.Click(Driver, pickerid);
+            WebElementUtils.Click(Driver, btnid);
 
-            //screenshot
+            var result = WebElementUtils.GetAttribute<double>(Driver, pregressbarId, "Progress");
+            Assert.True((value == result), "value should be " + result);
         }
 
         [Test]
         public void ChangeValueTest()
         {
+            var pregressbarId = "progressBar";
             var sliderId = "slider";
+            var value = 0.5;
 
-            //setvalue
+            WebElementUtils.SetAttribute(Driver, sliderId, "Value", value);
 
-            //screenshot
+            var result = WebElementUtils.GetAttribute<double>(Driver, pregressbarId, "Progress");
+
+            Assert.True((value == result), "value should be " + result);
         }
     }
 }

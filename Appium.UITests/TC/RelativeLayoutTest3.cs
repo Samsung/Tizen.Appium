@@ -38,8 +38,8 @@ namespace Appium.UITests
         {
             var sliderId = "sliderMargin";
 
-            //screenshot
-            //setvalue
+            WebElementUtils.SetAttribute(Driver, sliderId, "Value", 100);
+
             //screenshot
         }
 
@@ -48,8 +48,8 @@ namespace Appium.UITests
         {
             var sliderId = "sliderPadding";
 
-            //screenshot
-            //setvalue
+            WebElementUtils.SetAttribute(Driver, sliderId, "Value", 100);
+
             //screenshot
         }
     }
