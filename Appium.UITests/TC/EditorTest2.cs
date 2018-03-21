@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Tizen;
 using OpenQA.Selenium.Appium.Android;
@@ -36,21 +36,32 @@ namespace Appium.UITests
         [Test]
         public void SetTextTest()
         {
-            string origin = WebElementUtils.GetText(Driver, "longEditor");
+            var longEditorId = "longEditor";
+            var editorId = "editor";
             string add = "abcdefg";
-            WebElementUtils.SetText(Driver, "longEditor", add);
 
-            WebElementUtils.Click(Driver, "editor");
-            string result = WebElementUtils.GetText(Driver, "longEditor");
-            Assert.AreEqual(origin+add, result);
+            string origin = WebElementUtils.GetText(Driver, longEditorId);
+
+            WebElementUtils.SetText(Driver, longEditorId, add);
+
+            WebElementUtils.Click(Driver, editorId);
+            string result = WebElementUtils.GetText(Driver, longEditorId);
+            Assert.AreEqual(origin + add, result);
         }
 
         [Test]
         public void CompletedTest()
         {
-            WebElementUtils.SetText(Driver, "longEditor", "ABC");
-            WebElementUtils.Click(Driver, "editor");
-            string result = WebElementUtils.GetText(Driver, "editor");
+            var longEditorId = "longEditor";
+            var editorId = "editor";
+            string add = "ABC";
+
+            WebElementUtils.SetText(Driver, longEditorId, add);
+            WebElementUtils.Click(Driver, editorId);
+
+            WebElementUtils.Click(Driver, editorId);
+            string result = WebElementUtils.GetText(Driver, editorId);
+
             Assert.AreEqual("Editing completed", result);
         }
     }

@@ -31,25 +31,20 @@ namespace Appium.UITests
         public void ViewTest()
         {
             var pageId = "MasterDetailPage";
-            var listId = "listView";
-            var itemString = "[Color: A=1, R=0, G=0, B=0, Hue=0, Saturation=0, Luminosity=0]";
+            var itemId = "[Color: A=1, R=0, G=0, B=0, Hue=0, Saturation=0, Luminosity=0]";
             var detailPageId = "DetailPage";
             var touchScreen = new RemoteTouchScreenUtils(Driver);
 
-            var isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
-            if (!Convert.ToBoolean(isPresented))
+            var isPresented = WebElementUtils.GetAttribute<bool>(Driver, pageId, "IsPresented");
+            if (!isPresented)
             {
                 touchScreen.Drag(0, 500, 300, 500);
             }
 
-            var itemId = WebElementUtils.GetAttribute(Driver, listId, itemString);
-            Assert.False(String.IsNullOrEmpty(itemId), itemId + "should not be empty or null, but got " + itemId);
             WebElementUtils.Click(Driver, itemId);
 
-            var color = WebElementUtils.GetAttribute(Driver, detailPageId, "BackgroundColor");
-            Assert.True((color.ToString() == itemString), itemString + " is expected, but got " + color.ToString());
-
-            //screenshot
+            var color = WebElementUtils.GetAttribute<string>(Driver, detailPageId, "BackgroundColor");
+            Assert.True((color == itemId), itemId + " is expected, but got " + color);
         }
     }
 }
