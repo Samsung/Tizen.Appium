@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Tizen;
 using OpenQA.Selenium.Appium.Android;
@@ -35,37 +35,13 @@ namespace Appium.UITests
         }
 
         [Test]
-        public void ActivateButtonTest()
+        public void ViewTest()
         {
-            Point before = WebElementUtils.GetLocation(Driver, "button1");
-            var touch = new RemoteTouchScreenUtils(Driver);
-            touch.Down(408, 250);
-            touch.Up(408, 250);
-            Point after = WebElementUtils.GetLocation(Driver, "button1");
-            Assert.AreNotEqual(before, after);
+            var sliderId = "sliderH";
 
-            touch.Down(156, 250);
-            touch.Up(156, 250);
-            Point after2 = WebElementUtils.GetLocation(Driver, "button1");
-            Assert.AreNotEqual(after, after2);
-        }
+            WebElementUtils.SetAttribute(Driver, sliderId, "Value", 0.3);
 
-        [Test]
-        public void InactivateButtonTest()
-        {
-            WebElementUtils.Click(Driver, "button2");
-
-            Point before = WebElementUtils.GetLocation(Driver, "button2");
-            var touch = new RemoteTouchScreenUtils(Driver);
-            touch.Down(408, 250);
-            touch.Up(408, 250);
-            Point after = WebElementUtils.GetLocation(Driver, "button2");
-            Assert.AreNotEqual(before, after);
-
-            touch.Down(156, 250);
-            touch.Up(156, 250);
-            Point after2 = WebElementUtils.GetLocation(Driver, "button2");
-            Assert.AreNotEqual(after, after2);
+            //screenshot
         }
     }
 }

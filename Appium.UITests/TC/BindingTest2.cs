@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Tizen;
 using OpenQA.Selenium.Appium.Android;
@@ -35,15 +35,18 @@ namespace Appium.UITests
         [Test]
         public void BindingTest()
         {
-            var touch = new RemoteTouchScreenUtils(Driver);
-            string box1width = WebElementUtils.GetAttribute(Driver, "box1", "WidthRequest");
-            string box2width = WebElementUtils.GetAttribute(Driver, "box2", "WidthRequest");
-            touch.Down(450, 599);
-            touch.Up(450, 599);
-            string box1width2 = WebElementUtils.GetAttribute(Driver, "box1", "WidthRequest");
-            string box2width2 = WebElementUtils.GetAttribute(Driver, "box2", "WidthRequest");
-            Assert.AreNotEqual(box1width, box1width2);
-            Assert.AreNotEqual(box2width, box2width2);
+            var box1Id = "box1";
+            var box2Id = "box2";
+            var sliderId = "slider";
+            var value = 150;
+
+            WebElementUtils.SetAttribute(Driver, sliderId, "Value", value);
+
+            var width1 = WebElementUtils.GetAttribute<double>(Driver, box1Id, "Width");
+            var width2 = WebElementUtils.GetAttribute<double>(Driver, box2Id, "Width");
+
+            Assert.True((width1 == value), "Height should be same with " + value);
+            Assert.True((width2 == value), "Width should be same with " + value);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Tizen;
 using OpenQA.Selenium.Appium.Android;
@@ -35,45 +35,15 @@ namespace Appium.UITests
         }
 
         [Test]
-        public void PaddingTest()
+        public void ViewTest()
         {
-            Point boxOrigin = WebElementUtils.GetLocation(Driver, "box");
-            Point box2Origin = WebElementUtils.GetLocation(Driver, "box2");
+            var paddingSliderId = "sliderPadding";
+            var marginSliderId = "sliderMargin";
 
-            var touch = new RemoteTouchScreenUtils(Driver);
-            touch.Down(78, 237);
-            touch.Up(78, 237);
-            touch.Down(245, 237);
-            touch.Up(245, 237);
-            touch.Down(504, 237);
-            touch.Up(504, 237);
+            WebElementUtils.SetAttribute(Driver, paddingSliderId, "Value", 100);
+            WebElementUtils.SetAttribute(Driver, marginSliderId, "Value", 100);
 
-            Point boxAfter = WebElementUtils.GetLocation(Driver, "box");
-            Point box2After = WebElementUtils.GetLocation(Driver, "box2");
-
-            Assert.AreNotEqual(boxOrigin, boxAfter);
-            Assert.AreNotEqual(box2Origin, box2After);
-        }
-
-        [Test]
-        public void MarginTest()
-        {
-            Size boxOrigin = WebElementUtils.GetSize(Driver, "box");
-            Size box2Origin = WebElementUtils.GetSize(Driver, "box2");
-
-            var touch = new RemoteTouchScreenUtils(Driver);
-            touch.Down(51, 344);
-            touch.Up(51, 344);
-            touch.Down(88, 344);
-            touch.Up(88, 344);
-            touch.Down(142, 344);
-            touch.Up(142, 344);
-
-            Size boxAfter = WebElementUtils.GetSize(Driver, "box");
-            Size box2After = WebElementUtils.GetSize(Driver, "box2");
-
-            Assert.AreNotEqual(boxOrigin, boxAfter);
-            Assert.AreNotEqual(box2Origin, box2After);
+            //screenshot
         }
     }
 }
