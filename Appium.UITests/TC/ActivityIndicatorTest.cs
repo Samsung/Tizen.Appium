@@ -37,18 +37,12 @@ namespace Appium.UITests
         public void ColorTest()
         {
             string color = WebElementUtils.GetAttribute(Driver, "ai", "Color");
+
             WebElementUtils.Click(Driver, "button");
+
             string color2 = WebElementUtils.GetAttribute(Driver, "ai", "Color");
+
             Assert.AreNotEqual(color, color2);
-
-            //TEST
-            WebElementUtils.SetAttribute(Driver, "ai", "IsRunning", "true");
-            var isRunning = WebElementUtils.GetAttribute<bool>(Driver, "ai", "IsRunning");
-            Console.WriteLine("### isRunning? " + isRunning);
-
-            WebElementUtils.SetAttribute(Driver, "ai", "IsRunning", "false");
-            isRunning = WebElementUtils.GetAttribute<bool>(Driver, "ai", "IsRunning");
-            Console.WriteLine("### isRunning? " + isRunning);
         }
     }
 }

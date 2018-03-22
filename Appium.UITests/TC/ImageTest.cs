@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Tizen;
 using OpenQA.Selenium.Appium.Android;
@@ -37,28 +37,64 @@ namespace Appium.UITests
         [Test]
         public void ImageSourceTest()
         {
+            var alphaSliderId = "sldAlpha";
+            var redSliderId = "sldRed";
+            var greenSliderId = "sldGreen";
+            var blueSliderId = "sldBlue";
+
+            WebElementUtils.SetAttribute(Driver, alphaSliderId, "Value", 100);
+            WebElementUtils.SetAttribute(Driver, redSliderId, "Value", 100);
+            WebElementUtils.SetAttribute(Driver, greenSliderId, "Value", 100);
+            WebElementUtils.SetAttribute(Driver, blueSliderId, "Value", 100);
+
             WebElementUtils.Click(Driver, "btnImage1");
             string expect = "File: Icon.png";
             string ret = WebElementUtils.GetAttribute(Driver, "img", "Source");
             Assert.AreEqual(expect, ret);
+
+            //screenshot
         }
 
         [Test]
         public void ImageSourceTest2()
         {
+            var alphaSliderId = "sldAlpha";
+            var redSliderId = "sldRed";
+            var greenSliderId = "sldGreen";
+            var blueSliderId = "sldBlue";
+
+            WebElementUtils.SetAttribute(Driver, alphaSliderId, "Value", 100);
+            WebElementUtils.SetAttribute(Driver, redSliderId, "Value", 100);
+            WebElementUtils.SetAttribute(Driver, greenSliderId, "Value", 100);
+            WebElementUtils.SetAttribute(Driver, blueSliderId, "Value", 100);
+
             WebElementUtils.Click(Driver, "btnImage2");
             string expect = "File: b.jpg";
             string ret = WebElementUtils.GetAttribute(Driver, "img", "Source");
             Assert.AreEqual(expect, ret);
+
+            //screenshot
         }
 
         [Test]
         public void ImageSourceTest3()
         {
+            var alphaSliderId = "sldAlpha";
+            var redSliderId = "sldRed";
+            var greenSliderId = "sldGreen";
+            var blueSliderId = "sldBlue";
+
+            WebElementUtils.SetAttribute(Driver, alphaSliderId, "Value", 100);
+            WebElementUtils.SetAttribute(Driver, redSliderId, "Value", 100);
+            WebElementUtils.SetAttribute(Driver, greenSliderId, "Value", 100);
+            WebElementUtils.SetAttribute(Driver, blueSliderId, "Value", 100);
+
             WebElementUtils.Click(Driver, "btnImage3");
             string expect = "File: tizen.png";
             string ret = WebElementUtils.GetAttribute(Driver, "img", "Source");
             Assert.AreEqual(expect, ret);
+
+            //screenshot
         }
     }
 }
