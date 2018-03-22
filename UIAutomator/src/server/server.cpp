@@ -192,9 +192,9 @@ string Server::ElementGetProperty(string automationId, string property)
     DBusMessage::getInstance()->AddArgument(automationId);
     DBusMessage::getInstance()->AddArgument(property);
     DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage("GetProperty");
-    char* result = 0;
+    char* result = nullptr;
     DBusMessage::getInstance()->GetReplyMessage(reply, &result);
-    string ret = result;
+    string ret = (result != nullptr)? result : "";
     return ret;
 }
 
@@ -225,9 +225,9 @@ string Server::ElementGetStringMessage(string automationId, string method)
     _D("%s of %s", method.c_str(), automationId.c_str());
     DBusMessage::getInstance()->AddArgument(automationId);
     DBusMessage* reply = DBusMessage::getInstance()->SendSyncMessage(method);
-    char* ret;
+    char* ret = nullptr;
     DBusMessage::getInstance()->GetReplyMessage(reply, &ret);
-    string result = ret;
+    string result = (ret != nullptr) ? ret : "";
     return result;
 }
 
@@ -658,7 +658,7 @@ void Server::DeleteTimer()
         ecore_timer_del(SubscribeTimer);
         SubscribeTimer = 0;
         _D("Timer deleted");
-    }    
+    }
 }
 
 void Server::init()
