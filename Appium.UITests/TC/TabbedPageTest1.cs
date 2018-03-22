@@ -36,10 +36,22 @@ namespace Appium.UITests
             WebElementUtils.Click(Driver, showBtnId);
 
             WebElementUtils.Click(Driver, hideBtnId);
-            //screenshot
+            var image = "TabbedPageTest1_hide.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+        }
+
+        [Test]
+        public void ShowHideTest2()
+        {
+            var hideBtnId = "hide";
+            var showBtnId = "show";
 
             WebElementUtils.Click(Driver, showBtnId);
-            //screenshot
+
+            var image = "TabbedPageTest1_show.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }

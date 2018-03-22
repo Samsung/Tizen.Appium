@@ -8,6 +8,7 @@ namespace Appium.UITests
     {
         string PlatformName;
         AppiumDriver Driver;
+        //TizenDriver Driver;
 
         public TableViewTest6(string platform)
         {
@@ -31,17 +32,36 @@ namespace Appium.UITests
         public void ViewTest()
         {
             var redBtnId = "red";
-            var greenBtnId = "green";
-            var grayBtnId = "gray";
+            var redImage = "TableViewTest6_red.png";
 
             WebElementUtils.Click(Driver, redBtnId);
-            //screenshot
+            //WebElementUtils.GetScreenshotAndSave(Driver, redImage);
+
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, redImage));
+        }
+
+        [Test]
+        public void ViewTest2()
+        {
+            var greenBtnId = "green";
+            var greenImage = "TableViewTest6_green.png";
 
             WebElementUtils.Click(Driver, greenBtnId);
-            //screenshot
+            //WebElementUtils.GetScreenshotAndSave(Driver, greenImage);
+
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, greenImage));
+        }
+
+        [Test]
+        public void ViewTest3()
+        {
+            var grayBtnId = "gray";
+            var grayImage = "TableViewTest6_gray.png";
 
             WebElementUtils.Click(Driver, grayBtnId);
-            //screenshot
+            //WebElementUtils.GetScreenshotAndSave(Driver, grayImage);
+
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, grayImage));
         }
     }
 }

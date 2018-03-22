@@ -33,7 +33,10 @@ namespace Appium.UITests
             var firstBtnId = "first1";
 
             WebElementUtils.Click(Driver, firstBtnId);
-            //screenshot
+
+            var image = "TabbedPageTest3.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }

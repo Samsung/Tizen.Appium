@@ -30,7 +30,9 @@ namespace Appium.UITests
         [Test]
         public void ViewTest()
         {
-            //screenshot
+            var image = "StackLayoutTest1.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }

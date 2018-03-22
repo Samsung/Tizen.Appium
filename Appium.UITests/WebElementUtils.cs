@@ -3,6 +3,8 @@ using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Remote;
 using System.Drawing;
 using OpenQA.Selenium.Appium.Tizen;
+using System.IO;
+using OpenQA.Selenium;
 
 namespace Appium.UITests
 {
@@ -122,6 +124,47 @@ namespace Appium.UITests
         {
             AppiumWebElement element = driver.GetWebElement(automationId);
             return element.Selected;
+        }
+
+        public static void GetScreenshotAndSave(AppiumDriver driver, string imageName)
+        {
+            TizenDriver<AppiumWebElement> tizenDriver = driver.Driver as TizenDriver<AppiumWebElement>;
+            var path = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+            var imagePath = path + "/images/" + imageName;
+
+            Screenshot screenshot = tizenDriver.GetScreenshot();
+
+            Image image = tizenDriver.CropAndConvertImage(screenshot, new Rectangle(0, 35, 720, 1024 - 35));
+
+            image.Save(imagePath);
+        }
+
+        public static bool CompareToScreenshot(AppiumDriver driver, string imageName)
+        {
+            TizenDriver<AppiumWebElement> tizenDriver = driver.Driver as TizenDriver<AppiumWebElement>;
+            var path = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+            if (!File.Exists(path + "/temp"))
+            {
+                Directory.CreateDirectory(path + "/temp");
+            }
+            var tempImagePath = path + "/temp/temp.png";
+
+            Screenshot screenshot = tizenDriver.GetScreenshot();
+
+            Image image = tizenDriver.CropAndConvertImage(screenshot, new Rectangle(0, 35, 720, 1024 - 35));
+            image.Save(tempImagePath);
+
+            var orgImage = Image.FromFile(path + "/images/" + imageName);
+            var compareImage = Image.FromFile(tempImagePath);
+
+            var result = tizenDriver.CompareToImages(orgImage, compareImage);
+
+            image.Dispose();
+            compareImage.Dispose();
+
+            File.Delete(tempImagePath);
+
+            return result;
         }
     }
 }
