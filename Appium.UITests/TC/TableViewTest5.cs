@@ -32,8 +32,11 @@ namespace Appium.UITests
         {
             var enableBtnId = "enble";
 
+            var image = "TabelViewTest5.png";
+
             WebElementUtils.Click(Driver, enableBtnId);
-            //screenshot
+            //WebElementUtils.GetScreenshotAndSave(Driver, imageName);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }

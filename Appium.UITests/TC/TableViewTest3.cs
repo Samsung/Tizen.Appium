@@ -33,7 +33,6 @@ namespace Appium.UITests
             var tableViewId = "table";
             var changeHasUnevenCellBtnId = "change";
             var plusRowHeightBtnId = "+10";
-            var minusRowHeightBtnId = "-10";
 
             var hasUnevenCell = WebElementUtils.GetAttribute<bool>(Driver, tableViewId, "HasUnevenRows");
             if (!hasUnevenCell)
@@ -42,10 +41,19 @@ namespace Appium.UITests
             }
 
             WebElementUtils.Click(Driver, plusRowHeightBtnId);
-            //screenshot
+            var plusImage = "TabelViewTest3_plus.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, plusImage);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, plusImage));
+        }
 
+        [Test]
+        public void ViewTest2()
+        {
+            var minusRowHeightBtnId = "-10";
             WebElementUtils.Click(Driver, minusRowHeightBtnId);
-            //screenshot
+            var minusImage = "TabelViewTest3_minus.png";
+            WebElementUtils.GetScreenshotAndSave(Driver, minusImage);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, minusImage));
         }
     }
 }

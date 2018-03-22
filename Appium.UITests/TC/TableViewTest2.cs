@@ -31,18 +31,35 @@ namespace Appium.UITests
         public void AddRemoveSectionTest()
         {
             var addSectionBtnId = "addSectionBtn";
+
+            WebElementUtils.Click(Driver, addSectionBtnId);
+            var addSectionImage = "TabelViewTest2_addSection.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, addSectionImage);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, addSectionImage));
+        }
+
+        [Test]
+        public void AddRemoveSectionTest2()
+        {
             var removeSectionBtnId = "removeSectionBtn";
+
+            WebElementUtils.Click(Driver, removeSectionBtnId);
+            var removeSectionImage = "TabelViewTest2_removeSection.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, removeSectionImage);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, removeSectionImage));
+        }
+
+        [Test]
+        public void AddRemoveSectionTest3()
+        {
+            var addSectionBtnId = "addSectionBtn";
             var removeAllSectionBtnId = "removeAllSectionBtn";
 
             WebElementUtils.Click(Driver, addSectionBtnId);
-            //screenshot
-
-            WebElementUtils.Click(Driver, removeSectionBtnId);
-            //screenshot
-
-            WebElementUtils.Click(Driver, addSectionBtnId);
             WebElementUtils.Click(Driver, removeAllSectionBtnId);
-            //screenshot
+            var removeAllSectionImage = "TabelViewTest2_removeAllSection.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, removeAllSectionImage);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, removeAllSectionImage));
         }
 
         [Test]
@@ -50,14 +67,23 @@ namespace Appium.UITests
         {
             var addSectionBtnId = "addSectionBtn";
             var addCellBtnId = "addCellBtn";
-            var removeCellBtnId = "removeCellBtn";
 
             WebElementUtils.Click(Driver, addSectionBtnId);
             WebElementUtils.Click(Driver, addCellBtnId);
-            //screenshot
+            var addImage = "TabelViewTest2_add.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, addImage);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, addImage));
+        }
+
+        [Test]
+        public void AddRemoveCellTest2()
+        {
+            var removeCellBtnId = "removeCellBtn";
 
             WebElementUtils.Click(Driver, removeCellBtnId);
-            //screenshot
+            var removeImage = "TabelViewTest2_remove.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, removeImage);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, removeImage));
         }
     }
 }

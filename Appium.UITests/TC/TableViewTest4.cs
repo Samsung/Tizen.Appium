@@ -47,7 +47,10 @@ namespace Appium.UITests
             WebElementUtils.SetAttribute(Driver, sliderId, "Value", 100);
 
             WebElementUtils.Click(Driver, setMinus1BtnId);
-            //screenshot
+
+            var image = "TabelViewTest4.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, imageName);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }
