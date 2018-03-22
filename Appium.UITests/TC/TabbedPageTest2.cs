@@ -33,7 +33,10 @@ namespace Appium.UITests
             var changeBtnId = "chageTitle";
 
             WebElementUtils.Click(Driver, changeBtnId);
-            //screenshot
+
+            var image = "TabbedPageTest2.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }
