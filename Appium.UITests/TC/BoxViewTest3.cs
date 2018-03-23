@@ -56,7 +56,9 @@ namespace Appium.UITests
             Assert.True((expectedBoxVal == color), "Normal box color should be " + expectedBoxVal);
             Assert.True((expectetPreBoxVal == precolor), "Pre-multiplied box color should be " + expectetPreBoxVal);
 
-            //screenshot
+            var image = "BoxViewTest3.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }

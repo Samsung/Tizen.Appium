@@ -35,7 +35,9 @@ namespace Appium.UITests
             var height = WebElementUtils.GetAttribute<double>(Driver, item100Id, "Height");
             Assert.True(height == 100, item100Id + ".Height should be 100, but got " + height);
 
-            //screenshot
+            var image = "ListViewTest10.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }

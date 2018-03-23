@@ -34,7 +34,9 @@ namespace Appium.UITests
 
             WebElementUtils.Click(Driver, addBtnId);
 
-            // screenshot
+            var image = "LayoutAddRemoveTest_addbtn.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
 
         [Test]
@@ -46,7 +48,9 @@ namespace Appium.UITests
             WebElementUtils.Click(Driver, addBtnId);
             WebElementUtils.Click(Driver, removeBtnId);
 
-            //screenshot
+            var image = "LayoutAddRemoveTest_removebtn.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }

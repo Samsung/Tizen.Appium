@@ -52,7 +52,9 @@ namespace Appium.UITests
             string ret = WebElementUtils.GetAttribute(Driver, "img", "Source");
             Assert.AreEqual(expect, ret);
 
-            //screenshot
+            var image = "ImageTest.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
 
         [Test]
@@ -73,7 +75,9 @@ namespace Appium.UITests
             string ret = WebElementUtils.GetAttribute(Driver, "img", "Source");
             Assert.AreEqual(expect, ret);
 
-            //screenshot
+            var image = "ImageTest_2.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
 
         [Test]
@@ -94,7 +98,9 @@ namespace Appium.UITests
             string ret = WebElementUtils.GetAttribute(Driver, "img", "Source");
             Assert.AreEqual(expect, ret);
 
-            //screenshot
+            var image = "ImageTest_3.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }
