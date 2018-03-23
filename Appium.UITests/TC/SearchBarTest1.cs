@@ -33,7 +33,11 @@ namespace Appium.UITests
             var searchBarBtnId = "searchBar";
 
             WebElementUtils.SetText(Driver, searchBarBtnId, "test");
-            //screenshot
+            System.Threading.Thread.Sleep(2000);
+
+            var image = "SearchBarTest1.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }
