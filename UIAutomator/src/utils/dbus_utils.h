@@ -82,6 +82,7 @@ public:
 
     int RegisterSignal(SignalHandler callback);
     static void DBusSignalHandler(void *data, DBusMessage *msg);
+    static void DBusAppSignalHandler(void *data, DBusMessage *msg);
 private:
     E_DBus_Connection* EdbusConnection;
     E_DBus_Signal_Handler* EdbusHandler;
