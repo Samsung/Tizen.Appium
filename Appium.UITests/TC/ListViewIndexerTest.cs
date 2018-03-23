@@ -38,7 +38,9 @@ namespace Appium.UITests
             var displayBinding = WebElementUtils.GetAttribute<string>(Driver, listId, "GroupDisplayBinding");
             var shortBinding = WebElementUtils.GetAttribute<string>(Driver, listId, "GroupDisplayBinding");
 
-            //screenshot for checking index on the listview
+            var image = "ListViewIndexerTest_enable1.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
 
         [Test]
@@ -52,7 +54,9 @@ namespace Appium.UITests
             var displayBinding = WebElementUtils.GetAttribute<string>(Driver, listId, "GroupDisplayBinding");
             var shortBinding = WebElementUtils.GetAttribute<string>(Driver, listId, "GroupDisplayBinding");
 
-            //screenshot for checking index on the listview
+            var image = "ListViewIndexerTest_enable2.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
 
         [Test]
@@ -66,7 +70,9 @@ namespace Appium.UITests
             var displayBinding = WebElementUtils.GetAttribute<string>(Driver, listId, "GroupDisplayBinding");
             var shortBinding = WebElementUtils.GetAttribute<string>(Driver, listId, "GroupDisplayBinding");
 
-            //screenshot for checking index on the listview
+            var image = "ListViewIndexerTest_enable3.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }

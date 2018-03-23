@@ -27,7 +27,7 @@ namespace Appium.UITests
             Driver.Quit();
         }
 
-        [Test]
+        //[Test]
         public void CancleTest()
         {
             var btnId = "cancelOnlyButton";
@@ -35,12 +35,13 @@ namespace Appium.UITests
             WebElementUtils.Click(Driver, btnId);
 
             //screenshot
+            //not working displayalert
 
             Driver.Driver.Navigate().Back();
             System.Threading.Thread.Sleep(1000);
         }
 
-        [Test]
+        //[Test]
         public void CancleAcceptTest()
         {
             var btnId = "cancelAceeptButton";
@@ -48,6 +49,7 @@ namespace Appium.UITests
             WebElementUtils.Click(Driver, btnId);
 
             //screenshot
+            //not working displayalert
             Driver.Driver.Navigate().Back();
             System.Threading.Thread.Sleep(1000);
         }

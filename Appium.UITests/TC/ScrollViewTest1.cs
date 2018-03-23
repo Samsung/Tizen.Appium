@@ -35,13 +35,15 @@ namespace Appium.UITests
 
             var yBefore = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
 
-            remoteTouch.Flick(0, -3);
+            WebElementUtils.Click(Driver, "button");
 
             var yAfter = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
 
             Assert.True((yBefore < yAfter), "Y value should be incresed, but got before: " + yBefore + ", after: " + yAfter);
 
-            //screenshot
+            var image = "ScrollViewTest1.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }
