@@ -28,35 +28,24 @@ namespace Appium.UITests
         }
 
         [Test]
-        public void VerticalScrollTest()
+        public void ViewTest()
         {
             var scrollViewId = "scrollView";
-            var remoteTouch = new RemoteTouchScreenUtils(Driver);
-            var yBefore = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
-
-            remoteTouch.Flick(0, -3);
-
-            var yAfter = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
-
-            //screenshot
-
-            Assert.True((yBefore < yAfter), "y value should be increased, but got before: " + yBefore + ", after: " + yAfter);
-        }
-
-        [Test]
-        public void HorizontalScrollTest()
-        {
-            var scrollViewId = "scrollView";
-            var remoteTouch = new RemoteTouchScreenUtils(Driver);
 
             var xBefore = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollX");
+            var yBefore = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
 
-            remoteTouch.Flick(-3, 0);
+            WebElementUtils.Click(Driver, "button");
 
             var xAfter = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollX");
-            //screenshot
+            var yAfter = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
 
-            Assert.True((xBefore < xAfter), "x value should be increased, but got before: " + xBefore + ", after: " + xAfter);
+            Assert.True((xBefore < xAfter), "X value should be increased, but got before: " + xBefore + ", after: " + xAfter);
+            Assert.True((yBefore < yAfter), "y value should be increased, but got before: " + yBefore + ", after: " + yAfter);
+
+            var image = "ScrollViewTest3.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }

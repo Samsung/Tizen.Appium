@@ -27,11 +27,13 @@ namespace Appium.UITests
             Driver.Quit();
         }
 
-        [Test]
+        //[Test]
         public void ViewTest()
         {
             System.Threading.Thread.Sleep(10000);
+
             //screenshot
+            //value always changed
         }
     }
 }

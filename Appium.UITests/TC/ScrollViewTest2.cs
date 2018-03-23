@@ -31,17 +31,18 @@ namespace Appium.UITests
         public void ViewTest()
         {
             var scrollViewId = "scrollView";
-            var remoteTouch = new RemoteTouchScreenUtils(Driver);
 
             var xBefore = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollX");
 
-            remoteTouch.Flick(-3, 0);
+            WebElementUtils.Click(Driver, "button");
 
             var xAfter = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollX");
 
             Assert.True((xBefore < xAfter), "X value should be increased, but got before: " + xBefore + ", after: " + xAfter);
 
-            //screenshot
+            var image = "ScrollViewTest2.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }

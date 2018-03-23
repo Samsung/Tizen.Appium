@@ -27,18 +27,18 @@ namespace Appium.UITests
             Driver.Quit();
         }
 
-        //[Test]
+        [Test]
         public void BarColorChangeTest()
         {
             var btnId = "barColorChanged";
 
             WebElementUtils.Click(Driver, btnId);
 
-            //screenshot
-            //fix TC
-            //var image = "NavigationTest1_barColorChanged.png";
+            var image = "NavigationTest1_barColorChanged.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            //Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+
+            WebElementUtils.Click(Driver, btnId);
         }
 
         [Test]
@@ -51,6 +51,8 @@ namespace Appium.UITests
             var image = "NavigationTest1_BarVisible.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
             Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+
+            WebElementUtils.Click(Driver, btnId);
         }
     }
 }
