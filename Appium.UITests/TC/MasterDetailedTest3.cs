@@ -50,7 +50,9 @@ namespace Appium.UITests
             isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
             Assert.True(Convert.ToBoolean(isPresented), "IsPresented should not be true, but got " + isPresented);
 
-            //screenshot
+            var image = "MasterDetailedTest3_toggle.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
 
         [Test]
@@ -78,7 +80,9 @@ namespace Appium.UITests
             isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
             Assert.True(Convert.ToBoolean(isPresented), "IsPresented should not be true, but got " + isPresented);
 
-            //screenshot
+            var image = "MasterDetailedTest3_change.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
 
         [Test]
@@ -105,7 +109,9 @@ namespace Appium.UITests
             isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
             Assert.True(Convert.ToBoolean(isPresented), "IsPresented should not be true, but got " + isPresented);
 
-            //screenshot
+            var image = "MasterDetailedTest3_restore.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }
