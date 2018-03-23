@@ -43,7 +43,9 @@ namespace Appium.UITests
             WebElementUtils.SetAttribute(Driver, paddingSliderId, "Value", 100);
             WebElementUtils.SetAttribute(Driver, marginSliderId, "Value", 100);
 
-            //screenshot
+            var image = "FrameLayoutTest4.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }

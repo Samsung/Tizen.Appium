@@ -30,7 +30,9 @@ namespace Appium.UITests
         [Test]
         public void ViewTest()
         {
-            //screenshot
+            var image = "RelativeLayoutTest3.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
 
         [Test]
@@ -40,7 +42,9 @@ namespace Appium.UITests
 
             WebElementUtils.SetAttribute(Driver, sliderId, "Value", 100);
 
-            //screenshot
+            var image = "RelativeLayoutTest3_sliderMargin.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
 
         [Test]
@@ -50,7 +54,9 @@ namespace Appium.UITests
 
             WebElementUtils.SetAttribute(Driver, sliderId, "Value", 100);
 
-            //screenshot
+            var image = "RelativeLayoutTest3_sliderPadding.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }

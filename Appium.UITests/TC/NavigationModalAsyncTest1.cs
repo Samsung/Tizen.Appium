@@ -40,7 +40,9 @@ namespace Appium.UITests
             var depthAfter = GetNavigationStackDepth();
             Assert.True((depthBefore == depthAfter), "StackDepth should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
-            //screenshot
+            var image = "NavigationModalAsyncTest1_pushAndPop.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
 
             WebElementUtils.Click(Driver, popBtnId);
         }
@@ -57,7 +59,9 @@ namespace Appium.UITests
             var depthAfter = GetNavigationStackDepth();
             Assert.True((depthBefore == depthAfter), "StackDepth should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
-            //screenshot
+            var image = "NavigationModalAsyncTest1_popPush.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
 
         [Test]
@@ -72,7 +76,9 @@ namespace Appium.UITests
             var depthAfter = GetNavigationStackDepth();
             Assert.True((depthBefore == depthAfter), "StackDepth should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
-            //screenshot
+            var image = "NavigationModalAsyncTest1_pushPop.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
 
         [Test]
@@ -89,7 +95,9 @@ namespace Appium.UITests
             var depthAfter = GetNavigationStackDepth();
             Assert.True((depthBefore == depthAfter), "StackDepth should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
-            //screenshot
+            var image = "NavigationModalAsyncTest1_pushPush.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
 
             WebElementUtils.Click(Driver, popBtn3Id);
             WebElementUtils.Click(Driver, popBtn2Id);
