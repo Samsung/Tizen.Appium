@@ -287,7 +287,39 @@ int DBusSignal::InitConnection()
         _E("fail to add size signal");
         return -1;
     }
+
+    EdbusHandler = e_dbus_signal_handler_add(EdbusConnection, NULL,
+                             "/aul/dbus_handler","org.tizen.aul.signal", "app_launch", DBusAppSignalHandler, 0);
+
     return 0;
+}
+
+void DBusSignal::DBusAppSignalHandler(void *data, DBusMessage *msg)
+{
+    if (NULL == msg)
+    {
+        return;
+    }
+
+    DBusMessageIter args;
+    unsigned int pid;
+    char* app_name;
+
+    if (dbus_message_iter_init(msg, &args))
+    {
+      dbus_message_iter_get_basic(&args, &pid);
+      dbus_message_iter_next(&args);
+      dbus_message_iter_get_basic(&args, &app_name);
+
+      _D("pid=%u app_name=%s", pid, app_name);
+    }
+
+    if(strstr(app_name, "syspopup") != NULL) {
+      kill(pid, 9);
+      _D("UIAutomator kills %s during UI testing", app_name);
+    }
+
+    return;
 }
 
 void DBusSignal::DBusSignalHandler(void *data, DBusMessage *msg)
