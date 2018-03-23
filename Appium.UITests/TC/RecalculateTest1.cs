@@ -30,13 +30,20 @@ namespace Appium.UITests
         [Test]
         public void ViewTest()
         {
+            var image = "RecalculateTest1.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+        }
+
+        [Test]
+        public void ViewTest1()
+        {
             var pickerid = "button";
-
-            //screenshot
-
             WebElementUtils.Click(Driver, pickerid);
 
-            //screenshot
+            var image = "RecalculateTest1_clear.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }

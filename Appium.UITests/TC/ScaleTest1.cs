@@ -34,7 +34,9 @@ namespace Appium.UITests
 
             WebElementUtils.Click(Driver, btnId);
 
-            //screenshot
+            var image = "ScaleTest1.png";
+            //WebElementUtils.GetScreenshotAndSave(Driver, image);
+            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
         }
     }
 }
