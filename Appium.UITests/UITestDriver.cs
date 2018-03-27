@@ -91,12 +91,18 @@ namespace Appium.UITests
 
         public void GoHomePage()
         {
-            var mainPage = GetAttribute<string>("MainPage", "CurrentPage");
-            while (mainPage != "HomePage")
+            var MainPageEnabled = GetAttribute<bool>("MainPage", "IsEnabled");
+            if (!MainPageEnabled)
+            {
+                Assert.Fail("Not Found MainPage");
+            }
+
+            var currentPage = GetAttribute<string>("MainPage", "CurrentPage");
+            while (currentPage != "HomePage")
             {
                 _driver.Navigate().Back();
                 System.Threading.Thread.Sleep(1000);
-                mainPage = GetAttribute<string>("MainPage", "CurrentPage");
+                currentPage = GetAttribute<string>("MainPage", "CurrentPage");
             }
         }
 
