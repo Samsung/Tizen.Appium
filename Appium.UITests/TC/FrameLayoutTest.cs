@@ -1,43 +1,15 @@
-﻿using System;
-using OpenQA.Selenium.Appium;
-using OpenQA.Selenium.Appium.Tizen;
-using OpenQA.Selenium.Appium.Android;
-using OpenQA.Selenium.Remote;
 using NUnit.Framework;
-using OpenQA.Selenium.Appium.MultiTouch;
-using OpenQA.Selenium.Interactions.Internal;
 using System.Drawing;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class FrameLayoutTest1
+    [TestFixture]
+    public class FrameLayoutTest1 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public FrameLayoutTest1(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ButtonPositionTest()
         {
-            Point buttonPt = WebElementUtils.GetLocation(Driver, "button");
+            Point buttonPt = Driver.GetLocation("button");
             Assert.AreEqual(361, buttonPt.X);
             Assert.AreEqual(716, buttonPt.Y);
         }
@@ -45,7 +17,7 @@ namespace Appium.UITests
         [Test]
         public void LabelPositionTest()
         {
-            Point buttonPt = WebElementUtils.GetLocation(Driver, "bottomLabel");
+            Point buttonPt = Driver.GetLocation("bottomLabel");
             Assert.AreEqual(359, buttonPt.X);
             Assert.AreEqual(1223, buttonPt.Y);
         }
@@ -53,11 +25,11 @@ namespace Appium.UITests
         [Test]
         public void BoxPositionTest()
         {
-            Point topLeftBoxPt = WebElementUtils.GetLocation(Driver, "topLeftBox");
+            Point topLeftBoxPt = Driver.GetLocation("topLeftBox");
             Assert.AreEqual(179, topLeftBoxPt.X);
             Assert.AreEqual(432, topLeftBoxPt.Y);
 
-            Point topRightBoxPt = WebElementUtils.GetLocation(Driver, "topRightBox");
+            Point topRightBoxPt = Driver.GetLocation("topRightBox");
             Assert.AreEqual(540, topRightBoxPt.X);
             Assert.AreEqual(432, topRightBoxPt.Y);
         }
@@ -65,11 +37,11 @@ namespace Appium.UITests
         [Test]
         public void BoxSizeTest()
         {
-            Size topLeftBoxPt = WebElementUtils.GetSize(Driver, "topLeftBox");
+            Size topLeftBoxPt = Driver.GetSize("topLeftBox");
             Assert.AreEqual(286, topLeftBoxPt.Height);
             Assert.AreEqual(182, topLeftBoxPt.Width);
 
-            Size topRightBoxPt = WebElementUtils.GetSize(Driver, "topRightBox");
+            Size topRightBoxPt = Driver.GetSize("topRightBox");
             Assert.AreEqual(286, topRightBoxPt.Height);
             Assert.AreEqual(182, topRightBoxPt.Width);
         }

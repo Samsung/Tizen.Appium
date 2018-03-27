@@ -1,49 +1,26 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class ScrollViewTest1
+    [TestFixture]
+    public class ScrollViewTest1 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public ScrollViewTest1(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ViewTest()
         {
             var scrollViewId = "scrollView";
-            var remoteTouch = new RemoteTouchScreenUtils(Driver);
 
-            var yBefore = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
+            var yBefore = Driver.GetAttribute<double>(scrollViewId, "ScrollY");
 
-            WebElementUtils.Click(Driver, "button");
+            Driver.Flick(0, -3);
 
-            var yAfter = WebElementUtils.GetAttribute<double>(Driver, scrollViewId, "ScrollY");
+            var yAfter = Driver.GetAttribute<double>(scrollViewId, "ScrollY");
 
             Assert.True((yBefore < yAfter), "Y value should be incresed, but got before: " + yBefore + ", after: " + yAfter);
 
             var image = "ScrollViewTest1.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
     }
 }

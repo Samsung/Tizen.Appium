@@ -1,43 +1,21 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class SliderTest1
+    [TestFixture]
+    public class SliderTest1 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public SliderTest1(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void IncreaseTest()
         {
             var btnId = "button1";
             var sliderId = "slider";
 
-            var before = WebElementUtils.GetAttribute<double>(Driver, sliderId, "Value");
+            var before = Driver.GetAttribute<double>(sliderId, "Value");
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
-            var after = WebElementUtils.GetAttribute<double>(Driver, sliderId, "Value");
+            var after = Driver.GetAttribute<double>(sliderId, "Value");
 
             Assert.True(((before + 3) == after), "Value should be " + (before + 3));
         }
@@ -49,14 +27,14 @@ namespace Appium.UITests
             var deBtnId = "button2";
             var sliderId = "slider";
 
-            var before = WebElementUtils.GetAttribute<double>(Driver, sliderId, "Value");
+            var before = Driver.GetAttribute<double>(sliderId, "Value");
 
-            WebElementUtils.Click(Driver, inBtnId);
-            WebElementUtils.Click(Driver, inBtnId);
+            Driver.Click(inBtnId);
+            Driver.Click(inBtnId);
 
-            WebElementUtils.Click(Driver, deBtnId);
+            Driver.Click(deBtnId);
 
-            var after = WebElementUtils.GetAttribute<double>(Driver, sliderId, "Value");
+            var after = Driver.GetAttribute<double>(sliderId, "Value");
 
             Assert.True(((before + 3) == after), "Value should be " + (before + 3));
         }

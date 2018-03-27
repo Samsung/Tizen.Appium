@@ -1,68 +1,41 @@
-﻿using System;
-using OpenQA.Selenium.Appium;
-using OpenQA.Selenium.Appium.Tizen;
-using OpenQA.Selenium.Appium.Android;
-using OpenQA.Selenium.Remote;
 using NUnit.Framework;
-using OpenQA.Selenium.Appium.MultiTouch;
-using OpenQA.Selenium.Interactions.Internal;
+using System;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class ButtonTest1
+    [TestFixture]
+    public class ButtonTest1 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public ButtonTest1(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ClickTest()
         {
-            WebElementUtils.Click(Driver, "btnColored");
+            Driver.Click("btnColored");
         }
 
         [Test]
         public void ClickTest2()
         {
-            WebElementUtils.Click(Driver, "btnTxtToggle");
-            string result = WebElementUtils.GetText(Driver, "btnTxtToggle");
+            Driver.Click("btnTxtToggle");
+            string result = Driver.GetText("btnTxtToggle");
             Assert.AreEqual(result, string.Empty);
         }
 
         [Test]
         public void ClickTest3()
-        { 
-            WebElementUtils.Click(Driver, "btnImgToggle");
-            string result = WebElementUtils.GetAttribute(Driver, "btnImgToggle", "Image");
-            Assert.AreEqual(string.Empty, result);
+        {
+            Driver.Click("btnImgToggle");
+            string result = Driver.GetAttribute<string>("btnImgToggle", "Image");
+            Assert.True(String.IsNullOrEmpty(result));
         }
 
         [Test]
         public void ClickTest4()
         {
-            WebElementUtils.Click(Driver, "btnDisableToggle");
-            string result = WebElementUtils.GetAttribute(Driver, "btnDisableTarget", "IsEnabled");
-            Assert.AreEqual("True", result);
+            Driver.Click("btnDisableToggle");
+            bool result = Driver.GetAttribute<bool>("btnDisableTarget", "IsEnabled");
+            Assert.AreEqual(true, result);
 
-            WebElementUtils.Click(Driver, "btnDisableTarget");
+            Driver.Click("btnDisableTarget");
         }
     }
 }

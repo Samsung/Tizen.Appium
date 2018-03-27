@@ -1,32 +1,11 @@
-using System;
 using NUnit.Framework;
+using System;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class NavigationPageAsyncTest1
+    [TestFixture]
+    public class NavigationPageAsyncTest1 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public NavigationPageAsyncTest1(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void PushAndPopTest()
         {
@@ -35,21 +14,21 @@ namespace Appium.UITests
 
             var depthBefore = GetNavigationStackDepth();
 
-            WebElementUtils.Click(Driver, pushBtnId);
+            Driver.Click(pushBtnId);
             var depthAfter = GetNavigationStackDepth();
             Assert.True((depthBefore < depthAfter), "StackDepth should be increased, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image = "NavigationPageAsyncTest1_pushAndPop.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
 
-            WebElementUtils.Click(Driver, popBtnId);
+            Driver.Click(popBtnId);
             depthAfter = GetNavigationStackDepth();
             Assert.True((depthBefore == depthAfter), "StackDepth should be decreased, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image2 = "NavigationPageAsyncTest1_pushAndPop2.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image2);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image2));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image2));
         }
 
         [Test]
@@ -59,13 +38,13 @@ namespace Appium.UITests
 
             var depthBefore = GetNavigationStackDepth();
 
-            WebElementUtils.Click(Driver, pushAndPopBtnId);
+            Driver.Click(pushAndPopBtnId);
             var depthAfter = GetNavigationStackDepth();
             Assert.True((depthBefore == depthAfter), "StackDepth should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image = "NavigationPageAsyncTest1_pushPop.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
@@ -76,23 +55,23 @@ namespace Appium.UITests
 
             var depthBefore = GetNavigationStackDepth();
 
-            WebElementUtils.Click(Driver, pushPushBtnId);
+            Driver.Click(pushPushBtnId);
             var depthAfter = GetNavigationStackDepth();
             Assert.True(((depthBefore + 2) == depthAfter), "StackDepth should be increased, but got before: " + depthBefore + ", after: " + depthAfter);
 
             //var image = "NavigationPageAsyncTest1_pushPush.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            //Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            //Assert.AreEqual(true, Driver.CompareToScreenshot(image));
 
             //pop and pop issue
-            WebElementUtils.Click(Driver, popPopBtnId);
+            Driver.Click(popPopBtnId);
             depthAfter = GetNavigationStackDepth();
             Assert.True((depthBefore == depthAfter), "StackDepth should be decreased, but got before: " + depthBefore + ", after: " + depthAfter);
 
             //screenshot crash app
             //var image2 = "NavigationPageAsyncTest1_pushPushPopPop2.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image2);
-            //Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image2));
+            //Assert.AreEqual(true, Driver.CompareToScreenshot(image2));
         }
 
         [Test]
@@ -103,21 +82,21 @@ namespace Appium.UITests
 
             var depthBefore = GetNavigationStackDepth();
 
-            WebElementUtils.Click(Driver, pushBtnId);
+            Driver.Click(pushBtnId);
             var depthAfter = GetNavigationStackDepth();
             Assert.True((depthBefore < depthAfter), "StackDepth should be increased, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image = "NavigationPageAsyncTest1_popPush.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
 
             depthBefore = depthAfter;
-            WebElementUtils.Click(Driver, popPushBtnId);
+            Driver.Click(popPushBtnId);
             Assert.True((depthBefore == depthAfter), "StackDepth should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image2 = "NavigationPageAsyncTest1_popPush2.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image2);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image2));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image2));
         }
 
         [Test]
@@ -127,21 +106,22 @@ namespace Appium.UITests
 
             var depthBefore = GetNavigationStackDepth();
 
-            WebElementUtils.Click(Driver, popToRootBtnId);
+            Driver.Click(popToRootBtnId);
             var depthAfter = GetNavigationStackDepth();
             Assert.True((depthBefore > depthAfter), "StackDepth should be decreased, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image = "NavigationPageAsyncTest1_popToRoot.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
 
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
+            Driver.FindTC(this.GetType().Name);
+            //FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
         }
 
         int GetNavigationStackDepth()
         {
-            var depth = WebElementUtils.GetAttribute(Driver, "MainPage", "StackDepth");
-            return Convert.ToInt32(depth);
+            var depth = Driver.GetAttribute<int>("MainPage", "StackDepth");
+            return depth;
         }
     }
 }

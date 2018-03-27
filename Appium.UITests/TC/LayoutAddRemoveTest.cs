@@ -1,42 +1,20 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class LayoutAddRemoveTest
+    [TestFixture]
+    public class LayoutAddRemoveTest : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public LayoutAddRemoveTest(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void AddTest()
         {
             var addBtnId = "addbtn";
 
-            WebElementUtils.Click(Driver, addBtnId);
+            Driver.Click(addBtnId);
 
             var image = "LayoutAddRemoveTest_addbtn.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
@@ -45,12 +23,12 @@ namespace Appium.UITests
             var addBtnId = "addbtn";
             var removeBtnId = "removebtn";
 
-            WebElementUtils.Click(Driver, addBtnId);
-            WebElementUtils.Click(Driver, removeBtnId);
+            Driver.Click(addBtnId);
+            Driver.Click(removeBtnId);
 
             var image = "LayoutAddRemoveTest_removebtn.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
     }
 }

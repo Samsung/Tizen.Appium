@@ -1,38 +1,16 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class StackLayoutTest6
+    [TestFixture]
+    public class StackLayoutTest6 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public StackLayoutTest6(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ViewTest()
         {
             var image = "StackLayoutTest6.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
@@ -40,11 +18,11 @@ namespace Appium.UITests
         {
             var btnId = "orientaionChangeButton";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             var image = "StackLayoutTest6_orientation.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
@@ -54,16 +32,14 @@ namespace Appium.UITests
             var paddingSliderId = "paddingSlider";
             var spacingSliderId = "spacingSlider";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
-            var remoteTouch = new RemoteTouchScreenUtils(Driver);
-
-            WebElementUtils.SetAttribute(Driver, paddingSliderId, "Value", 100);
-            WebElementUtils.SetAttribute(Driver, spacingSliderId, "Value", 100);
+            Driver.SetAttribute(paddingSliderId, "Value", 100);
+            Driver.SetAttribute(spacingSliderId, "Value", 100);
 
             var image = "StackLayoutTest6_padding.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
     }
 }

@@ -1,37 +1,16 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class TapGestureTest3
+    [TestFixture]
+    public class TapGestureTest3 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public TapGestureTest3(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void TapImage()
         {
             bool result = false;
-            WebElementUtils.Click(Driver, "image");
-            string label = WebElementUtils.GetAttribute(Driver, "label", "Text");
+            Driver.Click("image");
+            string label = Driver.GetAttribute<string>("label", "Text");
             if (label.Equals("1 tap so far!"))
             {
                 result = true;
@@ -46,10 +25,12 @@ namespace Appium.UITests
         public void TapImageDouble()
         {
             bool result = false;
-            WebElementUtils.Click(Driver, "button");
-            WebElementUtils.ClickWithoutSleep(Driver, "image");
-            WebElementUtils.ClickWithoutSleep(Driver, "image");
-            string label = WebElementUtils.GetAttribute(Driver, "label", "Text");
+            Driver.Click("button");
+            Driver.Click("image", 0);
+            Driver.Click("image", 0);
+            //WebElementUtils.ClickWithoutSleep(Driver, "image");
+            //WebElementUtils.ClickWithoutSleep(Driver, "image");
+            string label = Driver.GetAttribute<string>("label", "Text");
             if (label.Equals("2 taps so far!"))
             {
                 result = true;
@@ -57,7 +38,7 @@ namespace Appium.UITests
 
             System.Threading.Thread.Sleep(2000);
 
-            Assert.AreEqual(result, true);
+            Assert.True(result);
         }
     }
 }

@@ -1,56 +1,34 @@
-using System;
 using NUnit.Framework;
+using System;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class PanGestureTest1
+    [TestFixture]
+    public class PanGestureTest1 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public PanGestureTest1(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ViewTest()
         {
             var containerId = "panContainer";
             var imageId = "image";
 
-            var x = Convert.ToInt32(WebElementUtils.GetAttribute(Driver, containerId, "X"));
-            var y = Convert.ToInt32(WebElementUtils.GetAttribute(Driver, containerId, "Y"));
-            var width = Convert.ToDouble(WebElementUtils.GetAttribute(Driver, containerId, "Width"));
-            var height = Convert.ToDouble(WebElementUtils.GetAttribute(Driver, containerId, "Height"));
+            int x = Driver.GetAttribute<int>(containerId, "X");
+            int y = Driver.GetAttribute<int>(containerId, "Y");
+            double width = Driver.GetAttribute<double>(containerId, "Width");
+            double height = Driver.GetAttribute<double>(containerId, "Height");
 
             Console.WriteLine("x={0}, y={1}, width ={2}, height={3}", x, y, width, height);
             x = x + (int)(width / 2);
             y = y + (int)(height / 2);
 
-            var beforeX = Convert.ToInt32(WebElementUtils.GetAttribute(Driver, imageId, "TranslationX"));
-            var beforeY = Convert.ToInt32(WebElementUtils.GetAttribute(Driver, imageId, "TranslationY"));
+            int beforeX = Driver.GetAttribute<int>(imageId, "TranslationX");
+            int beforeY = Driver.GetAttribute<int>(imageId, "TranslationY");
 
-            var touchScreen = new RemoteTouchScreenUtils(Driver);
             Console.WriteLine("x={0}, y={1},", x, y);
-            touchScreen.Drag(x, y, x - 100, y - 100);
+            Driver.Drag(x, y, x - 100, y - 100);
 
-            var afterX = Convert.ToInt32(WebElementUtils.GetAttribute(Driver, imageId, "TranslationX"));
-            var afterY = Convert.ToInt32(WebElementUtils.GetAttribute(Driver, imageId, "TranslationY"));
+            int afterX = Driver.GetAttribute<int>(imageId, "TranslationX");
+            int afterY = Driver.GetAttribute<int>(imageId, "TranslationY");
 
             Console.WriteLine("beforeX={0}, beforeY={1}, afterX={2}, afterY={3}", beforeX, beforeY, afterX, afterY);
 

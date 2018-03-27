@@ -1,46 +1,21 @@
-using System;
-using OpenQA.Selenium.Appium;
-using OpenQA.Selenium.Appium.Tizen;
-using OpenQA.Selenium.Appium.Android;
-using OpenQA.Selenium.Remote;
 using NUnit.Framework;
-using OpenQA.Selenium.Appium.MultiTouch;
-using OpenQA.Selenium.Interactions.Internal;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class ActivityIndicatorTest
+    [TestFixture]
+    public class ActivityIndicatorTest : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public ActivityIndicatorTest(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ColorTest()
         {
-            string color = WebElementUtils.GetAttribute(Driver, "ai", "Color");
+            var btnId = "button";
+            var elementId = "ai";
 
-            WebElementUtils.Click(Driver, "button");
+            var color = Driver.GetAttribute<string>(elementId, "Color");
 
-            string color2 = WebElementUtils.GetAttribute(Driver, "ai", "Color");
+            Driver.Click(btnId);
+
+            var color2 = Driver.GetAttribute<string>(elementId, "Color");
 
             Assert.AreNotEqual(color, color2);
         }

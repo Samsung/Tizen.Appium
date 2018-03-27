@@ -1,43 +1,20 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class TableViewTest6
+    [TestFixture]
+    public class TableViewTest6 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-        //TizenDriver Driver;
-
-        public TableViewTest6(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ViewTest()
         {
             var redBtnId = "red";
             var redImage = "TableViewTest6_red.png";
 
-            WebElementUtils.Click(Driver, redBtnId);
+            Driver.Click(redBtnId);
             //WebElementUtils.GetScreenshotAndSave(Driver, redImage);
 
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, redImage));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(redImage));
         }
 
         [Test]
@@ -46,10 +23,10 @@ namespace Appium.UITests
             var greenBtnId = "green";
             var greenImage = "TableViewTest6_green.png";
 
-            WebElementUtils.Click(Driver, greenBtnId);
+            Driver.Click(greenBtnId);
             //WebElementUtils.GetScreenshotAndSave(Driver, greenImage);
 
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, greenImage));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(greenImage));
         }
 
         [Test]
@@ -58,10 +35,10 @@ namespace Appium.UITests
             var grayBtnId = "gray";
             var grayImage = "TableViewTest6_gray.png";
 
-            WebElementUtils.Click(Driver, grayBtnId);
+            Driver.Click(grayBtnId);
             //WebElementUtils.GetScreenshotAndSave(Driver, grayImage);
 
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, grayImage));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(grayImage));
         }
     }
 }

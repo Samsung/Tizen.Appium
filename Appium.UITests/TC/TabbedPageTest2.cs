@@ -1,42 +1,20 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class TabbedPageTest2
+    [TestFixture]
+    public class TabbedPageTest2 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public TabbedPageTest2(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ChangeTitleTest()
         {
             var changeBtnId = "chageTitle";
 
-            WebElementUtils.Click(Driver, changeBtnId);
+            Driver.Click(changeBtnId);
 
             var image = "TabbedPageTest2.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
     }
 }

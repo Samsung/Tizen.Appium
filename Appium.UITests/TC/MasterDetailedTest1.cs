@@ -1,51 +1,29 @@
-using System;
 using NUnit.Framework;
+using System;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class MasterDetailedTest1
+    [TestFixture]
+    public class MasterDetailedTest1 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public MasterDetailedTest1(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ViewTest()
         {
             var pageId = "MasterDetailPage";
-            var touchScreen = new RemoteTouchScreenUtils(Driver);
 
-            var isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
+            var isPresented = Driver.GetAttribute<bool>(pageId, "IsPresented");
 
-            if (!Convert.ToBoolean(isPresented))
+            if (!isPresented)
             {
-                touchScreen.Drag(0, 500, 300, 500);
+                Driver.Drag(0, 500, 300, 500);
             }
 
-            isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
+            isPresented = Driver.GetAttribute<bool>(pageId, "IsPresented");
             Assert.True(Convert.ToBoolean(isPresented), "IsPresented should be true, but got " + isPresented);
 
             var image = "MasterDetailedTest1.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
     }
 }

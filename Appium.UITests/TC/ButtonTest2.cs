@@ -1,57 +1,29 @@
-﻿using System;
-using OpenQA.Selenium.Appium;
-using OpenQA.Selenium.Appium.Tizen;
-using OpenQA.Selenium.Appium.Android;
-using OpenQA.Selenium.Remote;
 using NUnit.Framework;
-using OpenQA.Selenium.Appium.MultiTouch;
-using OpenQA.Selenium.Interactions.Internal;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class ButtonTest2
+    [TestFixture]
+    public class ButtonTest2 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public ButtonTest2(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ClickTest()
         {
-            string before = WebElementUtils.GetAttribute(Driver, "btnColored", "TextColor");
-            WebElementUtils.Click(Driver, "btnColored");
-            string after = WebElementUtils.GetAttribute(Driver, "btnColored", "TextColor");
+            string before = Driver.GetAttribute<string>("btnColored", "TextColor");
+            Driver.Click("btnColored");
+            string after = Driver.GetAttribute<string>("btnColored", "TextColor");
             Assert.AreNotEqual(before, after);
         }
 
         [Test]
         public void ClickTest2()
         {
-            string before = WebElementUtils.GetAttribute(Driver, "btnDisableTarget", "IsEnabled");
-            Assert.AreEqual("False", before);
+            bool before = Driver.GetAttribute<bool>("btnDisableTarget", "IsEnabled");
+            Assert.AreEqual(false, before);
 
-            WebElementUtils.Click(Driver, "btnDisableToggle");
+            Driver.Click("btnDisableToggle");
 
-            string after = WebElementUtils.GetAttribute(Driver, "btnDisableTarget", "IsEnabled");
-            Assert.AreEqual("True", after);
+            bool after = Driver.GetAttribute<bool>("btnDisableTarget", "IsEnabled");
+            Assert.AreEqual(true, after);
         }
     }
 }

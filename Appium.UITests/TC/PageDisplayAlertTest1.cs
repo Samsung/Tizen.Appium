@@ -1,43 +1,21 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class PageDisplayAlertTest1
+    [TestFixture]
+    public class PageDisplayAlertTest1 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public PageDisplayAlertTest1(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         //[Test]
         public void CancleTest()
         {
             var btnId = "cancelOnlyButton";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             //screenshot
             //not working displayalert
 
-            Driver.Driver.Navigate().Back();
+            Driver.GoBack();
             System.Threading.Thread.Sleep(1000);
         }
 
@@ -46,11 +24,11 @@ namespace Appium.UITests
         {
             var btnId = "cancelAceeptButton";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             //screenshot
             //not working displayalert
-            Driver.Driver.Navigate().Back();
+            Driver.GoBack();
             System.Threading.Thread.Sleep(1000);
         }
     }

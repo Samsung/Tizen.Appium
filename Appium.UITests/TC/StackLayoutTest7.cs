@@ -1,42 +1,20 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class StackLayoutTest7
+    [TestFixture]
+    public class StackLayoutTest7 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public StackLayoutTest7(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void HRadioFillTest()
         {
             var btnId = "hRadioFill";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             var image = "StackLayoutTest7_hRadioFill.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
@@ -44,11 +22,11 @@ namespace Appium.UITests
         {
             var btnId = "hRadioStart";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             var image = "StackLayoutTest7_hRadioStart.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
@@ -56,11 +34,11 @@ namespace Appium.UITests
         {
             var btnId = "hRadioCenter";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             var image = "StackLayoutTest7_hRadioCenter.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
@@ -68,11 +46,11 @@ namespace Appium.UITests
         {
             var btnId = "hRadioEnd";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             var image = "StackLayoutTest7_hRadioEnd.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
@@ -80,11 +58,11 @@ namespace Appium.UITests
         {
             var btnId = "vRadioFill";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             var image = "StackLayoutTest7_vRadioFill.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
@@ -92,11 +70,11 @@ namespace Appium.UITests
         {
             var btnId = "vRadioEnd";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             var image = "StackLayoutTest7_vRadioEnd.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
@@ -104,11 +82,11 @@ namespace Appium.UITests
         {
             var btnId = "vRadioStart";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             var image = "StackLayoutTest7_vRadioStart.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
@@ -116,11 +94,11 @@ namespace Appium.UITests
         {
             var btnId = "vRadioCenter";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             var image = "StackLayoutTest7_vRadioCenter.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
     }
 }

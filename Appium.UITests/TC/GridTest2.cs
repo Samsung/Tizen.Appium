@@ -1,43 +1,15 @@
-﻿using System;
-using OpenQA.Selenium.Appium;
-using OpenQA.Selenium.Appium.Tizen;
-using OpenQA.Selenium.Appium.Android;
-using OpenQA.Selenium.Remote;
 using NUnit.Framework;
-using OpenQA.Selenium.Appium.MultiTouch;
-using OpenQA.Selenium.Interactions.Internal;
 using System.Drawing;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class GridTest2
+    [TestFixture]
+    public class GridTest2 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public GridTest2(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void TopLocationTest()
         {
-            Point point = WebElementUtils.GetLocation(Driver, "button1");
+            Point point = Driver.GetLocation("button1");
             Assert.AreEqual(360, point.X);
             Assert.AreEqual(199, point.Y);
         }
@@ -45,23 +17,23 @@ namespace Appium.UITests
         [Test]
         public void BottomLocationTest()
         {
-            Point point = WebElementUtils.GetLocation(Driver, "button2");
+            Point point = Driver.GetLocation("button2");
             Assert.AreEqual(118, point.X);
             Assert.AreEqual(510, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "button3");
+            point = Driver.GetLocation("button3");
             Assert.AreEqual(360, point.X);
             Assert.AreEqual(510, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "button4");
+            point = Driver.GetLocation("button4");
             Assert.AreEqual(118, point.X);
             Assert.AreEqual(1025, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "button5");
+            point = Driver.GetLocation("button5");
             Assert.AreEqual(360, point.X);
             Assert.AreEqual(1025, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "button6");
+            point = Driver.GetLocation("button6");
             Assert.AreEqual(602, point.X);
             Assert.AreEqual(767, point.Y);
         }
@@ -69,7 +41,7 @@ namespace Appium.UITests
         [Test]
         public void TopSizeTest()
         {
-            Size area = WebElementUtils.GetSize(Driver, "button1");
+            Size area = Driver.GetSize("button1");
             Assert.AreEqual(50, area.Height);
             Assert.AreEqual(364, area.Width);
         }
@@ -77,23 +49,23 @@ namespace Appium.UITests
         [Test]
         public void BottomSizeTest()
         {
-            Size area = WebElementUtils.GetSize(Driver, "button2");
+            Size area = Driver.GetSize("button2");
             Assert.AreEqual(258, area.Height);
             Assert.AreEqual(119, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "button3");
+            area = Driver.GetSize("button3");
             Assert.AreEqual(258, area.Height);
             Assert.AreEqual(119, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "button4");
+            area = Driver.GetSize("button4");
             Assert.AreEqual(258, area.Height);
             Assert.AreEqual(119, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "button5");
+            area = Driver.GetSize("button5");
             Assert.AreEqual(258, area.Height);
             Assert.AreEqual(119, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "button6");
+            area = Driver.GetSize("button6");
             Assert.AreEqual(519, area.Height);
             Assert.AreEqual(119, area.Width);
         }
