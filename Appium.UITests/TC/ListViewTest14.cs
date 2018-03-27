@@ -1,42 +1,20 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class ListViewTest14
+    [TestFixture]
+    public class ListViewTest14 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public ListViewTest14(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void DisableTest()
         {
             var enableBtnId = "disableButton";
             var itemId = "1 item";
 
-            WebElementUtils.Click(Driver, itemId);
-            WebElementUtils.Click(Driver, enableBtnId);
+            Driver.Click(itemId);
+            Driver.Click(enableBtnId);
 
-            var isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "IsEnabled");
+            var isEnabled = Driver.GetAttribute<bool>(itemId, "IsEnabled");
             Assert.False(isEnabled, itemId + ".IsVisible should be true, but got " + isEnabled);
         }
 
@@ -46,10 +24,10 @@ namespace Appium.UITests
             var enableBtnId = "enableButton";
             var itemId = "0 item";
 
-            WebElementUtils.Click(Driver, itemId);
-            WebElementUtils.Click(Driver, enableBtnId);
+            Driver.Click(itemId);
+            Driver.Click(enableBtnId);
 
-            var isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "IsEnabled");
+            var isEnabled = Driver.GetAttribute<bool>(itemId, "IsEnabled");
             Assert.True(isEnabled, itemId + ".IsVisible should be true, but got " + isEnabled);
         }
     }

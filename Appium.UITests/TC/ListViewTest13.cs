@@ -1,45 +1,23 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class ListViewTest13
+    [TestFixture]
+    public class ListViewTest13 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public ListViewTest13(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void DisableTest()
         {
             var disableBtnId = "disableButton";
             var itemId = "1 item";
 
-            var isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "On");
+            var isEnabled = Driver.GetAttribute<bool>(itemId, "On");
             Assert.True(isEnabled, itemId + ".IsVisible should be true, but got " + isEnabled);
 
-            WebElementUtils.Click(Driver, itemId);
-            WebElementUtils.Click(Driver, disableBtnId);
+            Driver.Click(itemId);
+            Driver.Click(disableBtnId);
 
-            isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "On");
+            isEnabled = Driver.GetAttribute<bool>(itemId, "On");
             Assert.False(isEnabled, itemId + ".IsVisible should be false, but got " + isEnabled);
         }
 
@@ -49,13 +27,13 @@ namespace Appium.UITests
             var enableBtnId = "enableButton";
             var itemId = "0 item";
 
-            var isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "On");
+            var isEnabled = Driver.GetAttribute<bool>(itemId, "On");
             Assert.True(isEnabled, itemId + ".IsVisible should be true, but got " + isEnabled);
 
-            WebElementUtils.Click(Driver, itemId);
-            WebElementUtils.Click(Driver, enableBtnId);
+            Driver.Click(itemId);
+            Driver.Click(enableBtnId);
 
-            isEnabled = WebElementUtils.GetAttribute<bool>(Driver, itemId, "On");
+            isEnabled = Driver.GetAttribute<bool>(itemId, "On");
             Assert.True(isEnabled, itemId + ".IsVisible should be true, but got " + isEnabled);
         }
     }

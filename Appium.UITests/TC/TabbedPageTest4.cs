@@ -1,42 +1,20 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class TabbedPageTest4
+    [TestFixture]
+    public class TabbedPageTest4 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public TabbedPageTest4(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void InsertBeforeTest()
         {
             var insertBeforeBtnId = "insertBeforeButton_1";
 
-            WebElementUtils.Click(Driver, insertBeforeBtnId);
+            Driver.Click(insertBeforeBtnId);
 
             var image = "TabbedPageTest4_insertBeforeButton_1.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
@@ -44,11 +22,11 @@ namespace Appium.UITests
         {
             var insertAfterBtnId = "insertAfterButton_1";
 
-            WebElementUtils.Click(Driver, insertAfterBtnId);
+            Driver.Click(insertAfterBtnId);
 
             var image = "TabbedPageTest4_insertAfterButton_1.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
@@ -56,11 +34,11 @@ namespace Appium.UITests
         {
             var removeBtnId = "removeButton_1";
 
-            WebElementUtils.Click(Driver, removeBtnId);
+            Driver.Click(removeBtnId);
 
             var image = "TabbedPageTest4_removeButton_1.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
     }
 }

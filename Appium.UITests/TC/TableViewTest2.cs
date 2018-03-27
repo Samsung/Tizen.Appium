@@ -1,41 +1,19 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class TableViewTest2
+    [TestFixture]
+    public class TableViewTest2 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public TableViewTest2(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void AddRemoveSectionTest()
         {
             var addSectionBtnId = "addSectionBtn";
 
-            WebElementUtils.Click(Driver, addSectionBtnId);
+            Driver.Click(addSectionBtnId);
             var addSectionImage = "TabelViewTest2_addSection.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, addSectionImage);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, addSectionImage));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(addSectionImage));
         }
 
         [Test]
@@ -43,10 +21,10 @@ namespace Appium.UITests
         {
             var removeSectionBtnId = "removeSectionBtn";
 
-            WebElementUtils.Click(Driver, removeSectionBtnId);
+            Driver.Click(removeSectionBtnId);
             var removeSectionImage = "TabelViewTest2_removeSection.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, removeSectionImage);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, removeSectionImage));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(removeSectionImage));
         }
 
         [Test]
@@ -55,11 +33,11 @@ namespace Appium.UITests
             var addSectionBtnId = "addSectionBtn";
             var removeAllSectionBtnId = "removeAllSectionBtn";
 
-            WebElementUtils.Click(Driver, addSectionBtnId);
-            WebElementUtils.Click(Driver, removeAllSectionBtnId);
+            Driver.Click(addSectionBtnId);
+            Driver.Click(removeAllSectionBtnId);
             var removeAllSectionImage = "TabelViewTest2_removeAllSection.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, removeAllSectionImage);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, removeAllSectionImage));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(removeAllSectionImage));
         }
 
         [Test]
@@ -68,11 +46,11 @@ namespace Appium.UITests
             var addSectionBtnId = "addSectionBtn";
             var addCellBtnId = "addCellBtn";
 
-            WebElementUtils.Click(Driver, addSectionBtnId);
-            WebElementUtils.Click(Driver, addCellBtnId);
+            Driver.Click(addSectionBtnId);
+            Driver.Click(addCellBtnId);
             var addImage = "TabelViewTest2_add.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, addImage);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, addImage));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(addImage));
         }
 
         [Test]
@@ -80,10 +58,10 @@ namespace Appium.UITests
         {
             var removeCellBtnId = "removeCellBtn";
 
-            WebElementUtils.Click(Driver, removeCellBtnId);
+            Driver.Click(removeCellBtnId);
             var removeImage = "TabelViewTest2_remove.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, removeImage);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, removeImage));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(removeImage));
         }
     }
 }

@@ -1,47 +1,25 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class SetColorTest
+    [TestFixture]
+    public class SetColorTest : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public SetColorTest(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ChangeColorTest()
         {
             var btnId = "button";
-            string currentButton = WebElementUtils.GetAttribute(Driver, "button", "TextColor");
-            string currentai = WebElementUtils.GetAttribute(Driver, "ai", "Color");
-            string currentbv = WebElementUtils.GetAttribute(Driver, "bv", "Color");
-            string currentst = WebElementUtils.GetAttribute(Driver, "st", "Color");
+            string currentButton = Driver.GetAttribute<string>("button", "TextColor");
+            string currentai = Driver.GetAttribute<string>("ai", "Color");
+            string currentbv = Driver.GetAttribute<string>("bv", "Color");
+            string currentst = Driver.GetAttribute<string>("st", "BackgroundColor");
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
-            string changedButton = WebElementUtils.GetAttribute(Driver, "button", "TextColor");
-            string changedai = WebElementUtils.GetAttribute(Driver, "ai", "Color");
-            string changedbv = WebElementUtils.GetAttribute(Driver, "bv", "Color");
-            string changedst = WebElementUtils.GetAttribute(Driver, "st", "Color");
+            string changedButton = Driver.GetAttribute<string>("button", "TextColor");
+            string changedai = Driver.GetAttribute<string>("ai", "Color");
+            string changedbv = Driver.GetAttribute<string>("bv", "Color");
+            string changedst = Driver.GetAttribute<string>("st", "BackgroundColor");
 
             Assert.AreNotEqual(currentButton, changedButton);
             Assert.AreNotEqual(currentai, changedai);

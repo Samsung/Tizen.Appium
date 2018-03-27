@@ -1,76 +1,46 @@
-﻿using System;
-using OpenQA.Selenium.Appium;
-using OpenQA.Selenium.Appium.Tizen;
-using OpenQA.Selenium.Appium.Android;
-using OpenQA.Selenium.Remote;
 using NUnit.Framework;
-using OpenQA.Selenium.Appium.MultiTouch;
-using OpenQA.Selenium.Interactions.Internal;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class EntryTest
+    [TestFixture]
+    public class EntryTest : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public EntryTest(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void SetTextTest()
         {
-            string before = WebElementUtils.GetText(Driver, "emptyEntry");
+            string before = Driver.GetText("emptyEntry");
             string addString = "ABCDEFG";
-            WebElementUtils.SetText(Driver, "emptyEntry", addString);
+            Driver.SetText("emptyEntry", addString);
 
             EntryUnfocused();
 
-            string after = WebElementUtils.GetText(Driver, "emptyEntry");
-            Assert.AreEqual(before+addString, after);
+            string after = Driver.GetText("emptyEntry");
+            Assert.AreEqual(before + addString, after);
         }
 
         [Test]
         public void SetTextTest2()
         {
-            string before = WebElementUtils.GetText(Driver, "passwdEntry");
+            string before = Driver.GetText("passwdEntry");
             string addString = "ABCDEFG";
-            WebElementUtils.SetText(Driver, "passwdEntry", addString);
+            Driver.SetText("passwdEntry", addString);
 
             EntryUnfocused();
 
-            string after = WebElementUtils.GetText(Driver, "passwdEntry");
+            string after = Driver.GetText("passwdEntry");
             Assert.AreEqual(before + addString, after);
         }
 
         [Test]
         public void GetTextTest()
         {
-            string result = WebElementUtils.GetText(Driver, "longEntry");
+            string result = Driver.GetText("longEntry");
             Assert.AreEqual("This is a Entry with very looooooooooooong looooooooooooooong text", result);
         }
 
         void EntryUnfocused()
         {
-            var touchScreen = new RemoteTouchScreen(Driver.Driver);
-            touchScreen.Down(240, 187);
-            touchScreen.Up(240, 187);
+            Driver.Click(240, 187);
         }
     }
 }

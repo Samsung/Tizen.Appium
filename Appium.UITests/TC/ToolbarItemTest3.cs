@@ -1,36 +1,22 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class ToolbarItemTest3
+    [TestFixture]
+    public class ToolbarItemTest3 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public ToolbarItemTest3(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
+        //All tests are done. Driver wil be closed
+        //[TestFixtureTearDown]
+        //public new void TestFixtureTearDown()
+        //{
+        //    Driver.Quit();
+        //}
 
         [Test]
         public void AddToolbarItem()
         {
-            WebElementUtils.Click(Driver, "addPrimaryItemButton");
-            WebElementUtils.Click(Driver, "addPrimaryItemButton2");
+            Driver.Click("addPrimaryItemButton");
+            Driver.Click("addPrimaryItemButton2");
 
             Assert.AreEqual(true, true);
         }
@@ -38,7 +24,7 @@ namespace Appium.UITests
         [Test]
         public void RemoveToolbarItem()
         {
-            WebElementUtils.Click(Driver, "removeItemButton");
+            Driver.Click("removeItemButton");
 
             Assert.AreEqual(true, true);
         }
@@ -46,7 +32,7 @@ namespace Appium.UITests
         [Test]
         public void ChangePriority()
         {
-            WebElementUtils.Click(Driver, "changeItemButton");
+            Driver.Click("changeItemButton");
 
             Assert.AreEqual(true, true);
         }
@@ -54,7 +40,7 @@ namespace Appium.UITests
         [Test]
         public void ChangeIcon()
         {
-            WebElementUtils.Click(Driver, "changeIconButton");
+            Driver.Click("changeIconButton");
 
             Assert.AreEqual(true, true);
         }

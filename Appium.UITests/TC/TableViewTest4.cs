@@ -1,32 +1,10 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class TableViewTest4
+    [TestFixture]
+    public class TableViewTest4 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public TableViewTest4(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ViewTest()
         {
@@ -36,21 +14,21 @@ namespace Appium.UITests
             var setMinus1BtnId = "btnSet_minus1";
             var sliderId = "slider";
 
-            var hasUnevenCell = WebElementUtils.GetAttribute<bool>(Driver, tableViewId, "HasUnevenRows");
+            var hasUnevenCell = Driver.GetAttribute<bool>(tableViewId, "HasUnevenRows");
             if (!hasUnevenCell)
             {
-                WebElementUtils.Click(Driver, checkId);
+                Driver.Click(checkId);
             }
 
-            WebElementUtils.Click(Driver, set0BtnId);
+            Driver.Click(set0BtnId);
 
-            WebElementUtils.SetAttribute(Driver, sliderId, "Value", 100);
+            Driver.SetAttribute(sliderId, "Value", 100);
 
-            WebElementUtils.Click(Driver, setMinus1BtnId);
+            Driver.Click(setMinus1BtnId);
 
             var image = "TabelViewTest4.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, imageName);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
     }
 }

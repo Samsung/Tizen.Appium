@@ -1,38 +1,10 @@
-using System;
-using OpenQA.Selenium.Appium;
-using OpenQA.Selenium.Appium.Tizen;
-using OpenQA.Selenium.Appium.Android;
-using OpenQA.Selenium.Remote;
 using NUnit.Framework;
-using OpenQA.Selenium.Appium.MultiTouch;
-using OpenQA.Selenium.Interactions.Internal;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class EditorTest2
+    [TestFixture]
+    public class EditorTest2 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public EditorTest2(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void SetTextTest()
         {
@@ -40,12 +12,12 @@ namespace Appium.UITests
             var editorId = "editor";
             string add = "abcdefg";
 
-            string origin = WebElementUtils.GetText(Driver, longEditorId);
+            string origin = Driver.GetText(longEditorId);
 
-            WebElementUtils.SetText(Driver, longEditorId, add);
+            Driver.SetText(longEditorId, add);
 
-            WebElementUtils.Click(Driver, editorId);
-            string result = WebElementUtils.GetText(Driver, longEditorId);
+            Driver.Click(editorId);
+            string result = Driver.GetText(longEditorId);
             Assert.AreEqual(origin + add, result);
         }
 
@@ -56,11 +28,11 @@ namespace Appium.UITests
             var editorId = "editor";
             string add = "ABC";
 
-            WebElementUtils.SetText(Driver, longEditorId, add);
-            WebElementUtils.Click(Driver, editorId);
+            Driver.SetText(longEditorId, add);
+            Driver.Click(editorId);
 
-            WebElementUtils.Click(Driver, editorId);
-            string result = WebElementUtils.GetText(Driver, editorId);
+            Driver.Click(longEditorId);
+            string result = Driver.GetText(editorId);
 
             Assert.AreEqual("Editing completed", result);
         }

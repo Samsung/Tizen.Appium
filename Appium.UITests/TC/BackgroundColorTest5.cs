@@ -1,79 +1,52 @@
-﻿using System;
-using OpenQA.Selenium.Appium;
-using OpenQA.Selenium.Appium.Tizen;
-using OpenQA.Selenium.Appium.Android;
-using OpenQA.Selenium.Remote;
 using NUnit.Framework;
-using System.Drawing;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class BackgroundColorTest5
+    [TestFixture]
+    public class BackgroundColorTest5 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public BackgroundColorTest5(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ActivityIndicatorBackgroundTest()
         {
-            string result = WebElementUtils.GetAttribute(Driver, "ai", "BackgroundColor");
-            WebElementUtils.Click(Driver, "button1");
-            string result2 = WebElementUtils.GetAttribute(Driver, "ai", "BackgroundColor");
+            string result = Driver.GetAttribute<string>("ai", "BackgroundColor");
+            Driver.Click("button1");
+            string result2 = Driver.GetAttribute<string>("ai", "BackgroundColor");
             Assert.AreNotEqual(result, result2);
         }
 
         [Test]
         public void LabelBackgroundTest()
         {
-            string result = WebElementUtils.GetAttribute(Driver, "label", "BackgroundColor");
-            WebElementUtils.Click(Driver, "button1");
-            string result2 = WebElementUtils.GetAttribute(Driver, "label", "BackgroundColor");
+            string result = Driver.GetAttribute<string>("label", "BackgroundColor");
+            Driver.Click("button1");
+            string result2 = Driver.GetAttribute<string>("label", "BackgroundColor");
             Assert.AreNotEqual(result, result2);
         }
 
         [Test]
         public void EntryBackgroundTest()
         {
-            string result = WebElementUtils.GetAttribute(Driver, "entry", "BackgroundColor");
-            WebElementUtils.Click(Driver, "button1");
-            string result2 = WebElementUtils.GetAttribute(Driver, "entry", "BackgroundColor");
+            string result = Driver.GetAttribute<string>("entry", "BackgroundColor");
+            Driver.Click("button1");
+            string result2 = Driver.GetAttribute<string>("entry", "BackgroundColor");
             Assert.AreNotEqual(result, result2);
         }
 
         [Test]
         public void SliderBackgroundTest()
         {
-            string result = WebElementUtils.GetAttribute(Driver, "slider", "BackgroundColor");
-            WebElementUtils.Click(Driver, "button1");
-            string result2 = WebElementUtils.GetAttribute(Driver, "slider", "BackgroundColor");
+            string result = Driver.GetAttribute<string>("slider", "BackgroundColor");
+            Driver.Click("button1");
+            string result2 = Driver.GetAttribute<string>("slider", "BackgroundColor");
             Assert.AreNotEqual(result, result2);
         }
 
         [Test]
         public void ProgressBarBackgroundTest()
         {
-            string result = WebElementUtils.GetAttribute(Driver, "progress", "BackgroundColor");
-            WebElementUtils.Click(Driver, "button1");
-            string result2 = WebElementUtils.GetAttribute(Driver, "progress", "BackgroundColor");
+            string result = Driver.GetAttribute<string>("progress", "BackgroundColor");
+            Driver.Click("button1");
+            string result2 = Driver.GetAttribute<string>("progress", "BackgroundColor");
             Assert.AreNotEqual(result, result2);
         }
     }

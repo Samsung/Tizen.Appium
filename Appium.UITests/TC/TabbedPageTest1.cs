@@ -1,44 +1,22 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class TabbedPageTest1
+    [TestFixture]
+    public class TabbedPageTest1 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public TabbedPageTest1(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ShowHideTest()
         {
             var hideBtnId = "hide";
             var showBtnId = "show";
 
-            WebElementUtils.Click(Driver, showBtnId);
+            Driver.Click(showBtnId);
 
-            WebElementUtils.Click(Driver, hideBtnId);
+            Driver.Click(hideBtnId);
             var image = "TabbedPageTest1_hide.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
@@ -47,11 +25,11 @@ namespace Appium.UITests
             var hideBtnId = "hide";
             var showBtnId = "show";
 
-            WebElementUtils.Click(Driver, showBtnId);
+            Driver.Click(showBtnId);
 
             var image = "TabbedPageTest1_show.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
     }
 }

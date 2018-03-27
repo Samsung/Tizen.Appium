@@ -1,32 +1,10 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class ListViewTest11
+    [TestFixture]
+    public class ListViewTest11 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public ListViewTest11(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void HasUnevenRowsTrueTest()
         {
@@ -35,15 +13,15 @@ namespace Appium.UITests
             var sliderId = "slider";
             var itemId = "list item 1";
 
-            var hasUnevenRows = WebElementUtils.GetAttribute<bool>(Driver, listId, "HasUnevenRows");
+            var hasUnevenRows = Driver.GetAttribute<bool>(listId, "HasUnevenRows");
             if (!hasUnevenRows)
             {
-                WebElementUtils.Click(Driver, checkId);
+                Driver.Click(checkId);
             }
 
-            WebElementUtils.SetAttribute(Driver, sliderId, "Value", 300);
+            Driver.SetAttribute(sliderId, "Value", 300);
 
-            var height = WebElementUtils.GetAttribute<double>(Driver, itemId, "Height");
+            var height = Driver.GetAttribute<double>(itemId, "Height");
             Assert.True((height == 300), "Height value should not be 300");
         }
 
@@ -55,15 +33,15 @@ namespace Appium.UITests
             var sliderId = "slider";
             var itemId = "list item 1";
 
-            var hasUnevenRows = WebElementUtils.GetAttribute<bool>(Driver, listId, "HasUnevenRows");
+            var hasUnevenRows = Driver.GetAttribute<bool>(listId, "HasUnevenRows");
             if (hasUnevenRows)
             {
-                WebElementUtils.Click(Driver, checkId);
+                Driver.Click(checkId);
             }
 
-            WebElementUtils.SetAttribute(Driver, sliderId, "Value", 300);
+            Driver.SetAttribute(sliderId, "Value", 300);
 
-            var height = WebElementUtils.GetAttribute<double>(Driver, itemId, "Height");
+            var height = Driver.GetAttribute<double>(itemId, "Height");
             Assert.True((height != 300), "Height value should be 300");
         }
     }

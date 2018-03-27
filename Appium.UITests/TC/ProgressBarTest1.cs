@@ -1,32 +1,10 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class ProgressBarTest1
+    [TestFixture]
+    public class ProgressBarTest1 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public ProgressBarTest1(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ViewTest()
         {
@@ -34,9 +12,9 @@ namespace Appium.UITests
             var btnid = "playAnimation";
             var value = 1;
 
-            WebElementUtils.Click(Driver, btnid);
+            Driver.Click(btnid);
 
-            var result = WebElementUtils.GetAttribute<double>(Driver, pregressbarId, "Progress");
+            var result = Driver.GetAttribute<double>(pregressbarId, "Progress");
             Assert.True((value == result), "value should be " + result);
         }
 
@@ -47,9 +25,9 @@ namespace Appium.UITests
             var sliderId = "slider";
             var value = 0.5;
 
-            WebElementUtils.SetAttribute(Driver, sliderId, "Value", value);
+            Driver.SetAttribute(sliderId, "Value", value);
 
-            var result = WebElementUtils.GetAttribute<double>(Driver, pregressbarId, "Progress");
+            var result = Driver.GetAttribute<double>(pregressbarId, "Progress");
 
             Assert.True((value == result), "value should be " + result);
         }

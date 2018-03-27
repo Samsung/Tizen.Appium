@@ -1,55 +1,27 @@
-﻿using System;
-using OpenQA.Selenium.Appium;
-using OpenQA.Selenium.Appium.Tizen;
-using OpenQA.Selenium.Appium.Android;
-using OpenQA.Selenium.Remote;
 using NUnit.Framework;
-using OpenQA.Selenium.Appium.MultiTouch;
-using OpenQA.Selenium.Interactions.Internal;
 using System.Drawing;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class GridTest3
+    [TestFixture]
+    public class GridTest3 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public GridTest3(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void OperationLocationTest()
         {
-            Point point = WebElementUtils.GetLocation(Driver, "*");
+            Point point = Driver.GetLocation("*");
             Assert.AreEqual(633, point.X);
             Assert.AreEqual(769, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "-");
+            point = Driver.GetLocation("-");
             Assert.AreEqual(633, point.X);
             Assert.AreEqual(916, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "+");
+            point = Driver.GetLocation("+");
             Assert.AreEqual(633, point.X);
             Assert.AreEqual(1063, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "/");
+            point = Driver.GetLocation("/");
             Assert.AreEqual(633, point.X);
             Assert.AreEqual(622, point.Y);
         }
@@ -57,39 +29,39 @@ namespace Appium.UITests
         [Test]
         public void NumberButtonLocationTest()
         {
-            Point point = WebElementUtils.GetLocation(Driver, "1");
+            Point point = Driver.GetLocation("1");
             Assert.AreEqual(87, point.X);
             Assert.AreEqual(1063, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "2");
+            point = Driver.GetLocation("2");
             Assert.AreEqual(269, point.X);
             Assert.AreEqual(1063, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "3");
+            point = Driver.GetLocation("3");
             Assert.AreEqual(451, point.X);
             Assert.AreEqual(1063, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "4");
+            point = Driver.GetLocation("4");
             Assert.AreEqual(87, point.X);
             Assert.AreEqual(916, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "5");
+            point = Driver.GetLocation("5");
             Assert.AreEqual(269, point.X);
             Assert.AreEqual(916, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "6");
+            point = Driver.GetLocation("6");
             Assert.AreEqual(451, point.X);
             Assert.AreEqual(916, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "7");
+            point = Driver.GetLocation("7");
             Assert.AreEqual(87, point.X);
             Assert.AreEqual(769, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "8");
+            point = Driver.GetLocation("8");
             Assert.AreEqual(269, point.X);
             Assert.AreEqual(769, point.Y);
 
-            point = WebElementUtils.GetLocation(Driver, "9");
+            point = Driver.GetLocation("9");
             Assert.AreEqual(451, point.X);
             Assert.AreEqual(769, point.Y);
         }
@@ -97,19 +69,19 @@ namespace Appium.UITests
         [Test]
         public void OperationSizeTest()
         {
-            Size area = WebElementUtils.GetSize(Driver, "*");
+            Size area = Driver.GetSize("*");
             Assert.AreEqual(70, area.Height);
             Assert.AreEqual(88, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "-");
+            area = Driver.GetSize("-");
             Assert.AreEqual(70, area.Height);
             Assert.AreEqual(88, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "+");
+            area = Driver.GetSize("+");
             Assert.AreEqual(70, area.Height);
             Assert.AreEqual(88, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "/");
+            area = Driver.GetSize("/");
             Assert.AreEqual(70, area.Height);
             Assert.AreEqual(88, area.Width);
         }
@@ -117,39 +89,39 @@ namespace Appium.UITests
         [Test]
         public void BottomSizeTest()
         {
-            Size area = WebElementUtils.GetSize(Driver, "1");
+            Size area = Driver.GetSize("1");
             Assert.AreEqual(70, area.Height);
             Assert.AreEqual(88, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "2");
+            area = Driver.GetSize("2");
             Assert.AreEqual(70, area.Height);
             Assert.AreEqual(88, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "3");
+            area = Driver.GetSize("3");
             Assert.AreEqual(70, area.Height);
             Assert.AreEqual(88, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "4");
+            area = Driver.GetSize("4");
             Assert.AreEqual(70, area.Height);
             Assert.AreEqual(88, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "5");
+            area = Driver.GetSize("5");
             Assert.AreEqual(70, area.Height);
             Assert.AreEqual(88, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "6");
+            area = Driver.GetSize("6");
             Assert.AreEqual(70, area.Height);
             Assert.AreEqual(88, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "7");
+            area = Driver.GetSize("7");
             Assert.AreEqual(70, area.Height);
             Assert.AreEqual(88, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "8");
+            area = Driver.GetSize("8");
             Assert.AreEqual(70, area.Height);
             Assert.AreEqual(88, area.Width);
 
-            area = WebElementUtils.GetSize(Driver, "9");
+            area = Driver.GetSize("9");
             Assert.AreEqual(70, area.Height);
             Assert.AreEqual(88, area.Width);
         }

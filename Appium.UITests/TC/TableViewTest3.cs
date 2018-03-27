@@ -1,32 +1,10 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class TableViewTest3
+    [TestFixture]
+    public class TableViewTest3 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public TableViewTest3(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ViewTest()
         {
@@ -34,26 +12,26 @@ namespace Appium.UITests
             var changeHasUnevenCellBtnId = "change";
             var plusRowHeightBtnId = "+10";
 
-            var hasUnevenCell = WebElementUtils.GetAttribute<bool>(Driver, tableViewId, "HasUnevenRows");
+            var hasUnevenCell = Driver.GetAttribute<bool>(tableViewId, "HasUnevenRows");
             if (!hasUnevenCell)
             {
-                WebElementUtils.Click(Driver, changeHasUnevenCellBtnId);
+                Driver.Click(changeHasUnevenCellBtnId);
             }
 
-            WebElementUtils.Click(Driver, plusRowHeightBtnId);
+            Driver.Click(plusRowHeightBtnId);
             var plusImage = "TabelViewTest3_plus.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, plusImage);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, plusImage));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(plusImage));
         }
 
         [Test]
         public void ViewTest2()
         {
             var minusRowHeightBtnId = "-10";
-            WebElementUtils.Click(Driver, minusRowHeightBtnId);
+            Driver.Click(minusRowHeightBtnId);
             var minusImage = "TabelViewTest3_minus.png";
-            WebElementUtils.GetScreenshotAndSave(Driver, minusImage);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, minusImage));
+            //Driver.GetScreenshotAndSave(minusImage);
+            Assert.AreEqual(true, Driver.CompareToScreenshot(minusImage));
         }
     }
 }

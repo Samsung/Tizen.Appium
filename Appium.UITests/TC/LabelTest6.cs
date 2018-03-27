@@ -2,82 +2,61 @@ using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class LabelTest6
+    [TestFixture]
+    public class LabelTest6 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public LabelTest6(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void BoldTest()
         {
-            WebElementUtils.Click(Driver, "boldBtn");
+            Driver.Click("boldBtn");
         }
 
         [Test]
         public void ItalicTest()
         {
-            WebElementUtils.Click(Driver, "italic");
+            Driver.Click("italic");
         }
 
         [Test]
         public void LargerFontTest()
         {
-            WebElementUtils.Click(Driver, "largerFont");
+            Driver.Click("largerFont");
         }
 
         [Test]
         public void SmallerFontTest()
         {
-            WebElementUtils.Click(Driver, "smallerFont");
+            Driver.Click("smallerFont");
         }
 
         [Test]
         public void WordWrapTest()
         {
-            WebElementUtils.Click(Driver, "wordWrap");
+            Driver.Click("wordWrap");
         }
 
         [Test]
         public void CharWrapTest()
         {
-            WebElementUtils.Click(Driver, "charWrap");
+            Driver.Click("charWrap");
         }
 
         [Test]
         public void HeadWrapTest()
         {
-            WebElementUtils.Click(Driver, "headWrap");
+            Driver.Click("headWrap");
         }
 
         [Test]
         public void MiddleWrapTest()
         {
-            WebElementUtils.Click(Driver, "middleWrap");
+            Driver.Click("middleWrap");
         }
 
         [Test]
         public void NoWrapTest()
         {
-            WebElementUtils.Click(Driver, "noWrap");
+            Driver.Click("noWrap");
         }
     }
 }

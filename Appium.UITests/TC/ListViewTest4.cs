@@ -1,38 +1,16 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class ListViewTest4
+    [TestFixture]
+    public class ListViewTest4 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public ListViewTest4(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void SelectItemTest()
         {
             var btnId = "setButton";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             // screenshot
         }
@@ -42,7 +20,7 @@ namespace Appium.UITests
         {
             var btnId = "setButton2";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
             // screenshot
         }
 
@@ -51,7 +29,7 @@ namespace Appium.UITests
         {
             var btnId = "setButton3";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             // screenshot
         }

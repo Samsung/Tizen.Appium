@@ -1,117 +1,93 @@
-using System;
 using NUnit.Framework;
+using System;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class MasterDetailedTest3
+    [TestFixture]
+    public class MasterDetailedTest3 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public MasterDetailedTest3(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ToggleTest()
         {
             var pageId = "MasterDetailPage";
-            var touchScreen = new RemoteTouchScreenUtils(Driver);
             var masterBtnId = "master_button1";
             var togglBtnId = "detail_button1";
 
-            var isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
+            var isPresented = Driver.GetAttribute<bool>(pageId, "IsPresented");
 
-            if (Convert.ToBoolean(isPresented))
+            if (isPresented)
             {
-                WebElementUtils.Click(Driver, masterBtnId);
+                Driver.Click(masterBtnId);
             }
 
-            isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
+            isPresented = Driver.GetAttribute<bool>(pageId, "IsPresented");
             Assert.False(Convert.ToBoolean(isPresented), "IsPresented should not be false, but got " + isPresented);
 
-            WebElementUtils.Click(Driver, togglBtnId);
+            Driver.Click(togglBtnId);
 
-            isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
+            isPresented = Driver.GetAttribute<bool>(pageId, "IsPresented");
             Assert.True(Convert.ToBoolean(isPresented), "IsPresented should not be true, but got " + isPresented);
 
             var image = "MasterDetailedTest3_toggle.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
         public void ChangeTest()
         {
             var pageId = "MasterDetailPage";
-            var touchScreen = new RemoteTouchScreenUtils(Driver);
             var togglBtnId = "detail_button1";
             var masterBtnId = "master_button1";
             var changeBtnId = "detail_button2";
 
-            var isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
+            var isPresented = Driver.GetAttribute<bool>(pageId, "IsPresented");
 
-            if (Convert.ToBoolean(isPresented))
+            if (isPresented)
             {
-                WebElementUtils.Click(Driver, masterBtnId);
+                Driver.Click(masterBtnId);
             }
 
-            isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
+            isPresented = Driver.GetAttribute<bool>(pageId, "IsPresented");
             Assert.False(Convert.ToBoolean(isPresented), "IsPresented should not be false, but got " + isPresented);
 
-            WebElementUtils.Click(Driver, changeBtnId);
-            WebElementUtils.Click(Driver, togglBtnId);
+            Driver.Click(changeBtnId);
+            Driver.Click(togglBtnId);
 
-            isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
+            isPresented = Driver.GetAttribute<bool>(pageId, "IsPresented");
             Assert.True(Convert.ToBoolean(isPresented), "IsPresented should not be true, but got " + isPresented);
 
             var image = "MasterDetailedTest3_change.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
 
         [Test]
         public void RestoreTest()
         {
             var pageId = "MasterDetailPage";
-            var touchScreen = new RemoteTouchScreenUtils(Driver);
             var masterBtnId = "master_button1";
             var togglBtnId = "detail_button1";
             var restoreBtnId = "detail_button3";
 
-            var isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
-            if (Convert.ToBoolean(isPresented))
+            var isPresented = Driver.GetAttribute<bool>(pageId, "IsPresented");
+            if (isPresented)
             {
-                WebElementUtils.Click(Driver, masterBtnId);
+                Driver.Click(masterBtnId);
             }
 
-            isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
+            isPresented = Driver.GetAttribute<bool>(pageId, "IsPresented");
             Assert.False(Convert.ToBoolean(isPresented), "IsPresented should not be false, but got " + isPresented);
 
-            WebElementUtils.Click(Driver, restoreBtnId);
-            WebElementUtils.Click(Driver, togglBtnId);
+            Driver.Click(restoreBtnId);
+            Driver.Click(togglBtnId);
 
-            isPresented = WebElementUtils.GetAttribute(Driver, pageId, "IsPresented");
+            isPresented = Driver.GetAttribute<bool>(pageId, "IsPresented");
             Assert.True(Convert.ToBoolean(isPresented), "IsPresented should not be true, but got " + isPresented);
 
             var image = "MasterDetailedTest3_restore.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
     }
 }

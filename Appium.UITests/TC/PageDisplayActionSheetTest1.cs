@@ -1,44 +1,22 @@
-using System;
 using NUnit.Framework;
 
 namespace Appium.UITests
 {
-    [TestFixture(FormsTizenGalleryUtils.Platform)]
-    public class PageDisplayActionSheetTest1
+    [TestFixture]
+    public class PageDisplayActionSheetTest1 : TestTemplate
     {
-        string PlatformName;
-        AppiumDriver Driver;
-
-        public PageDisplayActionSheetTest1(string platform)
-        {
-            PlatformName = platform;
-        }
-
-        [TestFixtureSetUp]
-        public void Setup()
-        {
-            Driver = new AppiumDriver(PlatformName);
-            FormsTizenGalleryUtils.FindTC(Driver, this.GetType().Name);
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            Driver.Quit();
-        }
-
         [Test]
         public void ViewTest()
         {
             var btnId = "button";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             var image = "PageDisplayActionSheetTest1_button.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
 
-            Driver.Driver.Navigate().Back();
+            Driver.GoBack();
             System.Threading.Thread.Sleep(1000);
         }
 
@@ -47,13 +25,13 @@ namespace Appium.UITests
         {
             var btnId = "button1";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             var image = "PageDisplayActionSheetTest1_button1.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
 
-            Driver.Driver.Navigate().Back();
+            Driver.GoBack();
             System.Threading.Thread.Sleep(1000);
         }
 
@@ -62,13 +40,13 @@ namespace Appium.UITests
         {
             var btnId = "button2";
 
-            WebElementUtils.Click(Driver, btnId);
+            Driver.Click(btnId);
 
             var image = "PageDisplayActionSheetTest1_button3.png";
             //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, WebElementUtils.CompareToScreenshot(Driver, image));
+            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
 
-            Driver.Driver.Navigate().Back();
+            Driver.GoBack();
             System.Threading.Thread.Sleep(1000);
         }
     }
