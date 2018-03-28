@@ -30,18 +30,15 @@ namespace Appium.UITests
             Assert.True((currenPageBefore == currenPageAfter), "CurrenPage should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image = "NavigationPageAsyncTest2_insert.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
             Driver.GoBack();
 
             var image2 = "NavigationPageAsyncTest2_insert2.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image2);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image2));
+            Driver.CheckScreenshot(image2);
             Driver.GoBack();
 
             var image3 = "NavigationPageAsyncTest2_insert3.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image3);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image3));
+            Driver.CheckScreenshot(image3);
 
             System.Threading.Thread.Sleep(3000);
         }
@@ -63,8 +60,7 @@ namespace Appium.UITests
             Assert.True((currentPageBefore != currentPageAfter), "current page should not be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image = "NavigationPageAsyncTest2_removeTop.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
 
             Driver.Click(removeBtnId);
 
@@ -74,8 +70,7 @@ namespace Appium.UITests
             Assert.True((currentPageBefore == currentPageAfter), "current page should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image2 = "NavigationPageAsyncTest2_removeTop2.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image2);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image2));
+            Driver.CheckScreenshot(image2);
         }
 
         [Test]
@@ -102,8 +97,7 @@ namespace Appium.UITests
             Assert.True((currentPageBefore != currentPageAfter), "current page should not be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image = "NavigationPageAsyncTest2_removeBefore.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
 
             depthBefore = depthAfter;
             currentPageBefore = currentPageAfter;
@@ -116,15 +110,13 @@ namespace Appium.UITests
             Assert.True((currentPageBefore == currentPageAfter), "current page should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image2 = "NavigationPageAsyncTest2_removeBefore2.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image2);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image2));
+            Driver.CheckScreenshot(image2);
 
             Driver.GoBack();
             System.Threading.Thread.Sleep(3000);
 
             var image3 = "NavigationPageAsyncTest2_removeBefore3.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image3);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image3));
+            Driver.CheckScreenshot(image3);
         }
 
         int GetNavigationStackDepth()

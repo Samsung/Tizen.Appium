@@ -11,16 +11,15 @@ namespace Appium.UITests
             var btnId = "button";
 
             Driver.Click(btnId);
+            System.Threading.Thread.Sleep(1500);
 
             var image = "ListViewTest8.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
 
             Driver.Click(btnId);
 
             var image2 = "ListViewTest8_2.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image2);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image2));
+            Driver.CheckScreenshot(image2);
         }
     }
 }

@@ -13,8 +13,7 @@ namespace Appium.UITests
             Driver.Click(insertBeforeBtnId);
 
             var image = "TabbedPageTest4_insertBeforeButton_1.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -25,8 +24,7 @@ namespace Appium.UITests
             Driver.Click(insertAfterBtnId);
 
             var image = "TabbedPageTest4_insertAfterButton_1.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -37,8 +35,7 @@ namespace Appium.UITests
             Driver.Click(removeBtnId);
 
             var image = "TabbedPageTest4_removeButton_1.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

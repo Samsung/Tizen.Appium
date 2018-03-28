@@ -22,8 +22,7 @@ namespace Appium.UITests
             Assert.True(Convert.ToBoolean(isPresented), "IsPresented should be true, but got " + isPresented);
 
             var image = "MasterDetailedTest1.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

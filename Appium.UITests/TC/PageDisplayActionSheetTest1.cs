@@ -13,8 +13,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "PageDisplayActionSheetTest1_button.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
 
             Driver.GoBack();
             System.Threading.Thread.Sleep(1000);
@@ -28,8 +27,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "PageDisplayActionSheetTest1_button1.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
 
             Driver.GoBack();
             System.Threading.Thread.Sleep(1000);
@@ -43,8 +41,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "PageDisplayActionSheetTest1_button3.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
 
             Driver.GoBack();
             System.Threading.Thread.Sleep(1000);

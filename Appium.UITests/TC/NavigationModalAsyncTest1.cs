@@ -20,8 +20,7 @@ namespace Appium.UITests
             Assert.True((depthBefore == depthAfter), "StackDepth should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image = "NavigationModalAsyncTest1_pushAndPop.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
 
             Driver.Click(popBtnId);
         }
@@ -39,8 +38,7 @@ namespace Appium.UITests
             Assert.True((depthBefore == depthAfter), "StackDepth should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image = "NavigationModalAsyncTest1_popPush.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -56,8 +54,7 @@ namespace Appium.UITests
             Assert.True((depthBefore == depthAfter), "StackDepth should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image = "NavigationModalAsyncTest1_pushPop.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -75,8 +72,7 @@ namespace Appium.UITests
             Assert.True((depthBefore == depthAfter), "StackDepth should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
             var image = "NavigationModalAsyncTest1_pushPush.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
 
             Driver.Click(popBtn3Id);
             Driver.Click(popBtn2Id);

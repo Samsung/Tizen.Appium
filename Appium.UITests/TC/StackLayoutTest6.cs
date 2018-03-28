@@ -9,8 +9,7 @@ namespace Appium.UITests
         public void ViewTest()
         {
             var image = "StackLayoutTest6.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -21,8 +20,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "StackLayoutTest6_orientation.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -38,8 +36,7 @@ namespace Appium.UITests
             Driver.SetAttribute(spacingSliderId, "Value", 100);
 
             var image = "StackLayoutTest6_padding.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

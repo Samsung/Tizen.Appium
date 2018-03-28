@@ -24,8 +24,7 @@ namespace Appium.UITests
             Assert.AreEqual(expect, ret);
 
             var image = "ImageTest.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -47,8 +46,7 @@ namespace Appium.UITests
             Assert.AreEqual(expect, ret);
 
             var image = "ImageTest_2.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -70,8 +68,7 @@ namespace Appium.UITests
             Assert.AreEqual(expect, ret);
 
             var image = "ImageTest_3.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

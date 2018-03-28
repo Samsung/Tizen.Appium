@@ -13,8 +13,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "StepperTest1_increase.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -29,8 +28,7 @@ namespace Appium.UITests
             Driver.Click(deBtnId);
 
             var image = "StepperTest1_decrease.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

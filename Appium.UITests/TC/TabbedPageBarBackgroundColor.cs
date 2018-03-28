@@ -13,8 +13,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "TabbedPageBarBackgroundColor_changeTitle.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -25,8 +24,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "TabbedPageBarBackgroundColor_changeBackground.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

@@ -13,8 +13,7 @@ namespace Appium.UITests
             Driver.SetAttribute(sliderId, "Value", 0.3);
 
             var image = "FrameLayoutTest3.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

@@ -9,8 +9,7 @@ namespace Appium.UITests
         public void ViewTest()
         {
             var image = "RecalculateTest1.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -20,8 +19,7 @@ namespace Appium.UITests
             Driver.Click(pickerid);
 
             var image = "RecalculateTest1_clear.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

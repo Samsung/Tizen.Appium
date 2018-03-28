@@ -14,8 +14,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "StackLayoutTest8_orientation.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
 
             Driver.Click(resetBtnId);
         }
@@ -32,8 +31,7 @@ namespace Appium.UITests
             Driver.SetAttribute(marginSlider, "Value", 100);
 
             var image = "StackLayoutTest8.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

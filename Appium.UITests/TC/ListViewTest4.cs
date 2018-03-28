@@ -12,7 +12,8 @@ namespace Appium.UITests
 
             Driver.Click(btnId);
 
-            // screenshot
+            var image = "ListViewTest4_setButton.png";
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -21,7 +22,9 @@ namespace Appium.UITests
             var btnId = "setButton2";
 
             Driver.Click(btnId);
-            // screenshot
+
+            var image = "ListViewTest4_setButton2.png";
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -31,7 +34,8 @@ namespace Appium.UITests
 
             Driver.Click(btnId);
 
-            // screenshot
+            var image = "ListViewTest4_setButton3.png";
+            Driver.CheckScreenshot(image);
         }
     }
 }

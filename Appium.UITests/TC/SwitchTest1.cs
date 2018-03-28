@@ -19,8 +19,7 @@ namespace Appium.UITests
             Assert.True((toggledBefore != toggledAfter), "IsToggled should be changed, but got before: " + toggledBefore + ", after: " + toggledAfter);
 
             var image = "SwitchTest1_switch.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
 
             //reset
             if (toggledBefore != toggledAfter)
@@ -37,8 +36,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "SwitchTest1_start.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -49,8 +47,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "SwitchTest1_center.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -61,8 +58,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "SwitchTest1_end.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -73,8 +69,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "SwitchTest1_startAndExpand.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -85,8 +80,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "SwitchTest1_centerAndExpand.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -97,8 +91,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "SwitchTest1_endAndExpand.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -109,8 +102,7 @@ namespace Appium.UITests
             Driver.Click(btnId);
 
             var image = "SwitchTest1_fillAndExpand.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

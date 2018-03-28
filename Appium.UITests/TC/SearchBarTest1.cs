@@ -14,8 +14,7 @@ namespace Appium.UITests
             System.Threading.Thread.Sleep(2000);
 
             var image = "SearchBarTest1.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

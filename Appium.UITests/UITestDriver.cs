@@ -63,8 +63,8 @@ namespace Appium.UITests
             //capabillities.SetCapability("deviceName", "emulator-26101");
             capabillities.SetCapability("appPackage", "org.tizen.example.FormsTizenGallery.Tizen");
             capabillities.SetCapability("app", "FormsTizenGallery.Tizen-1.0.0.tpk");
-            //var driver = new TizenDriver<AppiumWebElement>(new Uri("http://192.168.0.49:8080/wd/hub"), capabillities);
-            _driver = new TizenDriver<AppiumWebElement>(new Uri("http://10.113.111.169:8080/wd/hub"), capabillities);
+            _driver = new TizenDriver<AppiumWebElement>(new Uri("http://192.168.0.49:4723/wd/hub"), capabillities);
+            //_driver = new TizenDriver<AppiumWebElement>(new Uri("http://10.113.113.120:4723/wd/hub"), capabillities);
             _touchScreen = new RemoteTouchScreen(_driver);
         }
 
@@ -98,7 +98,7 @@ namespace Appium.UITests
             }
 
             var currentPage = GetAttribute<string>("MainPage", "CurrentPage");
-            while (currentPage != "HomePage")
+            while (currentPage.IndexOf("HomePage") == -1)
             {
                 _driver.Navigate().Back();
                 System.Threading.Thread.Sleep(1000);
@@ -232,41 +232,46 @@ namespace Appium.UITests
 
             Screenshot screenshot = tizenDriver.GetScreenshot();
 
-            Image image = tizenDriver.CropAndConvertImage(screenshot, new Rectangle(0, 35, 720, 1024 - 35));
+            Image image = tizenDriver.TransformScreenshot(screenshot, new Rectangle(0, 35, 720, 1280 - 35));
 
             image.Save(imagePath);
         }
 
         public bool CompareToScreenshot(string imageName)
         {
-            return true;
-            //TizenDriver<AppiumWebElement> tizenDriver = _driver as TizenDriver<AppiumWebElement>;
-            //if (tizenDriver == null)
-            //    return false;
+            TizenDriver<AppiumWebElement> tizenDriver = _driver as TizenDriver<AppiumWebElement>;
+            if (tizenDriver == null)
+                return false;
 
-            //var path = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
-            //if (!File.Exists(path + "/temp"))
-            //{
-            //    Directory.CreateDirectory(path + "/temp");
-            //}
-            //var tempImagePath = path + "/temp/temp.png";
+            var path = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName;
+            if (!File.Exists(path + "/temp"))
+            {
+                Directory.CreateDirectory(path + "/temp");
+            }
+            var tempImagePath = path + "/temp/temp.png";
 
-            //Screenshot screenshot = tizenDriver.GetScreenshot();
+            Screenshot screenshot = tizenDriver.GetScreenshot();
 
-            //Image image = tizenDriver.CropAndConvertImage(screenshot, new Rectangle(0, 35, 720, 1024 - 35));
-            //image.Save(tempImagePath);
+            Image image = tizenDriver.TransformScreenshot(screenshot, new Rectangle(0, 35, 720, 1280 - 35));
+            image.Save(tempImagePath);
 
-            //var orgImage = Image.FromFile(path + "/images/" + imageName);
-            //var compareImage = Image.FromFile(tempImagePath);
+            var orgImage = Image.FromFile(path + "/images/" + imageName);
+            var compareImage = Image.FromFile(tempImagePath);
 
-            //var result = tizenDriver.CompareToImages(orgImage, compareImage);
+            var result = tizenDriver.CompareImages(orgImage, compareImage);
 
-            //image.Dispose();
-            //compareImage.Dispose();
+            image.Dispose();
+            compareImage.Dispose();
 
-            //File.Delete(tempImagePath);
+            File.Delete(tempImagePath);
 
-            //return result;
+            return result;
+        }
+
+        public void CheckScreenshot(string image)
+        {
+            //GetScreenshotAndSave(image);
+            Assert.AreEqual(true, CompareToScreenshot(image));
         }
     }
 }

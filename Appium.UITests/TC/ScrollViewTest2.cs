@@ -17,10 +17,6 @@ namespace Appium.UITests
             var xAfter = Driver.GetAttribute<double>(scrollViewId, "ScrollX");
 
             Assert.True((xBefore < xAfter), "X value should be increased, but got before: " + xBefore + ", after: " + xAfter);
-
-            var image = "ScrollViewTest2.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
     }
 }
