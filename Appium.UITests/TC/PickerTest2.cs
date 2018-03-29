@@ -12,9 +12,10 @@ namespace Appium.UITests
 
             Driver.Click(pickerid);
 
+            System.Threading.Thread.Sleep(1000);
+
             var image = "PickerTest2.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

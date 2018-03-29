@@ -19,9 +19,9 @@ namespace Appium.UITests
             }
 
             Driver.Click(plusRowHeightBtnId);
-            var plusImage = "TabelViewTest3_plus.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, plusImage);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(plusImage));
+
+            var image = "TabelViewTest3_plus.png";
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -29,9 +29,9 @@ namespace Appium.UITests
         {
             var minusRowHeightBtnId = "-10";
             Driver.Click(minusRowHeightBtnId);
-            var minusImage = "TabelViewTest3_minus.png";
-            //Driver.GetScreenshotAndSave(minusImage);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(minusImage));
+
+            var image = "TabelViewTest3_minus.png";
+            Driver.CheckScreenshot(image);
         }
     }
 }

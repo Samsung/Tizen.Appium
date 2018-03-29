@@ -13,8 +13,7 @@ namespace Appium.UITests
             Driver.Click(changeBtnId);
 
             var image = "TabbedPageTest2.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

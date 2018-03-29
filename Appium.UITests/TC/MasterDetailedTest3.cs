@@ -29,8 +29,7 @@ namespace Appium.UITests
             Assert.True(Convert.ToBoolean(isPresented), "IsPresented should not be true, but got " + isPresented);
 
             var image = "MasterDetailedTest3_toggle.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -58,8 +57,7 @@ namespace Appium.UITests
             Assert.True(Convert.ToBoolean(isPresented), "IsPresented should not be true, but got " + isPresented);
 
             var image = "MasterDetailedTest3_change.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -86,8 +84,7 @@ namespace Appium.UITests
             Assert.True(Convert.ToBoolean(isPresented), "IsPresented should not be true, but got " + isPresented);
 
             var image = "MasterDetailedTest3_restore.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

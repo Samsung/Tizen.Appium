@@ -17,8 +17,7 @@ namespace Appium.UITests
             var shortBinding = Driver.GetAttribute<string>(listId, "GroupDisplayBinding");
 
             var image = "ListViewIndexerTest_enable1.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -33,8 +32,7 @@ namespace Appium.UITests
             var shortBinding = Driver.GetAttribute<string>(listId, "GroupDisplayBinding");
 
             var image = "ListViewIndexerTest_enable2.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
 
         [Test]
@@ -49,8 +47,7 @@ namespace Appium.UITests
             var shortBinding = Driver.GetAttribute<string>(listId, "GroupDisplayBinding");
 
             var image = "ListViewIndexerTest_enable3.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }

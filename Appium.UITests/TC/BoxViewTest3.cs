@@ -30,8 +30,8 @@ namespace Appium.UITests
             Assert.True((expectetPreBoxVal == precolor), "Pre-multiplied box color should be " + expectetPreBoxVal);
 
             var image = "BoxViewTest3.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+
+            Driver.CheckScreenshot(image);
         }
     }
 }

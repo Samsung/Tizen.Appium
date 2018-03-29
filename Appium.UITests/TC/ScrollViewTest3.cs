@@ -20,10 +20,6 @@ namespace Appium.UITests
 
             Assert.True((xBefore < xAfter), "X value should be increased, but got before: " + xBefore + ", after: " + xAfter);
             Assert.True((yBefore < yAfter), "y value should be increased, but got before: " + yBefore + ", after: " + yAfter);
-
-            var image = "ScrollViewTest3.png";
-            //WebElementUtils.GetScreenshotAndSave(Driver, image);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
         }
     }
 }

@@ -13,8 +13,7 @@ namespace Appium.UITests
             var image = "TabelViewTest5.png";
 
             Driver.Click(enableBtnId);
-            //WebElementUtils.GetScreenshotAndSave(Driver, imageName);
-            Assert.AreEqual(true, Driver.CompareToScreenshot(image));
+            Driver.CheckScreenshot(image);
         }
     }
 }
