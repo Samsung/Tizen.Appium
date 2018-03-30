@@ -11,15 +11,15 @@ namespace Appium.UITests
         {
             Point entryPt = Driver.GetLocation("entry");
             Assert.AreEqual(360, entryPt.X);
-            Assert.AreEqual(313, entryPt.Y);
+            Assert.AreEqual(354, entryPt.Y);
 
             Point labelPt = Driver.GetLocation("label");
             Assert.AreEqual(360, labelPt.X);
-            Assert.AreEqual(417, labelPt.Y);
+            Assert.AreEqual(499, labelPt.Y);
 
             Point buttonPt = Driver.GetLocation("button");
             Assert.AreEqual(70, buttonPt.X);
-            Assert.AreEqual(650, buttonPt.Y);
+            Assert.AreEqual(732, buttonPt.Y);
         }
 
         [Test]
