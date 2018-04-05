@@ -16,15 +16,13 @@ namespace Tizen.Appium.Dbus
         public DbusConnection(string busName, string objectPath, string interfaceName)
         {
             Log.Debug("DbusConnection");
-
             InitializeDbusConnection(busName, objectPath, interfaceName);
         }
 
         void InitializeDbusConnection(string busName, string objectPath, string interfaceName)
         {
             Log.Debug("InitializeDbusConnection");
-            IntPtr error;
-            Interop.Edbus.dbus_error_init(out error);
+            IntPtr error = IntPtr.Zero;
 
             int ret = Interop.Edbus.e_dbus_init();
             if (ret == 0)
