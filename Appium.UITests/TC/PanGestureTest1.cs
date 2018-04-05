@@ -6,7 +6,7 @@ namespace Appium.UITests
     [TestFixture]
     public class PanGestureTest1 : TestTemplate
     {
-        [Test]
+        //[Test]
         public void ViewTest()
         {
             var containerId = "panContainer";

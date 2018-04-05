@@ -48,7 +48,7 @@ namespace Appium.UITests
         public void PushPushTest()
         {
             var pushPushBtnId = "pushpush_1";
-            var popPopBtnId = "poppop_3";
+            //var popPopBtnId = "poppop_3";
 
             var depthBefore = GetNavigationStackDepth();
 
@@ -60,9 +60,9 @@ namespace Appium.UITests
             Driver.CheckScreenshot(image);
 
             //pop and pop issue
-            Driver.Click(popPopBtnId);
-            depthAfter = GetNavigationStackDepth();
-            Assert.True((depthBefore == depthAfter), "StackDepth should be decreased, but got before: " + depthBefore + ", after: " + depthAfter);
+            //Driver.Click(popPopBtnId);
+            //depthAfter = GetNavigationStackDepth();
+            //Assert.True((depthBefore == depthAfter), "StackDepth should be decreased, but got before: " + depthBefore + ", after: " + depthAfter);
 
             //screenshot crash app
             //var image2 = "NavigationPageAsyncTest1_pushPushPopPop2.png";

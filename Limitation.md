@@ -27,6 +27,12 @@ Tizen Appium Limitation is as following.
     <th>Not selected</th>
   </tr>
   <tr align="left">
+    <th>ListView</th>
+    <th>Property</th>
+    <th>Height</th>
+    <th>Not supported</th>
+  </tr>
+  <tr align="left">
     <th>PanGesture</th>
     <th></th>
     <th></th>
@@ -55,6 +61,12 @@ Tizen Appium Limitation is as following.
     <th>Property</th>
     <th>SearchCommand</th>
     <th>Not selected</th>
+  </tr>
+  <tr align="left">
+    <th>TabGesture</th>
+    <th></th>
+    <th></th>
+    <th>Only single tap supported</th>
   </tr>
   <tr align="left">
     <th>ToolbarItems</th>

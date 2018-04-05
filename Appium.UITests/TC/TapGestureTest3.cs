@@ -21,7 +21,7 @@ namespace Appium.UITests
             Assert.AreEqual(result, true);
         }
 
-        [Test]
+        //[Test]
         public void TapImageDouble()
         {
             bool result = false;

@@ -14,7 +14,7 @@ namespace Appium.UITests
             Assert.AreEqual(rotation, 45);
         }
 
-        [Test]
+        //[Test]
         public void ScaleImageByTap()
         {
             Driver.Click("image", 0);
@@ -25,7 +25,7 @@ namespace Appium.UITests
             Assert.AreEqual(scale, 1.5);
         }
 
-        [Test]
+        //[Test]
         public void TurnedToOriginalStateByTap()
         {
             Driver.Click("image", 0);

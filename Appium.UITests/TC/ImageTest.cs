@@ -23,8 +23,8 @@ namespace Appium.UITests
             string ret = Driver.GetAttribute<string>("img", "Source");
             Assert.AreEqual(expect, ret);
 
-            var image = "ImageTest.png";
-            Driver.CheckScreenshot(image);
+            //var image = "ImageTest.png";
+            //Driver.CheckScreenshot(image);
         }
 
         [Test]
