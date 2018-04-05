@@ -5,7 +5,7 @@ namespace Appium.UITests
     [TestFixture]
     public class ListViewTest9 : TestTemplate
     {
-        [Test]
+        //[Test]
         public void HasUnevenRowsTrueTest()
         {
             var listId = "listView";
@@ -27,7 +27,7 @@ namespace Appium.UITests
             Assert.True((height == 300), "Height value should not be 300");
         }
 
-        [Test]
+        //[Test]
         public void HasUnevenRowsFalseTest()
         {
             var listId = "listView";
