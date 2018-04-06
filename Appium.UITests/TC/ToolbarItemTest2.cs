@@ -38,7 +38,7 @@ namespace Appium.UITests
             Assert.AreEqual(result, true);
         }
 
-        [Test]
+        //[Test]
         public void PushAndPushTest()
         {
             bool result = false;
@@ -65,7 +65,7 @@ namespace Appium.UITests
             Assert.AreEqual(result, true);
         }
 
-        [Test]
+        //[Test]
         public void PushandInsertBeforeTest()
         {
             bool result = false;
