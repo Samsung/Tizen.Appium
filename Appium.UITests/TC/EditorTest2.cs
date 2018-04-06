@@ -21,7 +21,7 @@ namespace Appium.UITests
             Assert.AreEqual(origin + add, result);
         }
 
-        [Test]
+        //[Test]
         public void CompletedTest()
         {
             var longEditorId = "longEditor";
