@@ -6,11 +6,11 @@ namespace Appium.UITests
     public class ToolbarItemTest3 : TestTemplate
     {
         //All tests are done.Driver wil be closed
-        [TestFixtureTearDown]
-        public new void TestFixtureTearDown()
-        {
-            Driver.Quit();
-        }
+        //[TestFixtureTearDown]
+        //public new void TestFixtureTearDown()
+        //{
+        //    Driver.Quit();
+        //}
 
         [Test]
         public void AddToolbarItem()
