@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>tizen40</TargetFramework>
+    <id>Tizen.Appium</id>
+    <authors>Samsung Electronics</authors>
+    <Version>0.9.0-pre1</Version>
+    <owners>Samsung Electronics</owners>
+    <copyright>© Samsung Electronics Co., Ltd All Rights Reserved</copyright>
+    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageProjectUrl>https://www.tizen.org/</PackageProjectUrl>
+    <PackageIconUrl>https://developer.tizen.org/sites/default/files/images/tizen-pinwheel-on-light-rgb_64_64.png</PackageIconUrl>
+    <description>This package contains utility library for running the automated tests for Tizen.</description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,12 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Tizen.NET" Version="4.0.0" />
+    <PackageReference Include="Tizen.NET" Version="4.0.0">
+      <ExcludeAssets>Runtime</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
+    <PackageReference Include="Xamarin.Forms.Platform.Tizen" Version="2.5.0.280555" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Xamarin.Forms\Xamarin.Forms.Core\Xamarin.Forms.Core.csproj" />
-    <ProjectReference Include="..\..\Xamarin.Forms\Xamarin.Forms.Platform.Tizen\Xamarin.Forms.Platform.Tizen.csproj" />
-  </ItemGroup>
-
 </Project>
