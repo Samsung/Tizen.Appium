@@ -66,6 +66,11 @@ namespace Tizen.Appium
             Log.Debug("[Reset toolbar] _elements.Count=" + _elements.Count);
         }
 
+        public static bool ContainsKey(string id)
+        {
+            return _elements.ContainsKey(id);
+        }
+
         public static ElementWrapper GetElementWrapper(string id)
         {
             Log.Debug("[GetElement] _elements.ContainsKey? " + _elements.ContainsKey(id) + ", _elements.Count=" + _elements.Count);
