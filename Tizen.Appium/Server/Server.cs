@@ -30,9 +30,10 @@ namespace Tizen.Appium
             if (_socket == null)
             {
                 _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             }
 
-            Log.Debug("Start Server: " + _ipep.ToString());
+            Log.Debug("Start Server: " + _ipep.ToString() + ", ReuseAddress: true");
             Start();
         }
 
