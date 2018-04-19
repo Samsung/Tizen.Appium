@@ -23,11 +23,11 @@ namespace Tizen.Appium
             if (nativeView == null)
             {
                 Log.Debug("Not Found Element");
-                result.Value = new Location(); ;
+                result.Value = new Location();
                 return result;
             }
 
-            result.Value = new Location(nativeView.Geometry.X, nativeView.Geometry.Y, GetCenterX(nativeView), GetCenterY(nativeView));
+            result.Value = new Location(nativeView.Geometry.X, nativeView.Geometry.Y, GetCenterX(nativeView), GetCenterY(nativeView), nativeView.Geometry.Width, nativeView.Geometry.Height);
 
             return result;
         }
