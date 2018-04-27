@@ -38,28 +38,28 @@ namespace Appium.UITests
         public void SizeTest()
         {
             Size area = Driver.GetSize("button1");
-            Assert.AreEqual(50, area.Height);
-            Assert.AreEqual(364, area.Width);
+            Assert.AreEqual(99, area.Height);
+            Assert.AreEqual(720, area.Width);
 
             area = Driver.GetSize("button2");
-            Assert.AreEqual(258, area.Height);
-            Assert.AreEqual(300, area.Width);
+            Assert.AreEqual(510, area.Height);
+            Assert.AreEqual(592, area.Width);
 
             area = Driver.GetSize("button3");
-            Assert.AreEqual(258, area.Height);
-            Assert.AreEqual(50, area.Width);
+            Assert.AreEqual(510, area.Height);
+            Assert.AreEqual(99, area.Width);
 
             area = Driver.GetSize("button4");
-            Assert.AreEqual(258, area.Height);
-            Assert.AreEqual(300, area.Width);
+            Assert.AreEqual(510, area.Height);
+            Assert.AreEqual(592, area.Width);
 
             area = Driver.GetSize("button5");
-            Assert.AreEqual(258, area.Height);
-            Assert.AreEqual(50, area.Width);
+            Assert.AreEqual(510, area.Height);
+            Assert.AreEqual(99, area.Width);
 
             area = Driver.GetSize("button6");
-            Assert.AreEqual(519, area.Height);
-            Assert.AreEqual(8, area.Width);
+            Assert.AreEqual(1025, area.Height);
+            Assert.AreEqual(17, area.Width);
         }
     }
 }

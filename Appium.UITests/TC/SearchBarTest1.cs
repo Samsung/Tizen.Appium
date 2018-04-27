@@ -11,7 +11,7 @@ namespace Appium.UITests
             var searchBarBtnId = "searchBar";
 
             Driver.SetText(searchBarBtnId, "test");
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(4000);
 
             var image = "SearchBarTest1.png";
             Driver.CheckScreenshot(image);

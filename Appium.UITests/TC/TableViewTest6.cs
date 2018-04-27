@@ -12,6 +12,8 @@ namespace Appium.UITests
 
             Driver.Click(redBtnId);
 
+            System.Threading.Thread.Sleep(2000);
+
             var image = "TableViewTest6_red.png";
             Driver.CheckScreenshot(image);
         }

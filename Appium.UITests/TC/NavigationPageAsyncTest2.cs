@@ -32,10 +32,12 @@ namespace Appium.UITests
             var image = "NavigationPageAsyncTest2_insert.png";
             Driver.CheckScreenshot(image);
             Driver.GoBack();
+            System.Threading.Thread.Sleep(2000);
 
             var image2 = "NavigationPageAsyncTest2_insert2.png";
             Driver.CheckScreenshot(image2);
             Driver.GoBack();
+            System.Threading.Thread.Sleep(2000);
 
             var image3 = "NavigationPageAsyncTest2_insert3.png";
             Driver.CheckScreenshot(image3);
@@ -59,6 +61,7 @@ namespace Appium.UITests
             Assert.True((depthBefore < depthAfter), "StackDepth should be increased, but got before: " + depthBefore + ", after: " + depthAfter);
             Assert.True((currentPageBefore != currentPageAfter), "current page should not be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
+            System.Threading.Thread.Sleep(2000);
             var image = "NavigationPageAsyncTest2_removeTop.png";
             Driver.CheckScreenshot(image);
 
@@ -69,6 +72,7 @@ namespace Appium.UITests
             Assert.True((depthBefore == depthAfter), "StackDepth should be same, but got before: " + depthBefore + ", after: " + depthAfter);
             Assert.True((currentPageBefore == currentPageAfter), "current page should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
+            System.Threading.Thread.Sleep(2000);
             var image2 = "NavigationPageAsyncTest2_removeTop2.png";
             Driver.CheckScreenshot(image2);
         }
@@ -96,6 +100,7 @@ namespace Appium.UITests
             Assert.True(((depthBefore + 2) == depthAfter), "StackDepth should be increased, but got before: " + depthBefore + ", after: " + depthAfter);
             Assert.True((currentPageBefore != currentPageAfter), "current page should not be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
+            System.Threading.Thread.Sleep(2000);
             var image = "NavigationPageAsyncTest2_removeBefore.png";
             Driver.CheckScreenshot(image);
 
@@ -109,6 +114,7 @@ namespace Appium.UITests
             Assert.True((depthBefore > depthAfter), "StackDepth should be decreased, but got before: " + depthBefore + ", after: " + depthAfter);
             Assert.True((currentPageBefore == currentPageAfter), "current page should be same, but got before: " + depthBefore + ", after: " + depthAfter);
 
+            System.Threading.Thread.Sleep(2000);
             var image2 = "NavigationPageAsyncTest2_removeBefore2.png";
             Driver.CheckScreenshot(image2);
 

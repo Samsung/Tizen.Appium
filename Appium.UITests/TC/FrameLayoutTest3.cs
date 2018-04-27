@@ -8,9 +8,9 @@ namespace Appium.UITests
         [Test]
         public void ViewTest()
         {
-            var sliderId = "sliderH";
+            //var sliderId = "sliderH";
 
-            Driver.SetAttribute(sliderId, "Value", 0.3);
+            //Driver.SetAttribute(sliderId, "Value", 1);
 
             var image = "FrameLayoutTest3.png";
             Driver.CheckScreenshot(image);

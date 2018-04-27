@@ -8,6 +8,7 @@ namespace Appium.UITests
         [Test]
         public void ViewTest()
         {
+            System.Threading.Thread.Sleep(3000);
             var image = "ListViewTest3.png";
             Driver.CheckScreenshot(image);
         }

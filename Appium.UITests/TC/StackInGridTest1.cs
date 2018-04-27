@@ -9,7 +9,6 @@ namespace Appium.UITests
         public void ViewTest()
         {
             var image = "StackInGridTest1.png";
-            System.Threading.Thread.Sleep(1500);
             Driver.CheckScreenshot(image);
         }
     }

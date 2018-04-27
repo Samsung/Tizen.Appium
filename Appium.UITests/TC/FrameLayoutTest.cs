@@ -38,12 +38,12 @@ namespace Appium.UITests
         public void BoxSizeTest()
         {
             Size topLeftBoxPt = Driver.GetSize("topLeftBox");
-            Assert.AreEqual(286, topLeftBoxPt.Height);
-            Assert.AreEqual(182, topLeftBoxPt.Width);
+            Assert.AreEqual(565, topLeftBoxPt.Height);
+            Assert.AreEqual(359, topLeftBoxPt.Width);
 
             Size topRightBoxPt = Driver.GetSize("topRightBox");
-            Assert.AreEqual(286, topRightBoxPt.Height);
-            Assert.AreEqual(182, topRightBoxPt.Width);
+            Assert.AreEqual(565, topRightBoxPt.Height);
+            Assert.AreEqual(359, topRightBoxPt.Width);
         }
     }
 }

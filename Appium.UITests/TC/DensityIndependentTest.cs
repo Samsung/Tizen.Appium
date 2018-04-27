@@ -9,7 +9,7 @@ namespace Appium.UITests
         [Test]
         public void BoxViewPositionTest()
         {
-            Point expect = new Point(197, 411);
+            Point expect = new Point(197, 400);
             Point ret = Driver.GetLocation("box");
             Assert.AreEqual(expect, ret);
         }
@@ -17,7 +17,7 @@ namespace Appium.UITests
         [Test]
         public void LabelPositionTest()
         {
-            Point expect = new Point(197, 491);
+            Point expect = new Point(197, 480);
             Point ret = Driver.GetLocation("boxLabel");
             Assert.AreEqual(expect, ret);
         }

@@ -8,6 +8,7 @@ using OpenQA.Selenium;
 
 using OpenQA.Selenium.Appium.Android;
 using NUnit.Framework;
+using OpenQA.Selenium.Appium.MultiTouch;
 
 namespace Appium.UITests
 {
@@ -64,7 +65,7 @@ namespace Appium.UITests
             capabillities.SetCapability("appPackage", "org.tizen.example.FormsTizenGallery.Tizen");
             capabillities.SetCapability("app", "FormsTizenGallery.Tizen-1.0.0.tpk");
             _driver = new TizenDriver<AppiumWebElement>(new Uri("http://192.168.0.49:4723/wd/hub"), capabillities);
-            //_driver = new TizenDriver<AppiumWebElement>(new Uri("http://10.113.113.120:4723/wd/hub"), capabillities);
+            //_driver = new TizenDriver<AppiumWebElement>(new Uri("http://10.113.111.166:4723/wd/hub"), capabillities);
             _touchScreen = new RemoteTouchScreen(_driver);
         }
 
@@ -141,18 +142,22 @@ namespace Appium.UITests
 
         public void Click(int x, int y, int delay = DelayTime)
         {
-            _touchScreen.Down(x, y);
-            _touchScreen.Up(x, y);
+            var touchAction = new TouchAction(_driver);
+            touchAction.Tap(x, y);
+            //_touchScreen.Down(x, y);
+            //_touchScreen.Up(x, y);
+            touchAction.Perform();
             System.Threading.Thread.Sleep(delay);
         }
 
         public void Click(string automationId, int delay = DelayTime)
         {
-            var element = _driver.FindElementByAccessibilityId(automationId);
-            var x = element.Location.X;
-            var y = element.Location.Y;
-            _touchScreen.Down(x, y);
-            _touchScreen.Up(x, y);
+            _driver.FindElementByAccessibilityId(automationId).Click();
+            //var element = _driver.FindElementByAccessibilityId(automationId);
+            //var x = element.Location.X;
+            //var y = element.Location.Y;
+            //_touchScreen.Down(x, y);
+            //_touchScreen.Up(x, y);
             System.Threading.Thread.Sleep(delay);
         }
 
@@ -167,19 +172,25 @@ namespace Appium.UITests
 
         public void SetText(string automationId, string text, int delayTime = DelayTime)
         {
-            var element = _driver.FindElementByAccessibilityId(automationId);
-            var x = element.Location.X;
-            var y = element.Location.Y;
-            _touchScreen.Down(x, y);
-            _touchScreen.Up(x, y);
-            _driver.Keyboard.SendKeys(text);
+            _driver.FindElementByAccessibilityId(automationId).SetImmediateValue(text);
+            //var element = _driver.FindElementByAccessibilityId(automationId);
+            //var x = element.Location.X;
+            //var y = element.Location.Y;
+            //_touchScreen.Down(x, y);
+            //_touchScreen.Up(x, y);
+            //_driver.Keyboard.SendKeys(text);
             System.Threading.Thread.Sleep(delayTime);
         }
 
         public T GetAttribute<T>(string automationId, string attribute, int delayTime = DelayTime)
         {
-            System.Threading.Thread.Sleep(delayTime);
+            //System.Threading.Thread.Sleep(delayTime);
             var element = _driver.FindElementByAccessibilityId(automationId);
+            if (element.Id == "-1")
+            {
+                return default(T);
+            }
+
             var stringValue = element.GetAttribute(attribute);
 
             if (!String.IsNullOrEmpty(stringValue))
@@ -270,6 +281,7 @@ namespace Appium.UITests
 
         public void CheckScreenshot(string image)
         {
+            System.Threading.Thread.Sleep(1000);
             //GetScreenshotAndSave(image);
             Assert.AreEqual(true, CompareToScreenshot(image));
         }

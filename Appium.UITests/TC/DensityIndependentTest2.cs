@@ -9,28 +9,28 @@ namespace Appium.UITests
         public void FontSizeTest()
         {
             double ret = Driver.GetAttribute<double>("label1", "FontSize");
-            Assert.AreEqual(23.2556957896752, ret);
+            Assert.AreEqual(18, (int)ret);
         }
 
         [Test]
         public void FontSizeTest2()
         {
             double ret = Driver.GetAttribute<double>("label2", "FontSize");
-            Assert.AreEqual(17.2556957896752, ret);
+            Assert.AreEqual(14, (int)ret);
         }
 
         [Test]
         public void FontSizeTest3()
         {
             double ret = Driver.GetAttribute<double>("label3", "FontSize");
-            Assert.AreEqual(14.2556957896752, ret);
+            Assert.AreEqual(13, (int)ret);
         }
 
         [Test]
         public void FontSizeTest4()
         {
             double ret = Driver.GetAttribute<double>("label4", "FontSize");
-            Assert.AreEqual(11.2556957896752, ret);
+            Assert.AreEqual(11, (int)ret);
         }
     }
 }

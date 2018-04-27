@@ -54,44 +54,44 @@ namespace Appium.UITests
         public void TopSizeTest()
         {
             Size area = Driver.GetSize("button1");
-            Assert.AreEqual(141, area.Height);
-            Assert.AreEqual(364, area.Width);
+            Assert.AreEqual(280, area.Height);
+            Assert.AreEqual(720, area.Width);
         }
 
         [Test]
         public void MiddleSizeTest()
         {
             Size area = Driver.GetSize("button2");
-            Assert.AreEqual(141, area.Height);
-            Assert.AreEqual(120, area.Width);
+            Assert.AreEqual(280, area.Height);
+            Assert.AreEqual(237, area.Width);
 
             area = Driver.GetSize("button3");
-            Assert.AreEqual(141, area.Height);
-            Assert.AreEqual(120, area.Width);
+            Assert.AreEqual(280, area.Height);
+            Assert.AreEqual(237, area.Width);
 
             area = Driver.GetSize("button4");
-            Assert.AreEqual(141, area.Height);
-            Assert.AreEqual(120, area.Width);
+            Assert.AreEqual(280, area.Height);
+            Assert.AreEqual(237, area.Width);
 
             area = Driver.GetSize("button5");
-            Assert.AreEqual(141, area.Height);
-            Assert.AreEqual(120, area.Width);
+            Assert.AreEqual(280, area.Height);
+            Assert.AreEqual(237, area.Width);
 
             area = Driver.GetSize("button6");
-            Assert.AreEqual(285, area.Height);
-            Assert.AreEqual(120, area.Width);
+            Assert.AreEqual(563, area.Height);
+            Assert.AreEqual(237, area.Width);
         }
 
         [Test]
         public void BottomSizeTest()
         {
             Size area = Driver.GetSize("button7");
-            Assert.AreEqual(141, area.Height);
-            Assert.AreEqual(242, area.Width);
+            Assert.AreEqual(280, area.Height);
+            Assert.AreEqual(479, area.Width);
 
             area = Driver.GetSize("button8");
-            Assert.AreEqual(141, area.Height);
-            Assert.AreEqual(120, area.Width);
+            Assert.AreEqual(280, area.Height);
+            Assert.AreEqual(237, area.Width);
         }
     }
 }

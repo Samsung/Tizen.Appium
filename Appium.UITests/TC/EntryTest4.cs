@@ -15,11 +15,11 @@ namespace Appium.UITests
 
             Point labelPt = Driver.GetLocation("label");
             Assert.AreEqual(360, labelPt.X);
-            Assert.AreEqual(499, labelPt.Y);
+            Assert.AreEqual(462, labelPt.Y);
 
             Point buttonPt = Driver.GetLocation("button");
             Assert.AreEqual(70, buttonPt.X);
-            Assert.AreEqual(732, buttonPt.Y);
+            Assert.AreEqual(659, buttonPt.Y);
         }
 
         [Test]
@@ -29,15 +29,15 @@ namespace Appium.UITests
 
             Point entryPt = Driver.GetLocation("test1");
             Assert.AreEqual(99, entryPt.X);
-            Assert.AreEqual(419, entryPt.Y);
+            Assert.AreEqual(333, entryPt.Y);
 
             Point labelPt = Driver.GetLocation("test2");
             Assert.AreEqual(310, labelPt.X);
-            Assert.AreEqual(419, labelPt.Y);
+            Assert.AreEqual(333, labelPt.Y);
 
             Point buttonPt = Driver.GetLocation("label");
-            Assert.AreEqual(560, buttonPt.X);
-            Assert.AreEqual(419, buttonPt.Y);
+            Assert.AreEqual(565, buttonPt.X);
+            Assert.AreEqual(333, buttonPt.Y);
         }
     }
 }
