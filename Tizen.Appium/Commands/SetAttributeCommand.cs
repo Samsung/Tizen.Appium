@@ -1,43 +1,34 @@
 using System;
 using Xamarin.Forms;
-using Tizen.Appium.Dbus;
 
 namespace Tizen.Appium
 {
-    public class SetPropertyMethod : IDbusMethod
+    internal class SetAttributeCommand : ICommand
     {
-        public string Name => MethodNames.SetProperty;
+        public string Command => Commands.SetAttribute;
 
-        public string Signature => "sss";
-
-        public string ReturnSignature => "b";
-
-        public string[] Args => new string[] { Params.ElementId, Params.PropertyName, Params.Value };
-
-        public Arguments Run(Arguments args)
+        public Result Run(Request req)
         {
-            Log.Debug("SetProperty");
+            Log.Debug("Run: SetAttribute");
 
-            var elementId = (string)args[Params.ElementId];
-            var propertyName = (string)args[Params.PropertyName];
-            var newValue = (string)args[Params.Value];
+            var elementId = req.Params.ElementId;
+            var propertyName = req.Params.Attribute;
+            var newValue = req.Params.Value;
 
-            var ret = new Arguments();
+            var result = new Result();
 
             var element = ElementUtils.GetElementWrapper(elementId)?.Element;
             if (element == null)
             {
                 Log.Debug("Not Found Element");
-                ret.SetArgument(Params.Return, false);
-                return ret;
+                return result;
             }
 
             var property = element.GetType().GetProperty(propertyName);
             if (property == null)
             {
                 Log.Debug(elementId + " element does not have " + propertyName + " property.");
-                ret.SetArgument(Params.Return, false);
-                return ret;
+                return result;
             }
 
             try
@@ -58,14 +49,14 @@ namespace Tizen.Appium
                     property.SetValue(element, value);
                 }
 
-                ret.SetArgument(Params.Return, true);
-                return ret;
+                result.Value = true;
+                return result;
             }
             catch (Exception e)
             {
                 Log.Debug(e.ToString());
-                ret.SetArgument(Params.Return, false);
-                return ret;
+                result.Value = false;
+                return result;
             }
         }
     }

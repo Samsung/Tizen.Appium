@@ -1,34 +1,26 @@
 using System;
-using Tizen.Appium.Dbus;
 
 namespace Tizen.Appium
 {
-    public class GetTextMethod : IDbusMethod
+    internal class GetTextCommand : ICommand
     {
-        public string Name => MethodNames.GetText;
+        public string Command => Commands.GetText;
 
-        public string Signature => "s";
-
-        public string ReturnSignature => "s";
-
-        public string[] Args => new string[] { Params.ElementId };
-
-        public Arguments Run(Arguments args)
+        public Result Run(Request req)
         {
-            Log.Debug("GetText");
+            Log.Debug("Run: GetText");
 
-            var elementId = (string)args[Params.ElementId];
+            var elementId = req.Params.ElementId;
             var textProperty = "Text";
             var formattedTextProperty = "FormattedText";
 
-            var ret = new Arguments();
+            var result = new Result();
 
             var element = ElementUtils.GetElementWrapper(elementId)?.Element;
             if (element == null)
             {
                 Log.Debug("Not Found Element");
-                ret.SetArgument(Params.Return, string.Empty);
-                return ret;
+                return result;
             }
 
             var text = element.GetType().GetProperty(textProperty)?.GetValue(element);
@@ -51,8 +43,8 @@ namespace Tizen.Appium
                 retVal = text;
             }
 
-            ret.SetArgument(Params.Return, retVal.ToString());
-            return ret;
+            result.Value = retVal.ToString();
+            return result;
         }
     }
 }

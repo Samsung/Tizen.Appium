@@ -15,10 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Interop\Interop.Edbus.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Tizen.NET" Version="4.0.0">
       <ExcludeAssets>Runtime</ExcludeAssets>
     </PackageReference>
