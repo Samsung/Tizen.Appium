@@ -8,17 +8,9 @@ namespace Appium.UITests
         [Test]
         public void ViewTest()
         {
-            var tableViewId = "table";
-            var checkId = "check";
             var set0BtnId = "btnSet0";
             var setMinus1BtnId = "btnSet_minus1";
             var sliderId = "slider";
-
-            var hasUnevenCell = Driver.GetAttribute<bool>(tableViewId, "HasUnevenRows");
-            if (!hasUnevenCell)
-            {
-                Driver.Click(checkId);
-            }
 
             Driver.Click(set0BtnId);
 

@@ -17,6 +17,7 @@ namespace Appium.UITests
         const int DelayTime = 1000;
         const string Platform = "Tizen";
 
+        static bool createFolder = false;
         static UITestDriver _instance;
         AppiumDriver<AppiumWebElement> _driver;
         RemoteTouchScreen _touchScreen;
@@ -248,7 +249,7 @@ namespace Appium.UITests
             image.Save(imagePath);
         }
 
-        public bool CompareToScreenshot(string imageName)
+        public bool CompareScreenshot(string imagePath)
         {
             TizenDriver<AppiumWebElement> tizenDriver = _driver as TizenDriver<AppiumWebElement>;
             if (tizenDriver == null)
@@ -266,10 +267,35 @@ namespace Appium.UITests
             Image image = tizenDriver.TransformScreenshot(screenshot, new Rectangle(0, 35, 720, 1280 - 35));
             image.Save(tempImagePath);
 
-            var orgImage = Image.FromFile(path + "/images/" + imageName);
+            var orgImage = Image.FromFile(path + "/images/" + imagePath);
             var compareImage = Image.FromFile(tempImagePath);
+            Image resultImage;
 
-            var result = tizenDriver.CompareImages(orgImage, compareImage);
+            var result = tizenDriver.CompareImages(orgImage, compareImage, out resultImage);
+            if (!createFolder)
+            {
+                if (!Directory.Exists(path + "/images/result"))
+                {
+                    Directory.CreateDirectory(path + "/images/result");
+                }
+                else
+                {
+                    Directory.Delete(path + "/images/result", true);
+                    Directory.CreateDirectory(path + "/images/result");
+                }
+                createFolder = true;
+            }
+
+            if (!result)
+            {
+                var imageName = imagePath.Replace(".png", "");
+                orgImage.Save(path + "/images/result/" + imageName + "_expect.png");
+                compareImage.Save(path + "/images/result/" + imageName + "_actual.png");
+                if (resultImage != null)
+                {
+                    resultImage.Save(path + "/images/result/" + imageName + "_diff.png");
+                }
+            }
 
             image.Dispose();
             compareImage.Dispose();
@@ -283,7 +309,7 @@ namespace Appium.UITests
         {
             System.Threading.Thread.Sleep(1000);
             //GetScreenshotAndSave(image);
-            Assert.AreEqual(true, CompareToScreenshot(image));
+            Assert.AreEqual(true, CompareScreenshot(image), "CompareToScreenshot result should be true. ");
         }
     }
 }
