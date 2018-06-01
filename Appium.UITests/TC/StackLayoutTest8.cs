@@ -19,16 +19,16 @@ namespace Appium.UITests
             Driver.Click(resetBtnId);
         }
 
-        [Test]
+        //[Test]
         public void ViewTest()
         {
             var paddingSlider = "sliderPadding";
             var spacingSlider = "sliderSpacing";
             var marginSlider = "sliderMargin";
 
-            Driver.SetAttribute(paddingSlider, "Value", 100);
-            Driver.SetAttribute(spacingSlider, "Value", 100);
-            Driver.SetAttribute(marginSlider, "Value", 100);
+            Driver.SetAttribute(paddingSlider, "Value", 50);
+            Driver.SetAttribute(spacingSlider, "Value", 50);
+            Driver.SetAttribute(marginSlider, "Value", 50);
 
             var image = "StackLayoutTest8.png";
             Driver.CheckScreenshot(image);

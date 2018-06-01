@@ -65,6 +65,7 @@ namespace Appium.UITests
             //capabillities.SetCapability("deviceName", "emulator-26101");
             capabillities.SetCapability("appPackage", "org.tizen.example.FormsTizenGallery.Tizen");
             capabillities.SetCapability("app", "FormsTizenGallery.Tizen-1.0.0.tpk");
+            capabillities.SetCapability("reboot", "true");
             _driver = new TizenDriver<AppiumWebElement>(new Uri("http://192.168.0.49:4723/wd/hub"), capabillities);
             //_driver = new TizenDriver<AppiumWebElement>(new Uri("http://10.113.111.166:4723/wd/hub"), capabillities);
             _touchScreen = new RemoteTouchScreen(_driver);
