@@ -44,8 +44,8 @@ namespace Tizen.Appium
                 else
                 {
                     var valueType = property.GetValue(element).GetType();
-                    var value = Convert.ChangeType(newValue, valueType);
-                    Log.Debug(newValue + " is converted to " + value + "(" + value.GetType() + ")");
+                    var value = ConvertType(newValue, valueType);
+                    Log.Debug(newValue + " is converted to " + value + "(" + valueType + ")");
                     property.SetValue(element, value);
                 }
 
@@ -57,6 +57,100 @@ namespace Tizen.Appium
                 Log.Debug(e.ToString());
                 result.Value = false;
                 return result;
+            }
+        }
+
+        object ConvertType(string value, Type type)
+        {
+            TypeConverter converter = null;
+            if (type == typeof(Xamarin.Forms.LayoutOptions))
+            {
+                converter = new LayoutOptionsConverter();
+            }
+            else if (type == typeof(Color))
+            {
+                converter = new ColorTypeConverter();
+            }
+            else if (type == typeof(ConstraintType))
+            {
+                converter = new ConstraintTypeConverter();
+            }
+            else if (type == typeof(FileImageSource))
+            {
+                converter = new FileImageSourceConverter();
+            }
+            else if (type == typeof(FlexAlignItems))
+            {
+                converter = new FlexAlignItemsTypeConverter();
+            }
+            else if (type == typeof(FlexAlignContent))
+            {
+                converter = new FlexAlignContentTypeConverter();
+            }
+            else if (type == typeof(FlexDirection))
+            {
+                converter = new FlexDirectionTypeConverter();
+            }
+            else if (type == typeof(FlexJustify))
+            {
+                converter = new FlexJustifyTypeConverter();
+            }
+            else if (type == typeof(FlexWrap))
+            {
+                converter = new FlexWrapTypeConverter();
+            }
+            else if (type == typeof(FlowDirection))
+            {
+                converter = new FlowDirectionConverter();
+            }
+            else if (type == typeof(Font))
+            {
+                converter = new FontTypeConverter();
+            }
+            else if (type == typeof(GridLength))
+            {
+                converter = new GridLengthTypeConverter();
+            }
+            else if (type == typeof(ImageSource))
+            {
+                converter = new ImageSourceConverter();
+            }
+            else if (type == typeof(Rectangle))
+            {
+                converter = new RectangleTypeConverter();
+            }
+            else if (type == typeof(TextAlignment))
+            {
+                converter = new TextAlignmentConverter();
+            }
+            else if (type == typeof(Thickness))
+            {
+                converter = new ThicknessTypeConverter();
+            }
+            else if (type == typeof(WebViewSource))
+            {
+                converter = new WebViewSourceTypeConverter();
+            }
+            else if (type == typeof(LineBreakMode))
+            {
+                return Enum.Parse(typeof(LineBreakMode), value);
+            }
+            else if (type == typeof(FontAttributes))
+            {
+                return Enum.Parse(typeof(FontAttributes), value);
+            }
+            else if (type == typeof(StackOrientation))
+            {
+                return Enum.Parse(typeof(StackOrientation), value);
+            }
+
+            if (converter != null)
+            {
+                return converter.ConvertFromInvariantString(value);
+            }
+            else
+            {
+                return Convert.ChangeType(value, type);
             }
         }
     }
