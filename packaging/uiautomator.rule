@@ -1,2 +1,0 @@
-uiautomator system::use_internet rw
-system::use_internet uiautomator rw
