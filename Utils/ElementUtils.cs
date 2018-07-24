@@ -122,7 +122,7 @@ namespace Tizen.Appium
                     {
                         if (_element.Target is VisualElement)
                         {
-                            return Platform.GetOrCreateRenderer((VisualElement)_element.Target).NativeView;
+                            return Platform.GetRenderer((VisualElement)_element.Target).NativeView;
                         }
                         else if (_element.Target is ItemContext)
                         {
