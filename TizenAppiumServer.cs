@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace Tizen.Appium
 {
@@ -25,7 +27,15 @@ namespace Tizen.Appium
 
             if (_commands.TryGetValue(req.Action, out cmd))
             {
-                result = cmd.Run(req);
+                var tcs = new TaskCompletionSource<Result>();
+
+                // Element should be controlled in main loop thread.
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    tcs.SetResult(cmd.Run(req));
+                });
+
+                result = tcs.Task.Result;
             }
             else
             {
