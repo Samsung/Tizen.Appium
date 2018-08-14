@@ -1,0 +1,3 @@
+language: csharp
+solution: Tizen.Appium.sln
+os: osx
