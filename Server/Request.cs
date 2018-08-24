@@ -16,11 +16,14 @@ namespace Tizen.Appium
 
     public class Params
     {
-        [JsonProperty("attribute")]
-        public string Attribute { get; set; }
+        [JsonProperty("strategy")]
+        public string Strategy { get; set; }
 
         [JsonProperty("elementId")]
         public string ElementId { get; set; }
+
+        [JsonProperty("attribute")]
+        public string Attribute { get; set; }
 
         [JsonProperty("value")]
         public string Value { get; set; }

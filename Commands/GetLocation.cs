@@ -1,5 +1,4 @@
 using System;
-using ElmSharp;
 using TSystemInfo = Tizen.System.Information;
 
 namespace Tizen.Appium
@@ -16,37 +15,27 @@ namespace Tizen.Appium
             Log.Debug("Run: GetLocation");
 
             var elementId = req.Params.ElementId;
-
             var result = new Result();
+            var location = AppAdapter.ObjectList.GetLocation(elementId);
 
-            var nativeView = ElementUtils.GetElementWrapper(elementId)?.NativeView;
-            if (nativeView == null)
-            {
-                Log.Debug("Not Found Element");
-                result.Value = new Location();
-                return result;
-            }
-
-            result.Value = new Location(nativeView.Geometry.X, nativeView.Geometry.Y, GetCenterX(nativeView), GetCenterY(nativeView), nativeView.Geometry.Width, nativeView.Geometry.Height);
+            //fixed with screen size 
+            result.Value = new Location(location.X, location.Y, GetCenterX(location), GetCenterY(location), location.Width, location.Height);
 
             return result;
         }
 
-        int GetCenterX(EvasObject obj)
+        int GetCenterX(Location location)
         {
-            if (obj == null)
-                return -1;
-
             int screenWidth;
             TSystemInfo.TryGetValue("http://tizen.org/feature/screen.width", out screenWidth);
 
-            if ((obj.Geometry.X > screenWidth) || (obj.Geometry.X + obj.Geometry.Width) < 0)
+            if ((location.X > screenWidth) || (location.X + location.Width) < 0)
             {
                 return -1;
             }
 
-            var x1 = Math.Max(0, obj.Geometry.X);
-            var x2 = Math.Min(screenWidth, obj.Geometry.X + obj.Geometry.Width);
+            var x1 = Math.Max(0, location.X);
+            var x2 = Math.Min(screenWidth, location.X + location.Width);
 
             if ((x2 - x1) < MinisumSize)
             {
@@ -58,21 +47,18 @@ namespace Tizen.Appium
             }
         }
 
-        int GetCenterY(EvasObject obj)
+        int GetCenterY(Location location)
         {
-            if (obj == null)
-                return -1;
-
             int screenHeight;
             TSystemInfo.TryGetValue("http://tizen.org/feature/screen.height", out screenHeight);
 
-            if ((obj.Geometry.Y > screenHeight) || (obj.Geometry.Y + obj.Geometry.Height) < 0)
+            if ((location.Y > screenHeight) || (location.Y + location.Height) < 0)
             {
                 return -1;
             }
 
-            var x1 = Math.Max(0, obj.Geometry.Y);
-            var x2 = Math.Min(screenHeight, obj.Geometry.Y + obj.Geometry.Height);
+            var x1 = Math.Max(0, location.Y);
+            var x2 = Math.Min(screenHeight, location.Y + location.Height);
 
             if ((x2 - x1) < MinisumSize)
             {

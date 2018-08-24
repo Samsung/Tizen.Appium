@@ -16,7 +16,7 @@ namespace Tizen.Appium
 
             var result = new Result();
 
-            var element = ElementUtils.GetElementWrapper(elementId)?.Element;
+            var element = AppAdapter.ObjectList.Get(elementId);
             if (element == null)
             {
                 Log.Debug("Not Found Element");

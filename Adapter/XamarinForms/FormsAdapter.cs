@@ -1,26 +1,38 @@
 using Xamarin.Forms;
-using Xamarin.Forms.Platform.Tizen;
 using Xamarin.Forms.Internals;
+using Xamarin.Forms.Platform.Tizen;
 
 namespace Tizen.Appium
 {
-    public class TizenAppiumElement
+    public class FormsAdapter : BaseAdapter
     {
         ToolbarTracker _toolbarTracker;
 
-        public TizenAppiumElement(Application app = null)
+        public FormsAdapter(Application app = null) : base()
         {
             Forms.ViewInitialized += (s, e) =>
             {
-                ElementUtils.AddElement(e.View);
+                if (e.View is Page)
+                {
+                    ((Page)e.View).Appearing += (ss, ee) =>
+                    {
+                        e.View.SetIsShownProperty(true);
+                    };
+
+                    ((Page)e.View).Disappearing += (ss, ee) =>
+                    {
+                        e.View.SetIsShownProperty(false);
+                    };
+                }
 
                 e.View.PropertyChanged += (ss, ee) =>
                 {
                     if ((ee.PropertyName == "Renderer") && (Platform.GetRenderer((BindableObject)ss) == null))
                     {
-                        ElementUtils.RemoveElement(e.View);
+                        ObjectList.Remove(e.View);
                     }
                 };
+                ObjectList.Add(e.View);
 
                 if ((e.View is ListView) || (e.View is TableView))
                 {
@@ -34,14 +46,24 @@ namespace Tizen.Appium
                 _toolbarTracker.Target = app.MainPage;
                 _toolbarTracker.CollectionChanged += (s, e) =>
                 {
-                    ElementUtils.ResetToolbarItems();
+                    ((FormsElementList)ObjectList).ResetToolbarItems();
 
                     foreach (var item in _toolbarTracker.ToolbarItems)
                     {
-                        ElementUtils.AddElement(item);
+                        ObjectList.Add(item);
                     }
                 };
             }
+        }
+
+        protected override IObjectList InitObjectList()
+        {
+            return new FormsElementList();
+        }
+
+        protected override Server InitServer()
+        {
+            return new FormsAppiumServer();
         }
 
         void AddItemFromList(VisualElement list)
@@ -51,18 +73,19 @@ namespace Tizen.Appium
             nativeView.ItemRealized += (s, e) =>
             {
                 var itemContext = (Xamarin.Forms.Platform.Tizen.Native.ListView.ItemContext)e.Item.Data;
-                ElementUtils.AddItemContext(itemContext);
+                ObjectList.Add(itemContext);
 
                 itemContext.Cell.Disappearing += (sender, args) =>
                 {
-                    ElementUtils.RemoveItemContext(itemContext);
+                    ObjectList.Remove(itemContext);
                 };
 
                 itemContext.Item.Deleted += (sender, args) =>
                 {
-                    ElementUtils.RemoveItemContext(itemContext);
+                    ObjectList.Remove(itemContext);
                 };
             };
         }
+
     }
 }

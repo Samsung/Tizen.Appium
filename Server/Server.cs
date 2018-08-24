@@ -1,23 +1,34 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using System.Threading;
+using Newtonsoft.Json;
 
 namespace Tizen.Appium
 {
-    internal abstract class Server
+    public abstract class Server
     {
         ManualResetEvent _receivedDone = new ManualResetEvent(false);
+        IDictionary<string, ICommand> _commands = new Dictionary<string, ICommand>();
         bool _receivedStop = false;
-
-        protected abstract string DataReceived(string data);
-
         IPEndPoint _ipep;
         Socket _socket;
 
-        protected Server(IPAddress address, int port)
+        protected IDictionary<string, ICommand> Command
         {
+            get
+            {
+                return _commands;
+            }
+        }
+
+        protected Server(IPAddress address = null, int port = 8888)
+        {
+
             if (address == null)
             {
                 _ipep = new IPEndPoint(IPAddress.Any, port);
@@ -33,11 +44,12 @@ namespace Tizen.Appium
                 _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             }
 
+            InitCommand();
+
             Log.Debug("Start Server: " + _ipep.ToString() + ", ReuseAddress: true");
-            Start();
         }
 
-        void Start()
+        public void Start()
         {
             try
             {
@@ -58,6 +70,25 @@ namespace Tizen.Appium
             if (_socket != null)
             {
                 _socket.Close();
+            }
+        }
+
+        protected abstract Result RunCommand(Request req);
+
+        void InitCommand()
+        {
+            Log.Debug("InitCommands");
+
+            Assembly asm = typeof(Server).GetTypeInfo().Assembly;
+            Type methodType = typeof(ICommand);
+
+            var commands = from method in asm.GetTypes()
+                           where methodType.IsAssignableFrom(method) && !method.GetTypeInfo().IsInterface && !method.GetTypeInfo().IsAbstract
+                           select Activator.CreateInstance(method) as ICommand;
+
+            foreach (var cmd in commands)
+            {
+                _commands.Add(cmd.Command, cmd);
             }
         }
 
@@ -101,14 +132,17 @@ namespace Tizen.Appium
                 {
                     var encoder = Encoding.GetEncoding("iso-8859-1");
                     content = encoder.GetString(state.Buffer, 0, read - 2);
-
                     Log.Debug("Received Data: " + content);
 
-                    var result = DataReceived(content);
+                    var req = JsonConvert.DeserializeObject<Request>(content);
+                    var result = new Result();
 
+                    result = RunCommand(req);
+
+                    var str = JsonConvert.SerializeObject(result);
                     Log.Debug("Result: " + result);
 
-                    Byte[] ret = Encoding.Default.GetBytes(result);
+                    Byte[] ret = Encoding.Default.GetBytes(str);
                     client.Send(ret);
                 }
                 else

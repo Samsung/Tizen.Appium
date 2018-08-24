@@ -1,5 +1,4 @@
 using System;
-using Xamarin.Forms;
 
 namespace Tizen.Appium
 {
@@ -16,7 +15,7 @@ namespace Tizen.Appium
 
             var result = new Result();
 
-            var element = ElementUtils.GetElementWrapper(elementId)?.Element;
+            var element = AppAdapter.ObjectList.Get(elementId);
             if (element == null)
             {
                 Log.Debug("Not Found Element");
@@ -26,14 +25,6 @@ namespace Tizen.Appium
             var value = element.GetType().GetProperty(propertyName)?.GetValue(element);
             if (value != null)
             {
-                if (value is Element)
-                {
-                    var id = ElementUtils.GetIdByElement((Element)value);
-                    if (!String.IsNullOrEmpty(id))
-                    {
-                        value = id;
-                    }
-                }
                 result.Value = value.ToString();
                 return result;
             }

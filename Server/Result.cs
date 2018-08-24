@@ -18,6 +18,17 @@ namespace Tizen.Appium
         }
     }
 
+    public class ObjectInfo
+    {
+        [JsonProperty("ELEMENT")]
+        public string Id { get; set; }
+
+        public ObjectInfo(string id = "")
+        {
+            Id = id;
+        }
+    }
+
     public class Location
     {
         [JsonProperty("x")]
