@@ -20,6 +20,13 @@ namespace Tizen.Appium
                     {
                         ElementUtils.RemoveElement(e.View);
                     }
+                    else if ((ee.PropertyName == VisualElement.IsVisibleProperty.PropertyName))
+                    {
+                         if(e.View.IsVisible)
+                             ElementUtils.AddElement(e.View);
+                         else 
+                             ElementUtils.RemoveElement(e.View);
+                    }
                 };
 
                 if ((e.View is ListView) || (e.View is TableView))
