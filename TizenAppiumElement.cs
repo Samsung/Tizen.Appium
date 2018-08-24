@@ -12,8 +12,6 @@ namespace Tizen.Appium
         {
             Forms.ViewInitialized += (s, e) =>
             {
-                ElementUtils.AddElement(e.View);
-
                 e.View.PropertyChanged += (ss, ee) =>
                 {
                     if ((ee.PropertyName == "Renderer") && (Platform.GetRenderer((BindableObject)ss) == null))
@@ -28,10 +26,14 @@ namespace Tizen.Appium
                              ElementUtils.RemoveElement(e.View);
                     }
                 };
-
-                if ((e.View is ListView) || (e.View is TableView))
+                
+                if(e.View.IsVisible)
                 {
-                    AddItemFromList(e.View);
+                    ElementUtils.AddElement(e.View);
+                    if ((e.View is ListView) || (e.View is TableView))
+                    {
+                        AddItemFromList(e.View);
+                    }                
                 }
             };
 
