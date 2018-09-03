@@ -6,18 +6,14 @@ namespace Tizen.Appium
 
         public static readonly string Tag = "TizenAppium";
 
-        static TizenAppiumElement _elementManager;
-        static TizenAppiumServer _server;
-
-        public static void StartService(Xamarin.Forms.Application app = null)
+        public static void StartService(object arg = null)
         {
-            Log.Debug("StartService : initialize");
+            Log.Debug("Start Service : initialize");
 
             if (IsInitialized)
                 return;
 
-            _server = new TizenAppiumServer();
-            _elementManager = new TizenAppiumElement(app);
+            Server.Instance.Start();
 
             IsInitialized = true;
         }
@@ -26,9 +22,12 @@ namespace Tizen.Appium
         {
             Log.Debug("StopService");
 
-            _server.Stop();
+            if (IsInitialized)
+            {
+                Server.Instance.Stop();
 
-            IsInitialized = false;
+                IsInitialized = false;
+            }
         }
     }
 }

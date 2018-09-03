@@ -1,6 +1,6 @@
 namespace Tizen.Appium
 {
-    internal interface ICommand
+    public interface ICommand
     {
         string Command { get; }
 
