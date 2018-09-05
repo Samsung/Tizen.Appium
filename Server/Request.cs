@@ -22,8 +22,26 @@ namespace Tizen.Appium
         [JsonProperty("elementId")]
         public string ElementId { get; set; }
 
+        [JsonProperty("x")]
+        public int X { get; set; }
+
+        [JsonProperty("y")]
+        public int Y { get; set; }
+
+        [JsonProperty("xSpeed")]
+        public int XSpeed { get; set; }
+
+        [JsonProperty("ySpeed")]
+        public int YSpeed { get; set; }
+
         [JsonProperty("attribute")]
         public string Attribute { get; set; }
+
+        [JsonProperty("key")]
+        public string Key { get; set; }
+
+        [JsonProperty("keys")]
+        public string[] Keys { get; set; }
 
         [JsonProperty("value")]
         public string Value { get; set; }

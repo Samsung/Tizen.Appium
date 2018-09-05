@@ -1,4 +1,3 @@
-
 namespace Tizen.Appium
 {
     internal class GetTextCommand : ICommand

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Tizen.Applications.Messages;
@@ -8,86 +9,96 @@ namespace Tizen.Appium
 {
     public class IpcConnection
     {
-        MessagePort _port;
-        string _portName;
-        string remoteAppId;
-        string _remotePort;
+        readonly string idKey = "id";
+        readonly string resultKey = "result";
+
+        readonly ConcurrentDictionary<int, Action<bool>> _handlerMap = new ConcurrentDictionary<int, Action<bool>>();
+        readonly object _requestLock = new object();
+        MessagePort _localPort;
+        RemotePort _remotePort;
+        int _reqId;
 
         public IpcConnection(string portName)
         {
-            _portName = portName;
-            _port = new MessagePort(_portName, false);
+            _localPort = new MessagePort(portName, false);
         }
 
         public void Register(string appId, string portName)
         {
-            remoteAppId = appId;
-            _remotePort = portName;
-
-            _port.Listen();
+            _remotePort = new RemotePort(appId, portName, false);
+            _localPort.MessageReceived += OnMessageReceived;
+            _localPort.Listen();
             Log.Debug("Register...");
         }
 
         public void Unregister()
         {
-            _port.StopListening();
+            _localPort.MessageReceived -= OnMessageReceived;
+            _localPort.StopListening();
             Log.Debug("Unregister...");
         }
 
-        public bool SenMessageAndWaitReply(Bundle message)
+        public Task<bool> SendAsync(Bundle message, int timeout = 3000)
         {
-            var tcs = new TaskCompletionSource<bool>();
-            var ct = new CancellationTokenSource(3000);
-            EventHandler<MessageReceivedEventArgs> handler = null;
+            if (!_remotePort.IsRunning())
+                return Task.FromResult(false);
 
-            _port.MessageReceived += handler = (sender, args) =>
+            var tcs = new TaskCompletionSource<bool>();
+            int id = 0;
+            lock (_requestLock)
             {
-                _port.MessageReceived -= handler;
-                var result = args.Message.GetItem("result");
-                try
-                {
-                    tcs.SetResult(Convert.ToBoolean(result));
-                }
-                catch (Exception e)
-                {
-                    Log.Debug("[Error] Converting error: result=" + result);
-                    tcs.SetResult(false);
-                }
-            };
+                id = _reqId++;
+            }
+
+            Timer timer = new Timer((state) =>
+            {
+                InvokeHandler(id, false);
+            }, null, timeout, Timeout.Infinite);
+
+            _handlerMap.TryAdd(id, (result) =>
+            {
+                timer.Dispose();
+                tcs.TrySetResult(result);
+            });
 
             try
             {
-                _port.Send(message, remoteAppId, _remotePort);
+                message.AddItem(idKey, id.ToString());
+                _localPort.Send(message, _remotePort.AppId, _remotePort.PortName);
                 message.Dispose();
-                Log.Debug("Send");
-
-                ct.Token.Register(() =>
-                {
-                    Log.Debug("cancelled");
-                    _port.MessageReceived -= handler;
-                    tcs.TrySetCanceled();
-                });
-
-                return tcs.Task.Result;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Debug("[Error] " + ex);
+                Log.Debug("[Error] " + e);
+                tcs.TrySetResult(false);
             }
-            return false;
+
+            return tcs.Task;
         }
 
-        public void SendMessage(Bundle message)
+        void InvokeHandler(int id, bool result)
+        {
+            if (!_handlerMap.ContainsKey(id))
+                return;
+
+            Action<bool> handler;
+            _handlerMap.TryRemove(id, out handler);
+            handler?.Invoke(result);
+        }
+
+        void OnMessageReceived(object sender, MessageReceivedEventArgs args)
         {
             try
             {
-                _port.Send(message, remoteAppId, _remotePort);
-                message.Dispose();
-                Log.Debug("Send");
+                var message = args.Message;
+                var id = Convert.ToInt32(message.GetItem(idKey));
+                var result = Convert.ToBoolean(message.GetItem(resultKey));
+
+                InvokeHandler(id, result);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Debug("[Error] " + ex);
+                Log.Debug("[Error]" + e);
             }
         }
     }
