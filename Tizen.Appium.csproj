@@ -4,7 +4,7 @@
     <TargetFramework>tizen40</TargetFramework>
     <id>Tizen.Appium</id>
     <authors>Samsung Electronics</authors>
-    <Version>1.0.1-pre1</Version>
+    <Version>1.1.0-pre1</Version>
     <owners>Samsung Electronics</owners>
     <copyright>© Samsung Electronics Co., Ltd All Rights Reserved</copyright>
     <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
