@@ -27,13 +27,13 @@ namespace Tizen.Appium
         {
             string id = "";
 
-            if (element is Element)
+            if (element is Element e)
             {
-                id = ((Element)element).GetId();
+                id = e.GetId();
             }
-            else if (element is ItemContext)
+            else if (element is ItemContext ic)
             {
-                id = ((ItemContext)element).Cell.GetId();
+                id = ic.Cell.GetId();
             }
 
             if (!String.IsNullOrEmpty(id) && _elementList.ContainsKey(id))

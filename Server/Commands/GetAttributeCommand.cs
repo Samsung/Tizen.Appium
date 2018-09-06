@@ -1,10 +1,10 @@
 namespace Tizen.Appium
 {
-    internal class GetAttributeCommand : ICommand
+    public class GetAttributeCommand : ICommand
     {
         public string Command => Commands.GetAttribute;
 
-        public Result Run(Request req)
+        public Result Run(Request req, IObjectList objectList, IInputGenerator inputGen)
         {
             Log.Debug("Run: GetAttribute");
 
@@ -13,7 +13,7 @@ namespace Tizen.Appium
 
             var result = new Result();
 
-            var element = AppAdapter.Instance.ObjectList.Get(elementId);
+            var element = objectList.Get(elementId);
             if (element == null)
             {
                 Log.Debug("Not Found Element");

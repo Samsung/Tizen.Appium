@@ -1,14 +1,13 @@
 namespace Tizen.Appium
 {
-    public class ElmSharpAdapter : AppAdapter
+    public sealed class ElmSharpAdapter : IAppAdapter
     {
-        public ElmSharpAdapter() : base()
-        {
-        }
+        EvasObjectList _objectList = new EvasObjectList();
 
-        protected override IObjectList InitObjectList()
+        public IObjectList ObjectList => _objectList;
+
+        public ElmSharpAdapter()
         {
-            throw new global::System.NotImplementedException();
         }
     }
 }

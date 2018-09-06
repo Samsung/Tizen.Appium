@@ -2,11 +2,11 @@ using System;
 
 namespace Tizen.Appium
 {
-    internal class SetAttributeCommand : ICommand
+    public class SetAttributeCommand : ICommand
     {
         public string Command => Commands.SetAttribute;
 
-        public Result Run(Request req)
+        public Result Run(Request req, IObjectList objectList, IInputGenerator inputGen)
         {
             Log.Debug("Run: SetAttribute");
 
@@ -16,7 +16,7 @@ namespace Tizen.Appium
 
             var result = new Result();
 
-            var element = AppAdapter.Instance.ObjectList.Get(elementId);
+            var element = objectList.Get(elementId);
             if (element == null)
             {
                 Log.Debug("Not Found Element");

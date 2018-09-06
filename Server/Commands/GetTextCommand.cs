@@ -1,17 +1,17 @@
 namespace Tizen.Appium
 {
-    internal class GetTextCommand : ICommand
+    public class GetTextCommand : ICommand
     {
         public string Command => Commands.GetText;
 
-        public Result Run(Request req)
+        public Result Run(Request req, IObjectList objectList, IInputGenerator inputGen)
         {
             Log.Debug("Run: GetText");
 
             var elementId = req.Params.ElementId;
 
             var result = new Result();
-            result.Value = AppAdapter.Instance.ObjectList.GetTextbyId(elementId);
+            result.Value = objectList.GetTextbyId(elementId);
 
             return result;
         }

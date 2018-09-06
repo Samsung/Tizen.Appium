@@ -4,20 +4,20 @@ using TSystemInfo = Tizen.System.Information;
 namespace Tizen.Appium
 {
     // TODO : This command will be deprecated
-    internal class GetLocationCommand : ICommand
+    public class GetLocationCommand : ICommand
     {
         //The element should be shown bigger than Minimun size for testing.
         int MinisumSize = 2;
 
         public string Command => Commands.GetLocation;
 
-        public Result Run(Request req)
+        public Result Run(Request req, IObjectList objectList, IInputGenerator inputGen)
         {
             Log.Debug("Run: GetLocation");
 
             var elementId = req.Params.ElementId;
             var result = new Result();
-            var location = AppAdapter.Instance.ObjectList.GetLocation(elementId);
+            var location = objectList.GetLocation(elementId);
 
             //fixed with screen size 
             result.Value = new Location(location.X, location.Y, GetCenterX(location), GetCenterY(location), location.Width, location.Height);

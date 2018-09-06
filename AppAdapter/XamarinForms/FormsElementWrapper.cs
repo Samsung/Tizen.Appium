@@ -25,9 +25,9 @@ namespace Tizen.Appium
         public FormsElementWrapper(object obj)
         {
             Element el;
-            if (obj is ItemContext)
+            if (obj is ItemContext ic)
             {
-                el = ((ItemContext)obj).Cell;
+                el = ic.Cell;
             }
             else
             {
@@ -42,13 +42,13 @@ namespace Tizen.Appium
         {
             get
             {
-                if (_element.Target is Element)
+                if (_element.Target is VisualElement ve)
                 {
-                    return ((Element)_element.Target).GetIsShownProperty() && ((VisualElement)_element.Target).IsVisible;
+                    return ve.GetIsShownProperty() && ve.IsVisible;
                 }
-                else if (_element.Target is ItemContext)
+                else if (_element.Target is ItemContext ic)
                 {
-                    return ((ItemContext)_element.Target).Cell.GetIsShownProperty();
+                    return ic.Cell.GetIsShownProperty();
                 }
                 return false;
             }
@@ -76,13 +76,13 @@ namespace Tizen.Appium
             {
                 if (_element.IsAlive)
                 {
-                    if (_element.Target is Element)
+                    if (_element.Target is Element e)
                     {
-                        return IsShown ? (Element)_element.Target : null;
+                        return IsShown ? e : null;
                     }
-                    else if (_element.Target is ItemContext)
+                    else if (_element.Target is ItemContext ic)
                     {
-                        return IsShown ? ((ItemContext)_element.Target).Cell : null;
+                        return IsShown ? ic.Cell : null;
                     }
                 }
                 else
@@ -99,13 +99,13 @@ namespace Tizen.Appium
             {
                 if (_element.IsAlive)
                 {
-                    if (_element.Target is Element)
+                    if (_element.Target is Element e)
                     {
-                        return IsShown ? Platform.GetRenderer((Element)_element.Target).NativeView : null;
+                        return IsShown ? Platform.GetRenderer(e).NativeView : null;
                     }
-                    else if (_element.Target is ItemContext)
+                    else if (_element.Target is ItemContext ic)
                     {
-                        return IsShown ? ((ItemContext)_element.Target).Item.TrackObject : null;
+                        return IsShown ? ic.Item.TrackObject : null;
                     }
                 }
                 else

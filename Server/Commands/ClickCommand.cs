@@ -3,22 +3,22 @@ using TSystemInfo = Tizen.System.Information;
 
 namespace Tizen.Appium
 {
-    internal class ClickCommand : ICommand
+    public class ClickCommand : ICommand
     {
         int MinisumSize = 2;
 
         public string Command => Commands.Click;
 
-        public Result Run(Request req)
+        public Result Run(Request req, IObjectList objectList, IInputGenerator inputGen)
         {
             var elementId = req.Params.ElementId;
             var result = new Result();
 
-            var location = AppAdapter.Instance.ObjectList.GetLocation(elementId);
+            var location = objectList.GetLocation(elementId);
             var x = GetCenterX(location);
             var y = GetCenterY(location);
 
-            result.Value = InputGenerator.Instance.Click(x, y);
+            result.Value = inputGen.Click(x, y);
             return result;
         }
 

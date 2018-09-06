@@ -1,39 +1,21 @@
-using System.Collections.Generic;
+using System;
 using Tizen.Applications;
 
 namespace Tizen.Appium
 {
-    class InputGenerator
+    public sealed class InputGenerator : IInputGenerator
     {
         readonly string portName = "tizen.appium.port";
         readonly string remoteAppId = "org.tizen.uiautomator";
         readonly string remotePortName = "uiautomator_port";
 
-        static InputGenerator _generator;
+        bool _disposed = false;
         IpcConnection _connection;
 
-        public static InputGenerator Instance
-        {
-            get
-            {
-                if (_generator == null)
-                    _generator = new InputGenerator();
-
-                return _generator;
-            }
-        }
-
-        InputGenerator() { }
-
-        public void Register()
+        public InputGenerator()
         {
             _connection = new IpcConnection(portName);
             _connection.Register(remoteAppId, remotePortName);
-        }
-
-        public void Unregister()
-        {
-            _connection.Unregister();
         }
 
         public bool Click(int x, int y)
@@ -128,6 +110,30 @@ namespace Tizen.Appium
             data.AddItem("key", key);
 
             return _connection.SendAsync(data).Result;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~InputGenerator()
+        {
+            Dispose(false);
+        }
+
+        void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                _connection.Unregister();
+            }
+
+            _disposed = true;
         }
     }
 }

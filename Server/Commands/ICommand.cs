@@ -4,6 +4,6 @@ namespace Tizen.Appium
     {
         string Command { get; }
 
-        Result Run(Request req);
+        Result Run(Request req, IObjectList objectList, IInputGenerator inputGen);
     }
 }

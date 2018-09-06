@@ -12,10 +12,12 @@ namespace Tizen.Appium
 {
     public class Server
     {
-        static Server _server;
+        static Server s_server;
 
         ManualResetEvent _receivedDone = new ManualResetEvent(false);
         IDictionary<string, ICommand> _commands = new Dictionary<string, ICommand>();
+        IInputGenerator _inputgenerator;
+        IAppAdapter _appAdapter;
         bool _receivedStop = false;
         IPEndPoint _ipep;
         Socket _socket;
@@ -24,14 +26,19 @@ namespace Tizen.Appium
         {
             get
             {
-                if (_server == null)
-                    _server = new Server();
+                if (s_server == null)
+                    s_server = new Server();
 
-                return _server;
+                return s_server;
             }
         }
 
-        Server() { }
+        Server()
+        {
+            _inputgenerator = new InputGenerator();
+            _appAdapter = AppAdapter.Create(AppType.Forms);
+            InitCommand();
+        }
 
         public void Start(IPAddress address = null, int port = 8888)
         {
@@ -51,10 +58,6 @@ namespace Tizen.Appium
                 _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             }
 
-            InputGenerator.Instance.Register();
-            AppAdapter.Init(AppType.Forms);
-
-            InitCommand();
             Bind();
 
             Log.Debug("Start Server: " + _ipep.ToString() + ", ReuseAddress: true");
@@ -62,7 +65,7 @@ namespace Tizen.Appium
 
         public void Stop()
         {
-            InputGenerator.Instance.Unregister();
+            _inputgenerator.Dispose();
 
             if (_socket != null)
             {
@@ -111,7 +114,7 @@ namespace Tizen.Appium
 
             if (_commands.TryGetValue(req.Action, out cmd))
             {
-                result = cmd.Run(req);
+                result = cmd.Run(req, _appAdapter.ObjectList, _inputgenerator);
             }
             else
             {

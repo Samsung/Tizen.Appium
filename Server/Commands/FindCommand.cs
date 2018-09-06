@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace Tizen.Appium
 {
-    internal class FindCommand : ICommand
+    public class FindCommand : ICommand
     {
         public string Command => Commands.Find;
 
-        public Result Run(Request req)
+        public Result Run(Request req, IObjectList objectList, IInputGenerator inputGen)
         {
             var strategy = req.Params.Strategy;
             var elementId = req.Params.ElementId;
@@ -14,22 +14,22 @@ namespace Tizen.Appium
             Log.Debug("Run: Find with " + strategy);
 
             var result = new Result();
-            List<ObjectInfo> list = new List<ObjectInfo>();
+            List<Result.Element> list = new List<Result.Element>();
 
             if (strategy == "automationId")
             {
-                var obj = AppAdapter.Instance.ObjectList.Get(elementId);
+                var obj = objectList.Get(elementId);
                 if (obj != null)
                 {
-                    list.Add(new ObjectInfo(elementId));
+                    list.Add(new Result.Element(elementId));
                 }
             }
             else
             {
-                var ids = AppAdapter.Instance.ObjectList.GetIdsByName(elementId);
+                var ids = objectList.GetIdsByName(elementId);
                 foreach (var id in ids)
                 {
-                    list.Add(new ObjectInfo(id));
+                    list.Add(new Result.Element(id));
                 }
             }
 
