@@ -16,7 +16,7 @@ namespace Tizen.Appium
 
         IEnumerable<string> GetIdsByName(string name);
 
-        Location GetLocation(string id);
+        Geometry GetGeometry(string id);
 
         string GetTextbyId(string id);
 

@@ -78,9 +78,9 @@ namespace Tizen.Appium
             return selected;
         }
 
-        public Location GetLocation(string id)
+        public Geometry GetGeometry(string id)
         {
-            var tcs = new TaskCompletionSource<Location>();
+            var tcs = new TaskCompletionSource<Geometry>();
 
             // Getting location works on only main thread since platform 5.0
             Device.BeginInvokeOnMainThread(() =>
@@ -88,9 +88,9 @@ namespace Tizen.Appium
                 var nativeView = GetObjectWrapper(id)?.NativeView;
 
                 if (nativeView != null)
-                    tcs.SetResult(new Location(nativeView.Geometry.X, nativeView.Geometry.Y, 0, 0, nativeView.Geometry.Width, nativeView.Geometry.Height));
+                    tcs.SetResult(new Geometry(nativeView.Geometry.X, nativeView.Geometry.Y, nativeView.Geometry.Width, nativeView.Geometry.Height));
                 else
-                    tcs.SetResult(new Location());
+                    tcs.SetResult(new Geometry());
             });
 
             return tcs.Task.Result;

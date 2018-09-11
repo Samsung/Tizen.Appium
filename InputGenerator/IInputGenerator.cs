@@ -7,11 +7,11 @@ namespace Tizen.Appium
     {
         bool Click(int x, int y);
 
-        bool touchUp(int x, int y);
+        bool TouchUp(int x, int y);
 
-        bool touchDown(int x, int y);
+        bool TouchDown(int x, int y);
 
-        bool touchMove(int x, int y);
+        bool TouchMove(int x, int y);
 
         bool Flick(int xSpeed, int ySpeed);
 

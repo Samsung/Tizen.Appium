@@ -34,7 +34,7 @@ namespace Tizen.Appium
             throw new global::System.NotImplementedException();
         }
 
-        public Location GetLocation(string id)
+        public Geometry GetGeometry(string id)
         {
             throw new global::System.NotImplementedException();
         }

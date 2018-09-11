@@ -28,7 +28,7 @@ namespace Tizen.Appium
             return _connection.SendAsync(data).Result;
         }
 
-        public bool touchUp(int x, int y)
+        public bool TouchUp(int x, int y)
         {
             var data = new Bundle();
             data.AddItem("command", "up");
@@ -38,7 +38,7 @@ namespace Tizen.Appium
             return _connection.SendAsync(data).Result;
         }
 
-        public bool touchDown(int x, int y)
+        public bool TouchDown(int x, int y)
         {
             var data = new Bundle();
             data.AddItem("command", "down");
@@ -48,7 +48,7 @@ namespace Tizen.Appium
             return _connection.SendAsync(data).Result;
         }
 
-        public bool touchMove(int x, int y)
+        public bool TouchMove(int x, int y)
         {
             var data = new Bundle();
             data.AddItem("command", "move");
@@ -71,7 +71,7 @@ namespace Tizen.Appium
             data.AddItem("yDown", yDown.ToString());
             data.AddItem("xUp", xUp.ToString());
             data.AddItem("yUp", yUp.ToString());
-            data.AddItem("step", yUp.ToString());
+            data.AddItem("steps", steps.ToString());
 
             return _connection.SendAsync(data).Result;
         }

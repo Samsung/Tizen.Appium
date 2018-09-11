@@ -27,5 +27,34 @@ namespace Tizen.Appium
                 Id = id;
             }
         }
+
+        public class Size
+        {
+            [JsonProperty("width")]
+            public int Width { get; set; }
+
+            [JsonProperty("height")]
+            public int Height { get; set; }
+
+            public Size(int width = 0, int height = 0)
+            {
+                Width = width;
+                Height = height;
+            }
+        }
+        public class Location
+        {
+            [JsonProperty("x")]
+            public int X { get; set; }
+
+            [JsonProperty("y")]
+            public int Y { get; set; }
+
+            public Location(int x = 0, int y = 0)
+            {
+                X = x;
+                Y = y;
+            }
+        }
     }
 }
