@@ -12,6 +12,13 @@ namespace Tizen.Appium
         bool _disposed = false;
         IpcConnection _connection;
 
+        bool _touchTriggered = false;
+        int _x = -1;
+        int _y = -1;
+
+        bool _keyPressed = false;
+        string _key = "";
+
         public InputGenerator()
         {
             _connection = new IpcConnection(portName);
@@ -25,17 +32,20 @@ namespace Tizen.Appium
             data.AddItem("x", x.ToString());
             data.AddItem("y", y.ToString());
 
-            return _connection.SendAsync(data).Result;
-        }
+            try
+            {
+                return _connection.SendAsync(data).Result;
+            }
+            catch (AggregateException ae)
+            {
+                ae.Handle(e => {
+                    if (e is TimeoutException)
+                        throw e;
+                    return e is TimeoutException;
+                });
+            }
 
-        public bool TouchUp(int x, int y)
-        {
-            var data = new Bundle();
-            data.AddItem("command", "up");
-            data.AddItem("x", x.ToString());
-            data.AddItem("y", y.ToString());
-
-            return _connection.SendAsync(data).Result;
+            return false;
         }
 
         public bool TouchDown(int x, int y)
@@ -45,7 +55,66 @@ namespace Tizen.Appium
             data.AddItem("x", x.ToString());
             data.AddItem("y", y.ToString());
 
-            return _connection.SendAsync(data).Result;
+            try
+            {
+                var ret = _connection.SendAsync(data).Result;
+                if (ret)
+                {
+                    _touchTriggered = true;
+                    _x = x;
+                    _y = y;
+
+                    return ret;
+                }
+            }
+            catch (AggregateException ae)
+            {
+                ae.Handle(e => {
+                    if (e is TimeoutException)
+                        throw e;
+                    return e is TimeoutException;
+                });
+            }
+
+            return false;
+        }
+
+        public bool TouchUp(int x, int y)
+        {
+            var data = new Bundle();
+            data.AddItem("command", "up");
+
+            try
+            {
+                if (_touchTriggered)
+                {
+                    data.AddItem("x", _x.ToString());
+                    data.AddItem("y", _y.ToString());
+                    var ret =  _connection.SendAsync(data).Result;
+                    if (ret)
+                    {
+                        _touchTriggered = false;
+                        return ret;
+                    }
+                }
+                else
+                {
+                    data.AddItem("x", x.ToString());
+                    data.AddItem("y", y.ToString());
+                    return _connection.SendAsync(data).Result;
+                }
+            }
+            catch (AggregateException ae)
+            {
+                ae.Handle(e => {
+                    if (e is TimeoutException)
+                        throw e;
+                    return e is TimeoutException;
+                });
+            }
+
+            return false;
+
         }
 
         public bool TouchMove(int x, int y)
@@ -55,11 +124,19 @@ namespace Tizen.Appium
             data.AddItem("x", x.ToString());
             data.AddItem("y", y.ToString());
 
-            return _connection.SendAsync(data).Result;
-        }
+            try
+            {
+                return _connection.SendAsync(data).Result;
+            }
+            catch (AggregateException ae)
+            {
+                ae.Handle(e => {
+                    if (e is TimeoutException)
+                        throw e;
+                    return e is TimeoutException;
+                });
+            }
 
-        public bool Flick(int xSpeed, int ySpeed)
-        {
             return false;
         }
 
@@ -73,7 +150,20 @@ namespace Tizen.Appium
             data.AddItem("yUp", yUp.ToString());
             data.AddItem("steps", steps.ToString());
 
-            return _connection.SendAsync(data).Result;
+            try
+            {
+                return _connection.SendAsync(data).Result;
+            }
+            catch (AggregateException ae)
+            {
+                ae.Handle(e => {
+                    if (e is TimeoutException)
+                        throw e;
+                    return e is TimeoutException;
+                });
+            }
+
+            return false;
         }
 
         public bool SendKey(string key)
@@ -82,7 +172,20 @@ namespace Tizen.Appium
             data.AddItem("command", "sendkey");
             data.AddItem("key", key);
 
-            return _connection.SendAsync(data).Result;
+            try
+            {
+                return _connection.SendAsync(data).Result;
+            }
+            catch (AggregateException ae)
+            {
+                ae.Handle(e => {
+                    if (e is TimeoutException)
+                        throw e;
+                    return e is TimeoutException;
+                });
+            }
+
+            return false;
         }
 
         public bool SendKeys(string[] keys)
@@ -91,7 +194,21 @@ namespace Tizen.Appium
             data.AddItem("command", "sendkeys");
             data.AddItem("keys", keys);
 
-            return _connection.SendAsync(data).Result;
+            try
+            {
+                return _connection.SendAsync(data).Result;
+            }
+            catch (AggregateException ae)
+            {
+                ae.Handle(e => {
+                    if (e is TimeoutException)
+                        throw e;
+                    return e is TimeoutException;
+                });
+            }
+
+            return false;
+
         }
 
         public bool PressKey(string key)
@@ -100,16 +217,60 @@ namespace Tizen.Appium
             data.AddItem("command", "presskey");
             data.AddItem("key", key);
 
-            return _connection.SendAsync(data).Result;
+            try
+            {
+                var ret = _connection.SendAsync(data).Result;
+                if(ret)
+                {
+                    _keyPressed = true;
+                    return ret;
+                }
+            }
+            catch (AggregateException ae)
+            {
+                ae.Handle(e => {
+                    if (e is TimeoutException)
+                        throw e;
+                    return e is TimeoutException;
+                });
+            }
+
+            return false;
         }
 
         public bool ReleaseKey(string key)
         {
             var data = new Bundle();
             data.AddItem("command", "releasekey");
-            data.AddItem("key", key);
 
-            return _connection.SendAsync(data).Result;
+            try
+            {
+                if(_keyPressed)
+                {
+                    data.AddItem("key", _key);
+                    var ret = _connection.SendAsync(data).Result;
+                    if (ret)
+                    {
+                        _keyPressed = false;
+                        return ret;
+                    }
+                }
+                else
+                {
+                    data.AddItem("key", key);
+                    return _connection.SendAsync(data).Result;
+                }
+            }
+            catch (AggregateException ae)
+            {
+                ae.Handle(e => {
+                    if (e is TimeoutException)
+                        throw e;
+                    return e is TimeoutException;
+                });
+            }
+
+            return false;
         }
 
         public void Dispose()

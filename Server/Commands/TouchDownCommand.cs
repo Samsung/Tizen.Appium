@@ -8,25 +8,42 @@ namespace Tizen.Appium
 
         public Result Run(Request req, IObjectList objectList, IInputGenerator inputGen)
         {
+            Log.Debug("Run: TouchDown");
+
             var elementId = req.Params.ElementId;
             int x = req.Params.X;
             int y = req.Params.Y;
             var result = new Result();
             
-            if (String.IsNullOrEmpty(elementId))
+            try
             {
-                var geometry = objectList.GetGeometry(elementId);
-                result.Value = inputGen.TouchDown(geometry.CenterX, geometry.CenterY);
+                if (!String.IsNullOrEmpty(elementId))
+                {
+                    var geometry = objectList.GetGeometry(elementId);
+                    result.Value = inputGen.TouchDown(geometry.CenterX, geometry.CenterY);
+                }
+                else if ((x > 0) && (y > 0))
+                {
+                    result.Value = inputGen.TouchDown(x, y);
+                }
+                else
+                {
+                    Log.Debug("Invalid values");
+                }
             }
-            else if ( (x > 0) && (y > 0))
+            catch (TimeoutException te)
             {
-                result.Value = inputGen.TouchDown(x, y);
+                Log.Debug(te.ToString());
+                result.Status = 44;
+                result.Value = "false";
             }
-            else
+            catch (Exception e)
             {
-                Log.Debug("Invalid values");
+                Log.Debug(e.ToString());
+                result.Value = "false";
             }
-            
+
+
             return result;
         }
     }

@@ -14,7 +14,21 @@ namespace Tizen.Appium
             var result = new Result();
 
             var geometry = objectList.GetGeometry(elementId);
-            result.Value = inputGen.Click(geometry.CenterX, geometry.CenterY);
+            try
+            {
+                result.Value = inputGen.Click(geometry.CenterX, geometry.CenterY).ToString().ToLower();
+            }
+            catch(TimeoutException te)
+            {
+                Log.Debug(te.ToString());
+                result.Status = 44;
+                result.Value = "false";
+            }
+            catch (Exception e)
+            {
+                Log.Debug(e.ToString());
+                result.Value = "false";
+            }
 
             return result;
         }

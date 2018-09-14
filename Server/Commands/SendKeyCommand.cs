@@ -11,7 +11,22 @@ namespace Tizen.Appium
             var key = req.Params.Key;
             var result = new Result();
 
-            result.Value = inputGen.SendKey(key).ToString().ToLower();
+            try
+            {
+                result.Value = inputGen.SendKey(key).ToString().ToLower();
+            }
+            catch (TimeoutException te)
+            {
+                Log.Debug(te.ToString());
+                result.Status = 44;
+                result.Value = "false";
+            }
+            catch (Exception e)
+            {
+                Log.Debug(e.ToString());
+                result.Value = "false";
+            }
+
             return result;
         }
     }

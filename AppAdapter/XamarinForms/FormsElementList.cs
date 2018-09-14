@@ -65,37 +65,23 @@ namespace Tizen.Appium
 
         public IEnumerable<string> GetIdsByName(string name)
         {
-            Console.WriteLine("GetIdsByNames: " + name);
             var selected = _elementList.Where(kv => kv.Value.Name == name && kv.Value.IsShown == true).Select(kv => kv.Value.Id);
-
-            Console.WriteLine("selected: " + selected.Count());
-
-            foreach(var s in selected)
-            {
-                Console.WriteLine("id: " + s);
-            }
-
             return selected;
         }
 
         public Geometry GetGeometry(string id)
         {
-            var tcs = new TaskCompletionSource<Geometry>();
-
             // Getting location works on only main thread since platform 5.0
-            Device.BeginInvokeOnMainThread(() =>
+            return RunOnMainThread<Geometry>(() =>
             {
                 var nativeView = GetObjectWrapper(id)?.NativeView;
 
                 if (nativeView != null)
-                    tcs.SetResult(new Geometry(nativeView.Geometry.X, nativeView.Geometry.Y, nativeView.Geometry.Width, nativeView.Geometry.Height));
+                    return new Geometry(nativeView.Geometry.X, nativeView.Geometry.Y, nativeView.Geometry.Width, nativeView.Geometry.Height);
                 else
-                    tcs.SetResult(new Geometry());
+                    return new Geometry();
             });
-
-            return tcs.Task.Result;
         }
-
 
         public string GetTextbyId(string id)
         {
@@ -136,6 +122,17 @@ namespace Tizen.Appium
             _elementList.TryGetValue(id, out wrapper);
 
             return wrapper;
+        }
+
+        T RunOnMainThread<T>(Func<T> func)
+        {
+            var tcs = new TaskCompletionSource<T>();
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                var t = func();
+                tcs.SetResult(t);
+            });
+            return tcs.Task.Result;
         }
     }
 }

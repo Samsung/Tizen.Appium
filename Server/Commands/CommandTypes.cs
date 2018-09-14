@@ -1,6 +1,6 @@
 namespace Tizen.Appium
 {
-    internal class Commands
+    public class Commands
     {
         public static readonly string Find = "find";
         public static readonly string GetLocation = "element:location";

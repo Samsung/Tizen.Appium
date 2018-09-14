@@ -40,6 +40,7 @@ namespace Tizen.Appium
 
         public Task<bool> SendAsync(Bundle message, int timeout = 3000)
         {
+            Log.Debug(" send async");
             if (!_remotePort.IsRunning())
                 return Task.FromResult(false);
 
@@ -52,7 +53,13 @@ namespace Tizen.Appium
 
             Timer timer = new Timer((state) =>
             {
-                InvokeHandler(id, false);
+                _localPort.StopListening();
+                _localPort.Listen();
+
+                Action<bool> handler;
+                _handlerMap.TryRemove(id, out handler);
+                tcs.SetException(new TimeoutException());
+
             }, null, timeout, Timeout.Infinite);
 
             _handlerMap.TryAdd(id, (result) =>

@@ -1,3 +1,5 @@
+using Tizen.Applications;
+
 namespace Tizen.Appium
 {
     public class TizenAppium
@@ -6,14 +8,14 @@ namespace Tizen.Appium
 
         public static readonly string Tag = "TizenAppium";
 
-        public static void StartService(object arg = null)
+        public static void StartService(CoreApplication application)
         {
             Log.Debug("Start Service : initialize");
 
             if (IsInitialized)
                 return;
 
-            Server.Instance.Start();
+            Server.Instance.Start(application);
 
             IsInitialized = true;
         }

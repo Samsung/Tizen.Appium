@@ -1,4 +1,3 @@
-
 using System;
 
 namespace Tizen.Appium
@@ -12,8 +11,6 @@ namespace Tizen.Appium
         bool TouchDown(int x, int y);
 
         bool TouchMove(int x, int y);
-
-        bool Flick(int xSpeed, int ySpeed);
 
         bool Drag(int xDown, int yDown, int xUp, int yUp, int steps = 30);
 

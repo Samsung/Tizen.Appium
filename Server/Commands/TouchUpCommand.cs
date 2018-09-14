@@ -12,21 +12,35 @@ namespace Tizen.Appium
             var x = req.Params.X;
             var y = req.Params.Y;
             var result = new Result();
-            
-            if (String.IsNullOrEmpty(elementId))
+
+            try
             {
-                var geometry = objectList.GetGeometry(elementId);
-                result.Value = inputGen.TouchUp(geometry.CenterX, geometry.CenterY);
+                if (!String.IsNullOrEmpty(elementId))
+                {
+                    var geometry = objectList.GetGeometry(elementId);
+                    result.Value = inputGen.TouchUp(geometry.CenterX, geometry.CenterY);
+                }
+                else if ((x > 0) && (y > 0))
+                {
+                    result.Value = inputGen.TouchDown(x, y);
+                }
+                else
+                {
+                    Log.Debug("Invalid values");
+                }
             }
-            else if ( (x > 0) && (y > 0))
+            catch (TimeoutException te)
             {
-                result.Value = inputGen.TouchUp(x, y);
+                Log.Debug(te.ToString());
+                result.Status = 44;
+                result.Value = "false";
             }
-            else
+            catch (Exception e)
             {
-                Log.Debug("Invalid values");
+                Log.Debug(e.ToString());
+                result.Value = "false";
             }
-            
+
             return result;
         }
     }

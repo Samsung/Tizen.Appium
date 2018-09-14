@@ -7,16 +7,17 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
+using Tizen.Applications;
 
 namespace Tizen.Appium
 {
-    public class Server
+    public sealed class Server
     {
         static Server s_server;
 
         ManualResetEvent _receivedDone = new ManualResetEvent(false);
         IDictionary<string, ICommand> _commands = new Dictionary<string, ICommand>();
-        IInputGenerator _inputgenerator;
+        InputGenerator _inputgenerator;
         IAppAdapter _appAdapter;
         bool _receivedStop = false;
         IPEndPoint _ipep;
@@ -35,12 +36,10 @@ namespace Tizen.Appium
 
         Server()
         {
-            _inputgenerator = new InputGenerator();
-            _appAdapter = AppAdapter.Create(AppType.Forms);
             InitCommand();
         }
 
-        public void Start(IPAddress address = null, int port = 8888)
+        public void Start(CoreApplication application, IPAddress address = null, int port = 8888)
         {
 
             if (address == null)
@@ -58,6 +57,9 @@ namespace Tizen.Appium
                 _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             }
 
+            _appAdapter = AppAdapter.Create(application);
+            _inputgenerator = new InputGenerator();
+
             Bind();
 
             Log.Debug("Start Server: " + _ipep.ToString() + ", ReuseAddress: true");
@@ -74,6 +76,7 @@ namespace Tizen.Appium
                 Log.Debug("Closed");
             }
         }
+
         void InitCommand()
         {
             Log.Debug("InitCommands");
@@ -114,7 +117,7 @@ namespace Tizen.Appium
 
             if (_commands.TryGetValue(req.Action, out cmd))
             {
-                result = cmd.Run(req, _appAdapter.ObjectList, _inputgenerator);
+                result =  cmd.Run(req, _appAdapter.ObjectList, _inputgenerator);
             }
             else
             {

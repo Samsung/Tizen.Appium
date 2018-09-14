@@ -1,26 +1,17 @@
 using System;
+using Tizen.Applications;
+using Xamarin.Forms.Platform.Tizen;
 
 namespace Tizen.Appium
 {
-    public enum AppType
-    {
-        Forms,
-        ElmSharp
-    }
-
     public class AppAdapter
     {
-        public static IAppAdapter Create(AppType type)
+        public static IAppAdapter Create(CoreApplication application)
         {
-            switch (type)
-            {
-                case AppType.Forms:
-                    return new FormsAdapter();
-                case AppType.ElmSharp:
-                    return new ElmSharpAdapter();
-                default:
-                    return null;
-            }
+            if (application is Xamarin.Forms.Platform.Tizen.FormsApplication)
+                return new FormsAdapter();
+            else
+                return new ElmSharpAdapter();
         }
     }
 }

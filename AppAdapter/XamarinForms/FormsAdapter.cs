@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform.Tizen;
@@ -10,9 +12,7 @@ namespace Tizen.Appium
 
         public IObjectList ObjectList => _objectList;
 
-        ToolbarTracker _toolbarTracker;
-
-        public FormsAdapter(Application app = null)
+        public FormsAdapter()
         {
             Forms.ViewInitialized += (s, e) =>
             {
@@ -43,21 +43,6 @@ namespace Tizen.Appium
                     AddItemFromList(e.View);
                 }
             };
-
-            if (app != null)
-            {
-                _toolbarTracker = new ToolbarTracker();
-                _toolbarTracker.Target = app.MainPage;
-                _toolbarTracker.CollectionChanged += (s, e) =>
-                {
-                    _objectList.ResetToolbarItems();
-
-                    foreach (var item in _toolbarTracker.ToolbarItems)
-                    {
-                        _objectList.Add(item);
-                    }
-                };
-            }
         }
 
         void AddItemFromList(VisualElement list)
@@ -80,6 +65,5 @@ namespace Tizen.Appium
                 };
             };
         }
-
     }
 }
