@@ -16,18 +16,18 @@ namespace Tizen.Appium
             var result = new Result();
             try
             {
-                result.Value = inputGen.Drag(x, y, x + xSpeed, y + ySpeed).ToString().ToLower();
+                result.Value = inputGen.Drag(x, y, x + xSpeed, y + ySpeed);
             }
             catch (TimeoutException te)
             {
                 Log.Debug(te.ToString());
                 result.Status = 44;
-                result.Value = "false";
+                result.Value = false;
             }
             catch (Exception e)
             {
                 Log.Debug(e.ToString());
-                result.Value = "false";
+                result.Value = false;
             }
 
             return result;

@@ -41,6 +41,10 @@ namespace Tizen.Appium
                 Width = width;
                 Height = height;
             }
+            public override string ToString()
+            {
+                return "Width=" + Width + ", Height=" + Height;
+            }
         }
         public class Location
         {
@@ -55,6 +59,16 @@ namespace Tizen.Appium
                 X = x;
                 Y = y;
             }
+
+            public override string ToString()
+            {
+                return "X=" + X + ", Y=" + Y;
+            }
+        }
+
+        public override string ToString()
+        {
+            return Value.ToString();
         }
     }
 }

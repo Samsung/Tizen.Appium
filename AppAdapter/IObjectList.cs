@@ -12,13 +12,11 @@ namespace Tizen.Appium
 
         string GetIdByObject(object element);
 
-        object Get(string id);
+        IObject Get(string id);
+
+        IEnumerable<string> GetFocusedElementIds();
 
         IEnumerable<string> GetIdsByName(string name);
-
-        Geometry GetGeometry(string id);
-
-        string GetTextbyId(string id);
 
         void Clear();
     }

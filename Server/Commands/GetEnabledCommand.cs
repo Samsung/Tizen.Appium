@@ -9,25 +9,14 @@ namespace Tizen.Appium
             Log.Debug("Run: GetEnabled");
 
             var elementId = req.Params.ElementId;
-
             var result = new Result();
 
-
-            var element = objectList.Get(elementId);
-            if(element == null)
+            var value  = objectList.Get(elementId)?.GetPropertyValue("IsEnabled");
+            if(value != null)
             {
-                Log.Debug("Not Found Element");
-                return result;
+                result.Value = value;
             }
 
-            var value = element.GetType().GetProperty("IsEnabled")?.GetValue(element);
-            if (value != null)
-            {
-                result.Value = value.ToString();
-                return result;
-            }
-
-            Log.Debug(elementId + " element does not have IsEnabled property.");
             return result;
         }
     }

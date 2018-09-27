@@ -11,7 +11,7 @@ namespace Tizen.Appium
             var elementId = req.Params.ElementId;
 
             var result = new Result();
-            var element = objectList.Get(elementId) ;
+            var element = objectList.Get(elementId);
             result.Value = (element != null) ? true : false;
 
             return result;

@@ -24,6 +24,14 @@ namespace Tizen.Appium
                     list.Add(new Result.Element(elementId));
                 }
             }
+            else if (strategy == "focused")
+            {
+                var ids = objectList.GetFocusedElementIds();
+                foreach (var id in ids)
+                {
+                    list.Add(new Result.Element(id));
+                }
+            }
             else
             {
                 var ids = objectList.GetIdsByName(elementId);

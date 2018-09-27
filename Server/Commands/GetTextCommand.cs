@@ -11,7 +11,11 @@ namespace Tizen.Appium
             var elementId = req.Params.ElementId;
 
             var result = new Result();
-            result.Value = objectList.GetTextbyId(elementId);
+            var value = objectList.Get(elementId)?.Text;
+            if(value != null)
+            {
+                result.Value = value;
+            }
 
             return result;
         }

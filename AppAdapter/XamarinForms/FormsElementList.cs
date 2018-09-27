@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using ItemContext = Xamarin.Forms.Platform.Tizen.Native.ListView.ItemContext;
 
@@ -54,85 +53,36 @@ namespace Tizen.Appium
 
         public string GetIdByObject(object element)
         {
-            return _elementList.FirstOrDefault(kv => kv.Value.Element == element && kv.Value.IsShown).Key;
+            return _elementList.FirstOrDefault(kv => kv.Value.Element == element).Key;
         }
 
-        public object Get(string id)
-        {
-            var wrapper = GetObjectWrapper(id);
-            return (wrapper != null) ? wrapper.Element : null;
-        }
-
-        public IEnumerable<string> GetIdsByName(string name)
-        {
-            var selected = _elementList.Where(kv => kv.Value.Name == name && kv.Value.IsShown == true).Select(kv => kv.Value.Id);
-            return selected;
-        }
-
-        public Geometry GetGeometry(string id)
-        {
-            // Getting location works on only main thread since platform 5.0
-            return RunOnMainThread<Geometry>(() =>
-            {
-                var nativeView = GetObjectWrapper(id)?.NativeView;
-
-                if (nativeView != null)
-                    return new Geometry(nativeView.Geometry.X, nativeView.Geometry.Y, nativeView.Geometry.Width, nativeView.Geometry.Height);
-                else
-                    return new Geometry();
-            });
-        }
-
-        public string GetTextbyId(string id)
-        {
-            var element = GetObjectWrapper(id)?.Element;
-
-            if (element == null)
-                return string.Empty;
-
-            var text = element.GetType().GetProperty("Text")?.GetValue(element);
-            var formattedText = element.GetType().GetProperty("FormattedText")?.GetValue(element);
-
-            return (text != null)? text.ToString() : ((formattedText != null) ? formattedText.ToString() : string.Empty);
-        }
-
-        public void Clear()
-        {
-            _elementList.Clear();
-        }
-
-        internal void ResetToolbarItems()
-        {
-            var oldItemKeys = _elementList.Where(kv => kv.Value.Element is ToolbarItem).Select(kv => kv.Key).ToList();
-
-            Log.Debug("[Reset toolbar] oldKeys= " + oldItemKeys);
-
-            foreach (var key in oldItemKeys)
-            {
-                _elementList.Remove(key);
-            }
-            Log.Debug("[Reset toolbar] _elements.Count=" + _elementList.Count);
-        }
-
-        FormsElementWrapper GetObjectWrapper(string id)
+        public IObject Get(string id)
         {
             Log.Debug("[GetElement] _elements.ContainsKey? " + _elementList.ContainsKey(id) + ", _elements.Count=" + _elementList.Count);
 
             FormsElementWrapper wrapper = null;
             _elementList.TryGetValue(id, out wrapper);
+            if (wrapper != null && wrapper.Element != null)
+                return wrapper;
 
-            return wrapper;
+            return null;
         }
 
-        T RunOnMainThread<T>(Func<T> func)
+        public IEnumerable<string> GetIdsByName(string name)
         {
-            var tcs = new TaskCompletionSource<T>();
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                var t = func();
-                tcs.SetResult(t);
-            });
-            return tcs.Task.Result;
+            var selected = _elementList.Where(kv => kv.Value.Name == name && kv.Value.Element != null).Select(kv => kv.Value.Id);
+            return selected;
+        }
+
+        public IEnumerable<string> GetFocusedElementIds()
+        {
+            var focused = _elementList.Where(kv => kv.Value.Focused).Select(kv => kv.Value.Id);
+            return focused;
+        }
+
+        public void Clear()
+        {
+            _elementList.Clear();
         }
     }
 }

@@ -13,8 +13,14 @@ namespace Tizen.Appium
             var elementId = req.Params.ElementId;
 
             var result = new Result();
-            var geometry = objectList.GetGeometry(elementId);
-            result.Value = new Result.Size(geometry.Width, geometry.Height);
+            var geometry = objectList.Get(elementId)?.Geometry;
+            if(geometry != null)
+            {
+                result.Value = new Result.Size(geometry.Width, geometry.Height);
+            } else
+            {
+                result.Value = new Result.Size();
+            }
 
             return result;
         }

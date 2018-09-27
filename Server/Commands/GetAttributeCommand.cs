@@ -13,18 +13,10 @@ namespace Tizen.Appium
 
             var result = new Result();
 
-            var element = objectList.Get(elementId);
-            if (element == null)
-            {
-                Log.Debug("Not Found Element");
-                return result;
-            }
-
-            var value = element.GetType().GetProperty(propertyName)?.GetValue(element);
+            var value = objectList.Get(elementId)?.GetPropertyValue(propertyName);
             if (value != null)
             {
                 result.Value = value.ToString();
-                return result;
             }
 
             Log.Debug(elementId + " element does not have " + propertyName + " property.");

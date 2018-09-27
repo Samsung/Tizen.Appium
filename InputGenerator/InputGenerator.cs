@@ -222,6 +222,7 @@ namespace Tizen.Appium
                 var ret = _connection.SendAsync(data).Result;
                 if(ret)
                 {
+                    _key = key;
                     _keyPressed = true;
                     return ret;
                 }

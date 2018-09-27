@@ -7,6 +7,7 @@ namespace Tizen.Appium
         public static readonly string GetAttribute = "element:getAttribute";
         public static readonly string SetAttribute = "element:setAttribute";
         public static readonly string GetText = "element:getText";
+        public static readonly string SetText = "element:setText";
         public static readonly string GetEnabled = "element:enabled";
         public static readonly string GetDisplayed = "element:displayed";
         public static readonly string GetSize = "element:size";

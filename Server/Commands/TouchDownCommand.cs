@@ -19,7 +19,7 @@ namespace Tizen.Appium
             {
                 if (!String.IsNullOrEmpty(elementId))
                 {
-                    var geometry = objectList.GetGeometry(elementId);
+                    var geometry = objectList.Get(elementId)?.Geometry;
                     result.Value = inputGen.TouchDown(geometry.CenterX, geometry.CenterY);
                 }
                 else if ((x > 0) && (y > 0))
@@ -35,12 +35,12 @@ namespace Tizen.Appium
             {
                 Log.Debug(te.ToString());
                 result.Status = 44;
-                result.Value = "false";
+                result.Value = false;
             }
             catch (Exception e)
             {
                 Log.Debug(e.ToString());
-                result.Value = "false";
+                result.Value = false;
             }
 
 

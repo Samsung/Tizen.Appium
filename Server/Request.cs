@@ -42,6 +42,12 @@ namespace Tizen.Appium
             [JsonProperty("keys")]
             public string[] Keys { get; set; }
 
+            [JsonProperty("text")]
+            public string Text { get; set; }
+
+            [JsonProperty("replace")]
+            public bool Replace { get; set; }
+
             [JsonProperty("value")]
             public string Value { get; set; }
         }

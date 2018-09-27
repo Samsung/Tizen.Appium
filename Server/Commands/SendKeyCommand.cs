@@ -13,18 +13,18 @@ namespace Tizen.Appium
 
             try
             {
-                result.Value = inputGen.SendKey(key).ToString().ToLower();
+                result.Value = inputGen.SendKey(key);
             }
             catch (TimeoutException te)
             {
                 Log.Debug(te.ToString());
                 result.Status = 44;
-                result.Value = "false";
+                result.Value = false;
             }
             catch (Exception e)
             {
                 Log.Debug(e.ToString());
-                result.Value = "false";
+                result.Value = false;
             }
 
             return result;
