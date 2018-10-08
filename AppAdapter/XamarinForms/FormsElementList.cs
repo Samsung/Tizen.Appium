@@ -9,6 +9,20 @@ namespace Tizen.Appium
     public class FormsElementList : IObjectList
     {
         IDictionary<string, FormsElementWrapper> _elementList = new Dictionary<string, FormsElementWrapper>();
+        IDictionary<string, FormsElementWrapper> _toolbarItems = new Dictionary<string, FormsElementWrapper>();
+
+        public void AddToolbarItem(ToolbarItem item, ToolbarItemPosition position)
+        {
+            var wrapper = new FormsElementWrapper(item, position);
+            _toolbarItems[wrapper.Id] = wrapper;
+            Log.Debug("[Added][ToolbarItem] id=" + wrapper.Id + ", element=" + item.GetType() + ", _elements.Count=" + _elementList.Count);
+        }
+
+        public void ResetToolbarItems()
+        {
+            Log.Debug("[Reset][ToolbarItems]");
+            _toolbarItems.Clear();
+        }
 
         public void Add(object element)
         {
@@ -53,15 +67,18 @@ namespace Tizen.Appium
 
         public string GetIdByObject(object element)
         {
-            return _elementList.FirstOrDefault(kv => kv.Value.Element == element).Key;
+            return _elementList.Concat(_toolbarItems).FirstOrDefault(kv => kv.Value.Element == element).Key;
         }
 
         public IObject Get(string id)
         {
-            Log.Debug("[GetElement] _elements.ContainsKey? " + _elementList.ContainsKey(id) + ", _elements.Count=" + _elementList.Count);
-
             FormsElementWrapper wrapper = null;
-            _elementList.TryGetValue(id, out wrapper);
+            var list = _elementList.Concat(_toolbarItems).ToDictionary(kv => kv.Key, kv => kv.Value);
+
+            Log.Debug("[GetElement] objectList.ContainsKey? " + list.ContainsKey(id) + ", objectList.Count=" + list.Count);
+
+            list.TryGetValue(id, out wrapper);
+
             if (wrapper != null && wrapper.Element != null)
                 return wrapper;
 
@@ -70,7 +87,7 @@ namespace Tizen.Appium
 
         public IEnumerable<string> GetIdsByName(string name)
         {
-            var selected = _elementList.Where(kv => kv.Value.Name == name && kv.Value.Element != null).Select(kv => kv.Value.Id);
+            var selected = _elementList.Concat(_toolbarItems).Where(kv => kv.Value.Text == name && kv.Value.Element != null).Select(kv => kv.Value.Id);
             return selected;
         }
 

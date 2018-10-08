@@ -65,6 +65,8 @@ namespace Tizen.Appium
             _handlerMap.TryAdd(id, (result) =>
             {
                 timer.Dispose();
+                // Waiting to re-layout by input
+                Thread.Sleep(300);
                 tcs.TrySetResult(result);
             });
 

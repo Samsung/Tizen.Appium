@@ -7,10 +7,18 @@ using System.Threading.Tasks;
 
 namespace Tizen.Appium
 {
+    public enum ToolbarItemPosition
+    {
+        None,
+        Left,
+        Right
+    };
+
     public class FormsElementWrapper : IObject
     {
         WeakReference _element;
         string _id;
+        ToolbarItemPosition _position;
 
         public EventHandler Deleted;
 
@@ -37,6 +45,11 @@ namespace Tizen.Appium
             _id = el.GetId();
         }
 
+        public FormsElementWrapper(object obj, ToolbarItemPosition position) : this(obj)
+        {
+            _position = position;
+        }
+
         public Element Element
         {
             get
@@ -50,6 +63,10 @@ namespace Tizen.Appium
                     else if (_element.Target is ItemContext ic)
                     {
                         return ic.Cell.GetIsShownProperty() ? ic.Cell : null;
+                    }
+                    else if (_element.Target is Element e)
+                    {
+                        return e;
                     }
                 }
                 else
@@ -95,19 +112,6 @@ namespace Tizen.Appium
             }
         }
 
-        public string Name
-        {
-            get
-            {
-                var property = Element?.GetType().GetProperty("Text");
-                if (property != null)
-                {
-                    return (string)(property.GetValue(Element));
-                }
-                return string.Empty;
-            }
-        }
-
         public Geometry Geometry
         {
             get
@@ -115,9 +119,25 @@ namespace Tizen.Appium
                 return RunOnMainThread<Geometry>(() =>
                 {
                     if (NativeView != null)
+                    {
                         return new Geometry(NativeView.Geometry.X, NativeView.Geometry.Y, NativeView.Geometry.Width, NativeView.Geometry.Height);
+                    }
                     else
-                        return new Geometry();
+                    {
+                        if(_position == ToolbarItemPosition.Right)
+                        {
+                            var screenWidth = Utils.GetScreeenWidth();
+                            return new Geometry(screenWidth - 50, 50, 10, 10);
+                        }
+                        else if (_position == ToolbarItemPosition.Left)
+                        {
+                            return new Geometry(50, 50, 10, 10);
+                        }
+                        else
+                        {
+                            return new Geometry();
+                        }
+                    }
                 });
             }
         }
@@ -129,9 +149,10 @@ namespace Tizen.Appium
                 return RunOnMainThread<string>(() =>
                 {
                     var text = Element?.GetType().GetProperty("Text")?.GetValue(Element);
+                    var name = Element?.GetType().GetProperty("Name")?.GetValue(Element);
                     var formattedText = Element?.GetType().GetProperty("FormattedText")?.GetValue(Element);
 
-                    return (text != null) ? text.ToString() : ((formattedText != null) ? formattedText.ToString() : string.Empty);
+                    return (text != null) ? text.ToString() : ((name != null) ? name.ToString() : ((formattedText != null) ? formattedText.ToString() : string.Empty));
                 });
             }
         }

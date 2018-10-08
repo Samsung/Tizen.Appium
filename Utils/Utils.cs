@@ -1,4 +1,4 @@
-﻿using TSystemInfo = Tizen.System.Information;
+using TSystemInfo = Tizen.System.Information;
 
 namespace Tizen.Appium
 {
@@ -7,14 +7,14 @@ namespace Tizen.Appium
         public static int GetScreeenWidth()
         {
             int width;
-            TSystemInfo.TryGetValue("http://tizen.org/feature/screen.width", out width);
+            TSystemInfo.TryGetValue<int>("http://tizen.org/feature/screen.width", out width);
             return width;
         }
 
         public static int GetScreenHeight()
         {
             int height;
-            TSystemInfo.TryGetValue("http://tizen.org/feature/screen.height", out height);
+            TSystemInfo.TryGetValue<int>("http://tizen.org/feature/screen.height", out height);
             return height;
         }
 
