@@ -16,36 +16,59 @@ namespace Tizen.Appium
             Status = 0;
             Value = String.Empty;
         }
-    }
 
-    public class Location
-    {
-        [JsonProperty("x")]
-        public int X { get; set; }
-
-        [JsonProperty("y")]
-        public int Y { get; set; }
-
-        [JsonProperty("centerx")]
-        public int CenterX { get; set; }
-
-        [JsonProperty("centery")]
-        public int CenterY { get; set; }
-
-        [JsonProperty("width")]
-        public int Width { get; set; }
-
-        [JsonProperty("height")]
-        public int Height { get; set; }
-
-        public Location(int x1 = -1, int y1 = -1, int x2 = -1, int y2 = -1, int width = -1, int height = -1)
+        public class Element
         {
-            X = x1;
-            Y = y1;
-            CenterX = x2;
-            CenterY = y2;
-            Width = width;
-            Height = height;
+            [JsonProperty("ELEMENT")]
+            public string Id { get; set; }
+
+            public Element(string id = "")
+            {
+                Id = id;
+            }
+        }
+
+        public class Size
+        {
+            [JsonProperty("width")]
+            public int Width { get; set; }
+
+            [JsonProperty("height")]
+            public int Height { get; set; }
+
+            public Size(int width = 0, int height = 0)
+            {
+                Width = width;
+                Height = height;
+            }
+            public override string ToString()
+            {
+                return "Width=" + Width + ", Height=" + Height;
+            }
+        }
+        public class Location
+        {
+            [JsonProperty("x")]
+            public int X { get; set; }
+
+            [JsonProperty("y")]
+            public int Y { get; set; }
+
+            public Location(int x = 0, int y = 0)
+            {
+                X = x;
+                Y = y;
+            }
+
+            public override string ToString()
+            {
+                return "X=" + X + ", Y=" + Y;
+            }
+        }
+
+        public override string ToString()
+        {
+            return Value.ToString();
         }
     }
 }
