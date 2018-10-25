@@ -117,12 +117,15 @@ namespace Tizen.Appium
 
         }
 
-        public bool TouchMove(int x, int y)
+        public bool TouchMove(int xDown, int yDown, int xUp, int yUp, int steps = 10)
         {
             var data = new Bundle();
             data.AddItem("command", "move");
-            data.AddItem("x", x.ToString());
-            data.AddItem("y", y.ToString());
+            data.AddItem("xDown", xDown.ToString());
+            data.AddItem("yDown", yDown.ToString());
+            data.AddItem("xUp", xUp.ToString());
+            data.AddItem("yUp", yUp.ToString());
+            data.AddItem("steps", steps.ToString());
 
             try
             {

@@ -8,9 +8,14 @@ namespace Tizen.Appium
 
         public Result Run(Request req, IObjectList objectList, IInputGenerator inputGen)
         {
+
+            Log.Debug("Run: TouchMove");
             var elementId = req.Params.ElementId;
-            var x = req.Params.X;
-            var y = req.Params.Y;
+            var xDown = req.Params.XDown;
+            var yDown = req.Params.YDown;
+            var xUp = req.Params.XUp;
+            var yUp = req.Params.YUp;
+            var steps = req.Params.Steps;
             var result = new Result();
 
             try
@@ -18,11 +23,11 @@ namespace Tizen.Appium
                 if (!String.IsNullOrEmpty(elementId))
                 {
                     var geometry = objectList.Get(elementId).Geometry;
-                    result.Value = inputGen.TouchDown(geometry.CenterX, geometry.CenterY);
+                    result.Value = inputGen.TouchMove(geometry.CenterX, geometry.CenterY, xUp, yUp, steps);
                 }
-                else if ((x > 0) && (y > 0))
+                else if ((xDown > 0) && (yDown > 0) && (xUp > 0) && (yUp > 0))
                 {
-                    result.Value = inputGen.TouchDown(x, y);
+                    result.Value = inputGen.TouchMove(xDown, yDown, xUp, yUp, steps);
                 }
                 else
                 {
