@@ -166,7 +166,7 @@ namespace Tizen.Appium
                 {
                     var encoder = Encoding.GetEncoding("iso-8859-1");
                     content = encoder.GetString(state.Buffer, 0, read - 2);
-                    Log.Debug("-------- Received Data: " + content);
+                    Log.Debug("Received Data: " + content);
 
                     var req = JsonConvert.DeserializeObject<Request>(content);
                     var result = new Result();
@@ -174,7 +174,7 @@ namespace Tizen.Appium
                     result = RunCommand(req);
 
                     var str = JsonConvert.SerializeObject(result);
-                    Log.Debug("-------- Result: " + result);
+                    Log.Debug("Result: " + result);
 
                     Byte[] ret = Encoding.Default.GetBytes(str);
                     client.Send(ret);

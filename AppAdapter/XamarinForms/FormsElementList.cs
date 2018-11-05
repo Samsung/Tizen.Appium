@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
 using ItemContext = Xamarin.Forms.Platform.Tizen.Native.ListView.ItemContext;
-using ToolbarItemButton = Xamarin.Forms.Platform.Tizen.Native.ToolbarItemButton;
 
 namespace Tizen.Appium
 {
@@ -12,7 +11,7 @@ namespace Tizen.Appium
         IDictionary<string, FormsElementWrapper> _elementList = new Dictionary<string, FormsElementWrapper>();
         object _objcetLock = new object();
 
-        public void AddElement(object element)
+        public void Add(object element)
         {
             var wrapper = new FormsElementWrapper(element);
             wrapper.Deleted += (s, e) =>
@@ -20,20 +19,10 @@ namespace Tizen.Appium
                 RemoveById(wrapper.Id);
             };
 
-            lock(_objcetLock)
+            lock (_objcetLock)
             {
                 _elementList[wrapper.Id] = wrapper;
                 Log.Debug("[Added] id=" + wrapper.Id + ", element=" + element.GetType() + ", _elements.Count=" + _elementList.Count);
-            }
-        }
-
-        public void ResetToolbarItems()
-        {
-            var selected = _elementList.Where(kv => kv.Value.Element?.GetType() == typeof(ToolbarItemButton)).Select(kv => kv.Value.Id);
-
-            foreach (var id in selected.ToList())
-            {
-                RemoveById(id);
             }
         }
 
