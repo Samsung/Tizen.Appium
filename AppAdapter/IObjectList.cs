@@ -4,7 +4,7 @@ namespace Tizen.Appium
 {
     public interface IObjectList
     {
-        void Add(object element);
+        void AddElement(object element);
 
         void Remove(object element);
 
