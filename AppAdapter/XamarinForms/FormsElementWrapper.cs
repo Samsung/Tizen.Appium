@@ -1,9 +1,10 @@
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Tizen;
 using ItemContext = Xamarin.Forms.Platform.Tizen.Native.ListView.ItemContext;
 using EvasObject = ElmSharp.EvasObject;
-using System.Threading.Tasks;
+using ItemObject = ElmSharp.ItemObject;
 
 namespace Tizen.Appium
 {
@@ -18,7 +19,6 @@ namespace Tizen.Appium
     {
         WeakReference _element;
         string _id;
-        ToolbarItemPosition _position;
 
         public EventHandler Deleted;
 
@@ -32,25 +32,31 @@ namespace Tizen.Appium
 
         public FormsElementWrapper(object obj)
         {
-            Element el;
-            if (obj is ItemContext ic)
+            _element = new WeakReference(obj);
+
+            if(obj is Element e)
             {
-                el = ic.Cell;
+                _id = e.GetId();
+            }
+            else if (obj is ItemContext ic)
+            {
+                _id = ic.Cell.GetId();
             }
             else
             {
-                el = (Element)obj;
+                _id = obj.GetHashCode().ToString();
             }
-            _element = new WeakReference(obj);
-            _id = el.GetId();
+
+            if (NativeView != null)
+            {
+                NativeView.Deleted += (sender, arg) =>
+                {
+                    Deleted?.Invoke(this, EventArgs.Empty);
+                };
+            }
         }
 
-        public FormsElementWrapper(object obj, ToolbarItemPosition position) : this(obj)
-        {
-            _position = position;
-        }
-
-        public Element Element
+        public object Element
         {
             get
             {
@@ -67,6 +73,10 @@ namespace Tizen.Appium
                     else if (_element.Target is Element e)
                     {
                         return e;
+                    }
+                    else
+                    {
+                        return _element.Target;
                     }
                 }
                 else
@@ -90,6 +100,14 @@ namespace Tizen.Appium
                     else if (_element.Target is ItemContext ic)
                     {
                         return ic.Cell.GetIsShownProperty() ? ic.Item.TrackObject : null;
+                    }
+                    else if(_element.Target is ItemObject io)
+                    {
+                        return io.TrackObject;
+                    }
+                    else if(_element.Target is EvasObject eo)
+                    {
+                        return eo;
                     }
                 }
                 else
@@ -124,19 +142,7 @@ namespace Tizen.Appium
                     }
                     else
                     {
-                        if(_position == ToolbarItemPosition.Right)
-                        {
-                            var screenWidth = Utils.GetScreeenWidth();
-                            return new Geometry(screenWidth - 50, 50, 10, 10);
-                        }
-                        else if (_position == ToolbarItemPosition.Left)
-                        {
-                            return new Geometry(50, 50, 10, 10);
-                        }
-                        else
-                        {
-                            return new Geometry();
-                        }
+                        return new Geometry();
                     }
                 });
             }
@@ -151,8 +157,19 @@ namespace Tizen.Appium
                     var text = Element?.GetType().GetProperty("Text")?.GetValue(Element);
                     var name = Element?.GetType().GetProperty("Name")?.GetValue(Element);
                     var formattedText = Element?.GetType().GetProperty("FormattedText")?.GetValue(Element);
+                    var title = Element?.GetType().GetProperty("Title")?.GetValue(Element);
+                    var str = string.Empty;
 
-                    return (text != null) ? text.ToString() : ((name != null) ? name.ToString() : ((formattedText != null) ? formattedText.ToString() : string.Empty));
+                    if (text != null)
+                        str = text.ToString();
+                    else if (name != null)
+                        str = name.ToString();
+                    else if (formattedText != null)
+                        str = formattedText.ToString();
+                    else if (title != null)
+                        str = title.ToString();
+
+                    return str;
                 });
             }
         }

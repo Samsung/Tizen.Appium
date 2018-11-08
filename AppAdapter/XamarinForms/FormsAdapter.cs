@@ -1,15 +1,11 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Tizen;
-using Xamarin.Forms.Internals;
-using System;
-using System.Linq;
 
 namespace Tizen.Appium
 {
     public sealed class FormsAdapter : IAppAdapter
     {
         FormsElementList _objectList = new FormsElementList();
-        ToolbarTracker _toolbarTracker = new ToolbarTracker();
 
         public IObjectList ObjectList => _objectList;
 
@@ -28,11 +24,6 @@ namespace Tizen.Appium
                     {
                         p.SetIsShownProperty(false);
                     };
-
-                    if(p is NavigationPage np)
-                    {
-                        _toolbarTracker.Target = np;
-                    }
                 }
 
                 e.View.PropertyChanged += (ss, ee) =>
@@ -49,33 +40,6 @@ namespace Tizen.Appium
                     AddItemFromList(e.View);
                 }
             };
-
-            _toolbarTracker.CollectionChanged += OnToolbarCollectionChanged;
-
-
-        }
-        void OnToolbarCollectionChanged(object sender, EventArgs eventArgs)
-        {
-            _objectList.ResetToolbarItems();
-
-            var right = _toolbarTracker.ToolbarItems.Where(
-                i => i.Order == ToolbarItemOrder.Primary)
-                .OrderBy(i => i.Priority).FirstOrDefault();
-
-            var left = _toolbarTracker.ToolbarItems.Where(
-                i => i.Order == ToolbarItemOrder.Secondary)
-                .OrderBy(i => i.Priority).FirstOrDefault();
-
-
-            if (right != null)
-            {
-                _objectList.AddToolbarItem(right, ToolbarItemPosition.Right);
-            }
-
-            if (left != null)
-            {
-                _objectList.AddToolbarItem(left, ToolbarItemPosition.Left);
-            }
         }
 
         void AddItemFromList(VisualElement list)
