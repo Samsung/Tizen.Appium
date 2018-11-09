@@ -22,7 +22,7 @@ namespace Tizen.Appium
                 }
                 else if ((x > 0) && (y > 0))
                 {
-                    result.Value = inputGen.TouchDown(x, y);
+                    result.Value = inputGen.TouchUp(x, y);
                 }
                 else
                 {

@@ -34,7 +34,7 @@ namespace Tizen.Appium
         {
             _element = new WeakReference(obj);
 
-            if(obj is Element e)
+            if (obj is Element e)
             {
                 _id = e.GetId();
             }
@@ -101,11 +101,11 @@ namespace Tizen.Appium
                     {
                         return ic.Cell.GetIsShownProperty() ? ic.Item.TrackObject : null;
                     }
-                    else if(_element.Target is ItemObject io)
+                    else if (_element.Target is ItemObject io)
                     {
                         return io.TrackObject;
                     }
-                    else if(_element.Target is EvasObject eo)
+                    else if (_element.Target is EvasObject eo)
                     {
                         return eo;
                     }
@@ -154,22 +154,36 @@ namespace Tizen.Appium
             {
                 return RunOnMainThread<string>(() =>
                 {
-                    var text = Element?.GetType().GetProperty("Text")?.GetValue(Element);
-                    var name = Element?.GetType().GetProperty("Name")?.GetValue(Element);
-                    var formattedText = Element?.GetType().GetProperty("FormattedText")?.GetValue(Element);
-                    var title = Element?.GetType().GetProperty("Title")?.GetValue(Element);
-                    var str = string.Empty;
+                    string[] TextProperties = { "Text", "FormattedText" };
 
-                    if (text != null)
-                        str = text.ToString();
-                    else if (name != null)
-                        str = name.ToString();
-                    else if (formattedText != null)
-                        str = formattedText.ToString();
-                    else if (title != null)
-                        str = title.ToString();
+                    foreach (var prop in TextProperties)
+                    {
+                        var text = Element?.GetType().GetProperty(prop)?.GetValue(Element);
+                        if (text != null)
+                            return text.ToString();
+                    }
 
-                    return str;
+                    return string.Empty;
+                });
+            }
+        }
+
+        public string DisplayedText
+        {
+            get
+            {
+                return RunOnMainThread<string>(() =>
+                {
+                    string[] TextProperties = { "Text", "Name", "FormattedText", "Title", "PlaceHolder" };
+
+                    foreach (var prop in TextProperties)
+                    {
+                        var text = Element?.GetType().GetProperty(prop)?.GetValue(Element)?.ToString();
+                        if ((text != null) && (!string.IsNullOrEmpty(text)))
+                            return text;
+                    }
+
+                    return string.Empty;
                 });
             }
         }

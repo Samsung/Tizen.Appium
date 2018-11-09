@@ -27,6 +27,21 @@ namespace Tizen.Appium
             [JsonProperty("y")]
             public int Y { get; set; }
 
+            [JsonProperty("xDown")]
+            public int XDown { get; set; }
+
+            [JsonProperty("yDown")]
+            public int YDown { get; set; }
+
+            [JsonProperty("xUp")]
+            public int XUp { get; set; }
+
+            [JsonProperty("yUp")]
+            public int YUp { get; set; }
+
+            [JsonProperty("steps")]
+            public int Steps { get; set; }
+
             [JsonProperty("xSpeed")]
             public int XSpeed { get; set; }
 

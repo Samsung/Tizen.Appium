@@ -10,7 +10,7 @@ namespace Tizen.Appium
 
         bool TouchDown(int x, int y);
 
-        bool TouchMove(int x, int y);
+        bool TouchMove(int xDown, int yDown, int xUp, int yUp, int steps = 10);
 
         bool Drag(int xDown, int yDown, int xUp, int yUp, int steps = 50);
 
