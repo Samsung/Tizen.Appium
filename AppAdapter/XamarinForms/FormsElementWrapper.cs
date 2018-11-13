@@ -174,12 +174,12 @@ namespace Tizen.Appium
             {
                 return RunOnMainThread<string>(() =>
                 {
-                    string[] TextProperties = { "Text", "Name", "FormattedText", "Title", "PlaceHolder" };
+                    string[] TextProperties = { "Text", "Name", "FormattedText", "Title", "Placeholder" };
 
                     foreach (var prop in TextProperties)
                     {
                         var text = Element?.GetType().GetProperty(prop)?.GetValue(Element)?.ToString();
-                        if ((text != null) && (!string.IsNullOrEmpty(text)))
+                        if (!string.IsNullOrEmpty(text))
                             return text;
                     }
 
