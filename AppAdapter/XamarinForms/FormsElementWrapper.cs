@@ -168,26 +168,6 @@ namespace Tizen.Appium
             }
         }
 
-        public string DisplayedText
-        {
-            get
-            {
-                return RunOnMainThread<string>(() =>
-                {
-                    string[] TextProperties = { "Text", "Name", "FormattedText", "Title", "Placeholder" };
-
-                    foreach (var prop in TextProperties)
-                    {
-                        var text = Element?.GetType().GetProperty(prop)?.GetValue(Element)?.ToString();
-                        if (!string.IsNullOrEmpty(text))
-                            return text;
-                    }
-
-                    return string.Empty;
-                });
-            }
-        }
-
         public object GetPropertyValue(string propertyName)
         {
             return RunOnMainThread<object>(() =>
@@ -221,6 +201,27 @@ namespace Tizen.Appium
                 }
 
                 return true;
+            });
+        }
+
+        public bool HasTextPropertyByName(string name)
+        {
+            return RunOnMainThread<bool>(() =>
+            {
+                string[] TextProperties = { "Text", "Name", "FormattedText", "Title", "Placeholder", "Detail" };
+
+                foreach (var prop in TextProperties)
+                {
+                    var text = Element?.GetType().GetProperty(prop)?.GetValue(Element)?.ToString();
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        if (text.Equals(name))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
             });
         }
 

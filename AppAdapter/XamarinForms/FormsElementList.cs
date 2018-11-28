@@ -86,7 +86,7 @@ namespace Tizen.Appium
 
         public IEnumerable<string> GetIdsByName(string name)
         {
-            var selected = _elementList.Where(kv => kv.Value.Element != null && kv.Value.DisplayedText == name).Select(kv => kv.Value.Id);
+            var selected = _elementList.Where(kv => kv.Value.Element != null && kv.Value.HasTextPropertyByName(name)).Select(kv => kv.Value.Id);
             return selected;
         }
 

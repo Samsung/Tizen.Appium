@@ -8,10 +8,10 @@ namespace Tizen.Appium
         Geometry Geometry { get; }
 
         string Text { get; }
-        
-        string DisplayedText { get; }
 
         bool HasProperty(string property);
+
+        bool HasTextPropertyByName(string name);
 
         object GetPropertyValue(string property);
 
