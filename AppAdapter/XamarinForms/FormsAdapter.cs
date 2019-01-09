@@ -1,5 +1,9 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Tizen;
+#if WATCH
+using Tizen.Wearable.CircularUI.Forms.Renderer;
+using ElmSharp;
+#endif
 
 namespace Tizen.Appium
 {
@@ -35,7 +39,15 @@ namespace Tizen.Appium
                 };
                 _objectList.Add(e.View);
 
+#if WATCH
+                if (e.View is Wearable.CircularUI.Forms.CircleListView)
+                {
+                    AddItemFromCircleList(e.View);
+                }
+                else if((e.View is ListView) || (e.View is TableView))
+#else
                 if ((e.View is ListView) || (e.View is TableView))
+#endif
                 {
                     AddItemFromList(e.View);
                 }
@@ -48,19 +60,54 @@ namespace Tizen.Appium
 
             nativeView.ItemRealized += (s, e) =>
             {
-                var itemContext = (Xamarin.Forms.Platform.Tizen.Native.ListView.ItemContext)e.Item.Data;
-                _objectList.Add(itemContext);
+                var itemContext = e.Item.Data as Xamarin.Forms.Platform.Tizen.Native.ListView.ItemContext;
 
-                itemContext.Cell.Disappearing += (sender, args) =>
+                if (itemContext != null)
                 {
-                    _objectList.Remove(itemContext);
-                };
+                    _objectList.Add(itemContext);
 
-                itemContext.Item.Deleted += (sender, args) =>
-                {
-                    _objectList.Remove(itemContext);
-                };
+                    itemContext.Cell.Disappearing += (sender, args) =>
+                    {
+                        _objectList.Remove(itemContext);
+                    };
+
+                    itemContext.Item.Deleted += (sender, args) =>
+                    {
+                        _objectList.Remove(itemContext);
+                    };
+                }
             };
         }
+
+#if WATCH
+        void AddItemFromCircleList(VisualElement list)
+        {
+            var nativeView = (Wearable.CircularUI.Forms.Renderer.CircleListView)Platform.GetOrCreateRenderer(list).NativeView;
+
+            nativeView.ItemRealized += (s, e) =>
+            {
+                if(e.Item.Data is ListViewItemContext)
+                {
+                    var itemContext = e.Item.Data as ListViewItemContext;
+                    if (itemContext != null)
+                    {
+                        itemContext.Item = e.Item as GenItem;
+
+                        _objectList.Add(itemContext);
+
+                        itemContext.Cell.Disappearing += (sender, args) =>
+                        {
+                            _objectList.Remove(itemContext);
+                        };
+
+                        itemContext.Item.Deleted += (sender, args) =>
+                        {
+                            _objectList.Remove(itemContext);
+                        };
+                    }
+                }
+            };
+        }
+#endif
     }
 }
