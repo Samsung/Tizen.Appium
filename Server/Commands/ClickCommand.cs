@@ -16,6 +16,9 @@ namespace Tizen.Appium
             try
             {
                 var geometry = objectList.Get(elementId)?.Geometry;
+#if WATCH
+                Log.Debug($"geometry X:{geometry.X}, Y:{geometry.Y}, Width:{geometry.Width}, Height:{geometry.Height}");
+#endif
                 result.Value = inputGen.Click(geometry.CenterX, geometry.CenterY);
             }
             catch(TimeoutException te)

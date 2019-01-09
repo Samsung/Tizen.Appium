@@ -145,6 +145,9 @@ namespace Tizen.Appium
 
         public bool Drag(int xDown, int yDown, int xUp, int yUp, int steps = 30)
         {
+#if WATCH
+            steps = 100;
+#endif
             var data = new Bundle();
             data.AddItem("command", "drag");
             data.AddItem("xDown", xDown.ToString());

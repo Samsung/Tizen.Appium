@@ -5,6 +5,9 @@ using Xamarin.Forms.Platform.Tizen;
 using ItemContext = Xamarin.Forms.Platform.Tizen.Native.ListView.ItemContext;
 using EvasObject = ElmSharp.EvasObject;
 using ItemObject = ElmSharp.ItemObject;
+#if WATCH
+using Tizen.Wearable.CircularUI.Forms.Renderer;
+#endif
 
 namespace Tizen.Appium
 {
@@ -42,6 +45,12 @@ namespace Tizen.Appium
             {
                 _id = ic.Cell.GetId();
             }
+#if WATCH
+            else if (obj is ListViewItemContext lic)
+            {
+                _id = lic.Cell.GetId();
+            }
+#endif
             else
             {
                 _id = obj.GetHashCode().ToString();
@@ -70,6 +79,12 @@ namespace Tizen.Appium
                     {
                         return ic.Cell.GetIsShownProperty() ? ic.Cell : null;
                     }
+#if WATCH
+                    else if (_element.Target is ListViewItemContext lic)
+                    {
+                        return lic.Cell.GetIsShownProperty() ? lic.Cell : null;
+                    }
+#endif
                     else if (_element.Target is Element e)
                     {
                         return e;
@@ -101,6 +116,12 @@ namespace Tizen.Appium
                     {
                         return ic.Cell.GetIsShownProperty() ? ic.Item.TrackObject : null;
                     }
+#if WATCH
+                    else if (_element.Target is ListViewItemContext lic)
+                    {
+                        return lic.Cell.GetIsShownProperty() ? lic.Item.TrackObject : null;
+                    }
+#endif
                     else if (_element.Target is ItemObject io)
                     {
                         return io.TrackObject;
