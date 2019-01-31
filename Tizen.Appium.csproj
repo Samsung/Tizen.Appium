@@ -23,7 +23,9 @@
     <PackageReference Include="Tizen.NET" Version="4.0.0">
       <ExcludeAssets>Runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Tizen.Wearable.CircularUI" Version="1.0.0-pre2-00118" />
     <PackageReference Include="Xamarin.Forms" Version="3.2.0.871581" />
+  </ItemGroup>
+  <ItemGroup Condition="$(DefineConstants.Contains(WATCH))">
+    <PackageReference Include="Tizen.Wearable.CircularUI" Version="1.0.0-pre2-00118" />
   </ItemGroup>
 </Project>
