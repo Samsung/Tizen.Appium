@@ -39,7 +39,7 @@ namespace Tizen.Appium
             InitCommand();
         }
 
-        public void Start(CoreApplication application, IPAddress address = null, int port = 8888)
+        public void Start(IAppAdapter adapter, IPAddress address = null, int port = 8888)
         {
 
             if (address == null)
@@ -57,7 +57,7 @@ namespace Tizen.Appium
                 _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             }
 
-            _appAdapter = AppAdapter.Create(application);
+            _appAdapter = adapter;
             _inputgenerator = new InputGenerator();
 
             Bind();

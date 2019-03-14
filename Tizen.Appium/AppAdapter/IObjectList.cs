@@ -10,9 +10,7 @@ namespace Tizen.Appium
 
         void RemoveById(string id);
 
-        string GetIdByObject(object element);
-
-        IObject Get(string id);
+        IObjectWrapper Get(string id);
 
         IEnumerable<string> GetFocusedElementIds();
 

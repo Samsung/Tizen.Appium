@@ -1,9 +1,15 @@
 using TSystemInfo = Tizen.System.Information;
+using ElmSharp;
 
 namespace Tizen.Appium
 {
     public class Utils
     {
+        public static string GetProfile()
+        {
+            return Elementary.GetProfile();
+        }
+
         public static int GetScreeenWidth()
         {
             int width;
