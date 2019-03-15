@@ -17,7 +17,7 @@ namespace Tizen.Appium
             if (value != null)
             {
                 result.Value = value.ToString();
-                Log.Debug(elementId + " element have " + propertyName + " property.");
+                Log.Debug(elementId + " element has " + propertyName + " property.");
             }
             else
             {

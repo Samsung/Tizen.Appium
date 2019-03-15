@@ -15,6 +15,7 @@ namespace Tizen.Appium
         bool _touchTriggered = false;
         int _x = -1;
         int _y = -1;
+        int _steps = 50;
 
         bool _keyPressed = false;
         string _key = "";
@@ -23,6 +24,9 @@ namespace Tizen.Appium
         {
             _connection = new IpcConnection(portName);
             _connection.Register(remoteAppId, remotePortName);
+
+            if (Utils.GetProfile() == "wearable")
+                _steps = 160;
         }
 
         public bool Click(int x, int y)
@@ -117,7 +121,7 @@ namespace Tizen.Appium
 
         }
 
-        public bool TouchMove(int xDown, int yDown, int xUp, int yUp, int steps = 10)
+        public bool TouchMove(int xDown, int yDown, int xUp, int yUp, int steps)
         {
             var data = new Bundle();
             data.AddItem("command", "move");
@@ -143,18 +147,19 @@ namespace Tizen.Appium
             return false;
         }
 
-        public bool Drag(int xDown, int yDown, int xUp, int yUp, int steps = 30)
+        public bool Drag(int xDown, int yDown, int xUp, int yUp)
         {
 #if WATCH
             steps = 100;
 #endif
             var data = new Bundle();
+
             data.AddItem("command", "drag");
             data.AddItem("xDown", xDown.ToString());
             data.AddItem("yDown", yDown.ToString());
             data.AddItem("xUp", xUp.ToString());
             data.AddItem("yUp", yUp.ToString());
-            data.AddItem("steps", steps.ToString());
+            data.AddItem("steps", _steps.ToString());
 
             try
             {

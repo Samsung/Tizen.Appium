@@ -1,8 +1,8 @@
 using Xamarin.Forms;
 
-namespace Tizen.Appium
+namespace Tizen.Appium.Forms
 {
-    public static class FormsElementExtensions
+    public static class ElementExtensions
     {
         public static readonly BindableProperty IsShownProperty = BindableProperty.Create("IsShown", typeof(bool), typeof(Element), true);
 

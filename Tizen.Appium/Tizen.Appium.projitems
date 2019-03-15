@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>9cf5436f-ddd1-4bbb-a9d3-41b6646a44fc</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Tizen.Appium</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AppAdapter\BaseObjectList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppAdapter\BaseObjectWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppAdapter\BaseAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppAdapter\Geometry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppAdapter\IAppAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppAdapter\IObjectList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppAdapter\IObjectWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\ClickCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\DragCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\FindCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\FlickCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\GetAttributeCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\GetDisplayedCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\GetEnabledCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\GetLocationCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\GetSizeCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\GetTextCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\PressKeyCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\ReleaseKeyCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\SendKeyCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\SendKeysCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\SetAttributeCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\SetTextCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\TouchDownCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\TouchMoveCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\TouchUpCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InputGenerator\IInputGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InputGenerator\InputGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InputGenerator\IpcConnection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Server\CommandTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Server\ICommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Server\Request.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Server\Result.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Server\Server.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Server\StateObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TizenAppium.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Log.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Utils.cs" />
+  </ItemGroup>
+</Project>
