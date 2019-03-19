@@ -10,11 +10,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormsApp", "FormsApp\FormsA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormsApp.Tizen.Mobile", "FormsApp\FormsApp.Tizen.Mobile\FormsApp.Tizen.Mobile.csproj", "{B930604A-D99E-4509-ABB4-BF61E7688CFE}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Tizen.Appium", "Tizen.Appium\Tizen.Appium.shproj", "{9CF5436F-DDD1-4BBB-A9D3-41B6646A44FC}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Tizen.Appium.Shared", "Tizen.Appium.Shared\Tizen.Appium.Shared.shproj", "{9CF5436F-DDD1-4BBB-A9D3-41B6646A44FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tizen.Appium", "Tizen.Appium\Tizen.Appium.csproj", "{9AD47168-6015-4B5B-B772-C4486FAD5056}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Tizen.Appium\Tizen.Appium.projitems*{9cf5436f-ddd1-4bbb-a9d3-41b6646a44fc}*SharedItemsImports = 13
+		Tizen.Appium.Shared\Tizen.Appium.projitems*{9cf5436f-ddd1-4bbb-a9d3-41b6646a44fc}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{B930604A-D99E-4509-ABB4-BF61E7688CFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B930604A-D99E-4509-ABB4-BF61E7688CFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B930604A-D99E-4509-ABB4-BF61E7688CFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AD47168-6015-4B5B-B772-C4486FAD5056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AD47168-6015-4B5B-B772-C4486FAD5056}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AD47168-6015-4B5B-B772-C4486FAD5056}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AD47168-6015-4B5B-B772-C4486FAD5056}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
