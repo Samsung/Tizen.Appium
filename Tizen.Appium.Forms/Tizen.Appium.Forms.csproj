@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>tizen40</TargetFramework>
+    <RootNamespace>Tizen.Appium</RootNamespace>
+    <PackageId>Tizen.Appium.Forms</PackageId>
+    <authors>Samsung Electronics</authors>
+    <owners>Samsung Electronics</owners>
+    <Description>Tizen.Appium.Forms is a service library that supports running Appium for Tizen .NET (Xamarin.Forms) applications.</Description>
+    <PackageLicense>https://www.apache.org/licenses/LICENSE-2.0</PackageLicense>
+    <PackageProjectUrl>https://github.com/Samsung/Tizen.Appium</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/Samsung/Tizen.Appium/master/assets/images/logo.png</PackageIconUrl>
+    <PackageTags>tizen;tizen.net;appium;test;forms;</PackageTags>
+    <Copyright>© Samsung Electronics Co., Ltd All Rights Reserved</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
