@@ -3,7 +3,16 @@
   <!-- Property Group for Tizen Project -->
   <PropertyGroup>
     <TargetFramework>tizen60</TargetFramework>
-    <TizenCreateTpkOnBuild>false</TizenCreateTpkOnBuild>
+    <RootNamespace>Tizen.Appium</RootNamespace>
+    <PackageId>Tizen.Appium</PackageId>
+    <authors>Samsung Electronics</authors>
+    <owners>Samsung Electronics</owners>
+    <Description>Tizen.Appium is a service library that supports running Appium for Tizen .NET applications.</Description>
+    <PackageLicense>https://www.apache.org/licenses/LICENSE-2.0</PackageLicense>
+    <PackageProjectUrl>https://github.com/Samsung/Tizen.Appium</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/Samsung/Tizen.Appium/master/assets/images/logo.png</PackageIconUrl>
+    <PackageTags>tizen;tizen.net;appium;test</PackageTags>
+    <Copyright>© Samsung Electronics Co., Ltd All Rights Reserved</Copyright>
   </PropertyGroup>
 
   <!-- Include Nuget Package for Tizen Project building -->
@@ -12,7 +21,6 @@
     <PackageReference Include="Tizen.NET" Version="6.0.0.14715">
       <ExcludeAssets>Runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Tizen.NET.Sdk" Version="1.0.1" />
   </ItemGroup>
   <Import Project="..\Tizen.Appium.Shared\Tizen.Appium.projitems" Label="Shared" />
 
