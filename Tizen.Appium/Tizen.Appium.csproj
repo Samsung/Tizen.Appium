@@ -2,7 +2,7 @@
 
   <!-- Property Group for Tizen Project -->
   <PropertyGroup>
-    <TargetFramework>tizen60</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Tizen.Appium</RootNamespace>
     <PackageId>Tizen.Appium</PackageId>
     <authors>Samsung Electronics</authors>
@@ -17,6 +17,7 @@
 
   <!-- Include Nuget Package for Tizen Project building -->
   <ItemGroup>
+    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="Tizen.NET" Version="6.0.0.14715">
       <ExcludeAssets>Runtime</ExcludeAssets>

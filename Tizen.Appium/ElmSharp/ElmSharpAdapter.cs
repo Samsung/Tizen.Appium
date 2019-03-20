@@ -1,9 +1,10 @@
 using System;
-using Tizen.NUI;
+using ElmSharp;
+using Tizen.Appium;
 
 namespace Tizen.Appium
 {
-    public class NUIAdapter : BaseAdapter
+    public sealed class ElmSharpAdapter : BaseAdapter
     {
         static bool _isInitialized = false;
 
@@ -17,7 +18,7 @@ namespace Tizen.Appium
                 ScreenWidth = Utils.GetScreeenWidth();
                 ScreenHeight = Utils.GetScreenHeight();
 
-                TizenAppium.Start(new NUIAdapter());
+                TizenAppium.Start(new ElmSharpAdapter());
                 _isInitialized = true;
             }
         }
@@ -33,12 +34,16 @@ namespace Tizen.Appium
 
         protected override IObjectList CreateObjectList()
         {
-            return new NUIViewList();
+            return new EvasObjectList();
         }
 
         protected override void AdaptApp()
         {
-            Window.Instance.ViewAdded += (s, e) =>
+            Elementary.EvasObjectRealized += (s, e) =>
+            {
+                ObjectList.Add(s);
+            };
+            Elementary.ItemObjectRealized += (s, e) =>
             {
                 ObjectList.Add(s);
             };

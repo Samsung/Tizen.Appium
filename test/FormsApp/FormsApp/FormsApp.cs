@@ -20,15 +20,18 @@ namespace FormsApp
                     Children = {
                         new Label {
                             HorizontalTextAlignment = TextAlignment.Center,
-                            Text = "Welcome to Xamarin Forms!"
+                            Text = "Welcome to Xamarin Forms!",
+                            AutomationId = "label"
                         },
                         new Label
                         {
-                            Text = "test"
+                            Text = "test",
+                            AutomationId = "test"
                         },
                         new Button
                         {
-                            Text = "button"
+                            Text = "button",
+                            AutomationId = "button"
                         }
                     }
                 }
