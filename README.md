@@ -82,4 +82,5 @@ class Program : NUIApplication
         var app = new Program();
         app.Run(args);
     }
+}
 ```
