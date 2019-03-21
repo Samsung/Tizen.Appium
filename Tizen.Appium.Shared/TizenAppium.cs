@@ -5,15 +5,6 @@ using Tizen.Applications;
 
 namespace Tizen.Appium
 {
-    public enum AppType
-    {
-        Forms,
-        ElmSharp,
-        NUI,
-        FormsWearable,
-
-    }
-
     public partial class TizenAppium
     {
         public static bool IsInitialized { get; private set; }
