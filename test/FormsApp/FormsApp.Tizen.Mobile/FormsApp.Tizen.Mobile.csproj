@@ -5,6 +5,10 @@
     <TargetFramework>tizen40</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;UITEST</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\Tizen.Appium.Forms\Tizen.Appium.Forms.csproj" />
     <ProjectReference Include="..\FormsApp\FormsApp.csproj" />
