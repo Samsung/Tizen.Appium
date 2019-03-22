@@ -83,7 +83,7 @@ class Program : global::Xamarin.Forms.Platform.Tizen.FormsApplication
 > Note that an exception will be thrown if an attempt is made to set the `AutomationId` property more than once.
 
 ###### ElmSharp Application
-In ElmSharp, the recommended way to set this identifier is by using `AutomationId` property as shown below
+In ElmSharp, the recommended way to set this identifier is by using `AutomationId` property as shown below.
 
 ```cs
 var button = new Button(window)
@@ -117,7 +117,7 @@ Button button = new Button
 
 #### Writing Your Test Script
 Visual Studio has a template to help add a Tizen .NET UI Test projenct to an existing your application solution:
-> Upcoming [Visual Studio Tools for Tizen](https://marketplace.visualstudio.com/items?itemName=tizen.VisualStudioToolsforTizen) will support this template. Until then, you can manually create and use the UI test project
+> Upcoming [Visual Studio Tools for Tizen](https://marketplace.visualstudio.com/items?itemName=tizen.VisualStudioToolsforTizen) will support this template. Until then, you can manually create and use the UI test project.
 
 1. Right click on the solution, and select File > New Project
 
@@ -125,7 +125,11 @@ Visual Studio has a template to help add a Tizen .NET UI Test projenct to an exi
 
 ###### How to manually create a UI Test project
 
-1. Create a test project in Visual Studio.
+1. Create a test project in Visual Studio<br>
+   Select Visual C# -> Test -> Nunit Test Project
+   > If you know use to other test project, you can use it.
+   
+   ![image](https://user-images.githubusercontent.com/16184582/54807302-2cc43a00-4cc0-11e9-82fc-ebdbdff3d7ae.png)
 
 2. Add `Appium.WebDriver` as a package reference to your project (*.csporj)
 >Tizen driver is supported from `Appium.WebDriver 4.0.0.2-beta`. Therefore, we recommend that you use the version or later.
@@ -133,25 +137,55 @@ Visual Studio has a template to help add a Tizen .NET UI Test projenct to an exi
 
 3. Add the following code to initialize the `TizenDriver` and set the `AppiumOptions`
 ```cs
-static void Main(string[] args)
+public class UITest
 {
-    AppiumOptions appiumOptions = new AppiumOptions();
-    appiumOptions.AddAdditionalCapability("platformName", "Tizen");
-    appiumOptions.AddAdditionalCapability("deviceName", "emulator-26101");
-    appiumOptions.AddAdditionalCapability("appPackage", "org.tizen.example.NUIApp");
+    TizenDriver<TizenElement> _driver;
 
-    var driver = new TizenDriver<TizenElement>(new Uri("http://127.0.0.1:4723/wd/hub"), appiumOptions);
-    ExecuteTest(driver);
-}
+    [SetUp]
+    public void Setup()
+    {
+        AppiumOptions appiumOptions = new AppiumOptions();
 
-static void ExecuteTest(TizenDriver<TizenElement> driver)
-{
-    driver.FindElementByAccessibilityId("Button").Click();
+        appiumOptions.AddAdditionalCapability("platformName", "Tizen");
+        appiumOptions.AddAdditionalCapability("deviceName", "emulator-26101");
+
+        //Xamarin.Forms
+        appiumOptions.AddAdditionalCapability("appPackage", "org.tizen.example.FormsApp.Tizen.Mobile");
+
+        //ElmSharp
+        //appiumOptions.AddAdditionalCapability("appPackage", "org.tizen.example.ElmSharpApp");
+
+        //NUI
+        //appiumOptions.AddAdditionalCapability("appPackage", "org.tizen.example.NUIApp");
+
+        _driver = new TizenDriver<TizenElement>(new Uri("http://127.0.0.1:4723/wd/hub"), appiumOptions);
+    }
+
+    [Test]
+    public void Test1()
+    {
+        _driver.FindElementByAccessibilityId("Button").Click();
+    }
 }
 ```
-Make sure you set the appium server ip(ex:127.0.0.1:4723) and port number. You should set same server port number. (appium default port number is '4723').
+Make sure you set the appium server ip(ex:127.0.0.1:4723) and port number. You should set same server port number. (appium default port number is '4723')
 > If you want to find a device name, use 'sdb devices' command. You can find device list and the name.
+
+4. Install Nunit3 Test Adapter<br>
+   Go to Tools -> Extesion and Updates -> Select Online -> Search 'Nunit 3 Test Adapter'
+   ![image](https://user-images.githubusercontent.com/16184582/54807753-94c75000-4cc1-11e9-9f3d-20f6f41b3d73.png)
+   
+5. Open Test Explorer<br>
+   Go to Test -> Windows -> Test Explorer<br>
+   ![image](https://user-images.githubusercontent.com/16184582/54807946-1fa84a80-4cc2-11e9-8fd8-1352f8018c96.png)
 
 #### Running UI Automation Test
 
-Right-click on your test, and select ‘Run Test’, or you can select the test in the Test Explorer. (WIP)
+Right-click on your test, and select ‘Run Test’.<br>
+![image](https://user-images.githubusercontent.com/16184582/54808076-6c8c2100-4cc2-11e9-983d-eccc517c748c.png)
+
+If the test is successful.<br>
+![image](https://user-images.githubusercontent.com/16184582/54808182-ca206d80-4cc2-11e9-8f37-117a867a8646.png)
+
+If the test is fails, you can determine the cause.<br>
+![image](https://user-images.githubusercontent.com/16184582/54808277-1bc8f800-4cc3-11e9-957e-54f1d00bf4bd.png)
