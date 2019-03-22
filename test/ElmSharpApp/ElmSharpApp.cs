@@ -9,7 +9,7 @@ namespace ElmSharpApp
         protected override void OnCreate()
         {
             base.OnCreate();
-            TizenAppium.StartService();
+            TizenAppium.StartService(AppType.ElmSharp);
             Initialize();
         }
 
