@@ -50,7 +50,7 @@ namespace ElmSharpApp
                 AlignmentY = 0.5,
                 WeightX = 1,
                 WeightY = 1,
-                Text = "Welcome to Xamarin Forms!",
+                Text = "Welcome to ElmSharp!",
                 Color = Color.Black,
                 AutomationId = "label"
             };

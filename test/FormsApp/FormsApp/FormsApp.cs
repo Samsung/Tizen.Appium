@@ -11,28 +11,50 @@ namespace FormsApp
     {
         public App()
         {
+            var label = new Label
+            {
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Center,
+                Text = "Welcome to Xamarin Forms!",
+                FontSize = 25,
+                AutomationId = "label"
+            };
+            var test = new Label
+            {
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Center,
+                FontSize = 25,
+                Text = "test",
+                AutomationId = "test"
+            };
+            var button = new Button
+            {
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                Text = "button",
+                AutomationId = "button"
+            };
+
+            button.Clicked += (s, e) =>
+            {
+                test.Text = "Button Clicked";
+            };
+
             // The root page of your application
             MainPage = new ContentPage
             {
                 Content = new StackLayout
                 {
-                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
                     Children = {
-                        new Label {
-                            HorizontalTextAlignment = TextAlignment.Center,
-                            Text = "Welcome to Xamarin Forms!",
-                            AutomationId = "label"
-                        },
-                        new Label
-                        {
-                            Text = "test",
-                            AutomationId = "test"
-                        },
-                        new Button
-                        {
-                            Text = "button",
-                            AutomationId = "button"
-                        }
+                        label,
+                        test,
+                        button
                     }
                 }
             };
