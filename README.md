@@ -1,4 +1,4 @@
-# Tizen.Appium
+# Tizen.Appium [![NuGet](https://img.shields.io/nuget/v/Tizen.Appium.svg?style=flat-square&label=Tizen.Appium)](https://www.nuget.org/packages/Tizen.Appium/) [![NuGet](https://img.shields.io/nuget/v/Tizen.Appium.Forms.svg?style=flat-square&label=Tizen.Appium.Forms)](https://www.nuget.org/packages/Tizen.Appium.Forms/)
 `Tizen.Appium` is a service library that supports running Appium for Tizen .NET applications. It can simulate user interactions on Tizen .NET applications (`ElmSharp`,`NUI`) and also cross platform `Xamarin.Forms` application. As its name implies, it works based on the [Appium](http://appium.io/) that is an open source test automation framework.
 
 ## Getting Started with Tizen.Appium
