@@ -13,6 +13,10 @@ To automated your Tizen .NET applications, add `Tizen.Appium` as a pacakage refe
 ```xml
 <PackageReference Include="Tizen.Appium" Version="1.0.0-preview" />
 ```
+
+Or Set nuget Tizen.Appium
+![image](https://github.sec.samsung.net/storage/user/34413/files/3ac6c480-4f25-11e9-952b-aa8721ad6a95)
+
 > ElmSharp and NUI applications require a [Tizen.NET package](https://tizen.myget.org/feed/dotnet/package/nuget/Tizen.NET) version 6.0 or higher.
 
 > Xamarin.Forms application requires a [Tizen.NET 4.0.0](https://www.nuget.org/packages/Tizen.NET/4.0.0).
@@ -168,6 +172,8 @@ public class UITest
     }
 }
 ```
+> Write scripts with reference to [Supported Commands](https://github.com/Samsung/Tizen.Appium/wiki/Supported-Commands)
+
 Make sure you set the appium server ip(ex:127.0.0.1:4723) and port number. You should set same server port number. (appium default port number is '4723')
 > If you want to find a device name, use 'sdb devices' command. You can find device list and the name.
 
