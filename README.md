@@ -14,9 +14,6 @@ To automated your Tizen .NET applications, add `Tizen.Appium` as a pacakage refe
 <PackageReference Include="Tizen.Appium" Version="1.0.0-preview" />
 ```
 
-Or Set nuget Tizen.Appium
-![image](https://github.sec.samsung.net/storage/user/34413/files/3ac6c480-4f25-11e9-952b-aa8721ad6a95)
-
 > ElmSharp and NUI applications require a [Tizen.NET package](https://tizen.myget.org/feed/dotnet/package/nuget/Tizen.NET) version 6.0 or higher.
 
 > Xamarin.Forms application requires a [Tizen.NET 4.0.0](https://www.nuget.org/packages/Tizen.NET/4.0.0).
