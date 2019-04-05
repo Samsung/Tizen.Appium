@@ -5,10 +5,10 @@
 
 `Tizen.Appium` allows developers to write automated UI tests for Tizen .NET. 
 
-#### Prepare Your Test Environment
+### Prepare Your Test Environment
 This [link](https://github.com/Samsung/Tizen.Appium/wiki/How-to-use-appium) show how to setup the Appium.
 
-#### Adding Tizen.Appium support to Tizen .NET apps
+### Adding Tizen.Appium support to Tizen .NET apps
 To automated your Tizen .NET applications, add `Tizen.Appium` as a pacakage referernce to your application project.
 ```xml
 <PackageReference Include="Tizen.Appium" Version="1.0.0-preview" />
@@ -18,11 +18,11 @@ To automated your Tizen .NET applications, add `Tizen.Appium` as a pacakage refe
 
 > Xamarin.Forms application requires a [Tizen.NET 4.0.0](https://www.nuget.org/packages/Tizen.NET/4.0.0).
 
-#### Initializing the Tizen.Appium
+### Initializing the Tizen.Appium
 
 Add the following code to initialize `Tizen.Appium`. 
 
-###### ElmSharp Application
+#### ElmSharp Application
 ```cs
 using Tizen.Appium;
 
@@ -40,7 +40,7 @@ class App : CoreUIApplication
 }
 ```
 
-###### NUI Application
+#### NUI Application
 ```cs
 using Tizen.Appium;
 
@@ -58,7 +58,7 @@ class Program : NUIApplication
 }
 ```
 
-###### Xamarin.Forms Application
+#### Xamarin.Forms Application
 
 ```cs
 using Tizen.Appium;
@@ -78,12 +78,12 @@ class Program : global::Xamarin.Forms.Platform.Tizen.FormsApplication
 }
 ```
 
-#### Set AutomationId in Test Application
+### Set AutomationId in Test Application
 
 `Tizen.Appium` automates the user interface by activating controls on the screen and performing input. To do this, you should assign a  unique identifier to each controls.
 > Note that an exception will be thrown if an attempt is made to set the `AutomationId` property more than once.
 
-###### ElmSharp Application
+#### ElmSharp Application
 In ElmSharp, the recommended way to set this identifier is by using `AutomationId` property as shown below.
 
 ```cs
@@ -94,7 +94,7 @@ var button = new Button(window)
 };
 ```
 
-###### NUI Application
+#### NUI Application
 The true is same on NUI application. 
 
 ```cs
@@ -105,7 +105,7 @@ PushButton button = new PushButton
 }
 ```
 
-###### Xamarin.Forms Application
+#### Xamarin.Forms Application
 The true is same on Xamarin.Forms application. 
 
 ```cs
@@ -116,7 +116,7 @@ Button button = new Button
 }
 ```
 
-#### Writing Your Test Script
+### Writing Your Test Script
 Visual Studio has a template to help add a Tizen .NET UI Test projenct to an existing your application solution:
 > Upcoming [Visual Studio Tools for Tizen](https://marketplace.visualstudio.com/items?itemName=tizen.VisualStudioToolsforTizen) will support this template. Until then, you can manually create and use the UI test project.
 
@@ -124,7 +124,7 @@ Visual Studio has a template to help add a Tizen .NET UI Test projenct to an exi
 
 2. From the Tizen Templates, select the UI Test App template
 
-###### How to manually create a UI Test project
+#### How to manually create a UI Test project
 
 1. Create a test project in Visual Studio<br>
    Select Visual C# -> Test -> Nunit Test Project
@@ -182,7 +182,7 @@ Make sure you set the appium server ip(ex:127.0.0.1:4723) and port number. You s
    Go to Test -> Windows -> Test Explorer<br>
    ![image](https://user-images.githubusercontent.com/16184582/54807946-1fa84a80-4cc2-11e9-8fd8-1352f8018c96.png)
 
-#### Running UI Automation Test
+### Running UI Automation Test
 
 Right-click on your test, and select ‘Run Test’.<br>
 ![image](https://user-images.githubusercontent.com/16184582/54808076-6c8c2100-4cc2-11e9-983d-eccc517c748c.png)
@@ -192,3 +192,11 @@ If the test is successful.<br>
 
 If the test is fails, you can determine the cause.<br>
 ![image](https://user-images.githubusercontent.com/16184582/54808277-1bc8f800-4cc3-11e9-957e-54f1d00bf4bd.png)
+
+### Current Support
+#### Wearable
+ - 4.0 or later version of `Wearable devices` and `Emulator`.
+#### Mobile
+ - 4.0 or later version of `Emulator`.
+#### TV
+ - Not Supported due to security policy at the moment.
