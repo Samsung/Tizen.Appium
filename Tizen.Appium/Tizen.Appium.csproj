@@ -2,7 +2,7 @@
 
   <!-- Property Group for Tizen Project -->
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;tizen40</TargetFrameworks>
     <RootNamespace>Tizen.Appium</RootNamespace>
     <PackageId>Tizen.Appium</PackageId>
     <authors>Samsung Electronics</authors>
@@ -15,14 +15,30 @@
     <Copyright>© Samsung Electronics Co., Ltd All Rights Reserved</Copyright>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)'=='tizen40'">
+    <DefineConstants>__TIZEN4_0__</DefineConstants>
+  </PropertyGroup>
+
   <!-- Include Nuget Package for Tizen Project building -->
   <ItemGroup>
     <PackageReference Include="NETStandard.Library" Version="2.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
     <PackageReference Include="Tizen.NET" Version="6.0.0.14715">
       <ExcludeAssets>Runtime</ExcludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='tizen40'">
+    <PackageReference Include="Tizen.NET" Version="4.0.0">
+      <ExcludeAssets>Runtime</ExcludeAssets>
+    </PackageReference>
+    <Compile Remove="ElmSharp\**\*.cs" />
+    <Compile Remove="NUI\**\*.cs" />
+  </ItemGroup>
+
   <Import Project="..\Tizen.Appium.Shared\Tizen.Appium.projitems" Label="Shared" />
 
 </Project>
