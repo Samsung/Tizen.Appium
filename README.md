@@ -11,7 +11,7 @@ This [link](https://github.com/Samsung/Tizen.Appium/wiki/How-to-use-appium) show
 ### Adding Tizen.Appium support to Tizen .NET apps
 To automated your Tizen .NET applications, add `Tizen.Appium` as a pacakage referernce to your application project.
 ```xml
-<PackageReference Include="Tizen.Appium" Version="1.0.0-preview" />
+<PackageReference Include="Tizen.Appium" Version="1.0.0-preview2" />
 ```
 
 > ElmSharp and NUI applications require a [Tizen.NET package](https://tizen.myget.org/feed/dotnet/package/nuget/Tizen.NET) version 6.0 or higher.
