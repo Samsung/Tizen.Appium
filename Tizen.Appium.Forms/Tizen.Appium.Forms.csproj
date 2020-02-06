@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFrameworkIdentifier>Tizen</TargetFrameworkIdentifier>
     <TargetFramework>tizen40</TargetFramework>
     <RootNamespace>Tizen.Appium</RootNamespace>
     <PackageId>Tizen.Appium.Forms</PackageId>
@@ -20,11 +21,10 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="Tizen.NET" Version="4.0.0">
-      <ExcludeAssets>Runtime</ExcludeAssets>
-    </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="3.5.0.129452" />
+    <PackageReference Include="Tizen.NET" Version="4.0.0" />
+    <PackageReference Include="Xamarin.Forms" Version="4.4.0.991537" />
   </ItemGroup>
 
   <Import Project="..\Tizen.Appium.Shared\Tizen.Appium.projitems" Label="Shared" />
+
 </Project>

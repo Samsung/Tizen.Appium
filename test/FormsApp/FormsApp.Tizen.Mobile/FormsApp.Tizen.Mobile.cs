@@ -1,4 +1,5 @@
 using Tizen.Appium;
+using Xamarin.Forms;
 
 namespace FormsApp
 {
@@ -24,7 +25,7 @@ namespace FormsApp
         static void Main(string[] args)
         {
             var app = new Program();
-            global::Xamarin.Forms.Platform.Tizen.Forms.Init(app);
+            Forms.Init(app);
             app.Run(args);
         }
     }
