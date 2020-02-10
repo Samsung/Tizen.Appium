@@ -14,7 +14,8 @@ namespace Tizen.Appium
 
         protected override void AdaptApp()
         {
-            Xamarin.Forms.Platform.Tizen.Forms.ViewInitialized += (s, e) =>
+
+            Xamarin.Forms.Forms.ViewInitialized += (s, e) =>
             {
                 if (e.View is Page p)
                 {
