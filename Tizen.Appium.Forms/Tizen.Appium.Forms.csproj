@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;WATCH</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +25,14 @@
     <PackageReference Include="Xamarin.Forms" Version="4.4.0.991537" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Tizen.CircularUI-shyun\src\Tizen.Wearable.CircularUI.Forms.Renderer\Tizen.Wearable.CircularUI.Forms.Renderer.csproj" Condition="$(DefineConstants.Contains('WATCH'))"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="!$(DefineConstants.Contains('WATCH'))">
+    <Compile Remove="ShellItemWrapper.cs" />
+  </ItemGroup>
+  
   <Import Project="..\Tizen.Appium.Shared\Tizen.Appium.projitems" Label="Shared" />
 
 </Project>

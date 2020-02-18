@@ -36,19 +36,13 @@ namespace Tizen.Appium
             else
             {
                 _list.TryUpdate(wrapper.Id, wrapper, _list[wrapper.Id]);
-                Log.Debug("[Updated] " + wrapper.Id + " object already exists. It wiill be upsted to element=" + element.GetType() + ", _elements.Count=" + _list.Count);
+                Log.Debug("[Updated] " + wrapper.Id + " object already exists. It wiill be updated to element=" + element.GetType() + ", _elements.Count=" + _list.Count);
             }
-        }
-
-        public void Remove(object element)
-        {
-            var key = _list.Where(kv => kv.Value.EqualsTo(element)).FirstOrDefault().Key;
-            RemoveById(key);
         }
 
         public void RemoveById(string id)
         {
-            if (_list.ContainsKey(id))
+            if (!string.IsNullOrEmpty(id) && _list.ContainsKey(id))
             {
                 IObjectWrapper wrapper;
                 _list.TryRemove(id, out wrapper);
@@ -76,11 +70,6 @@ namespace Tizen.Appium
                 return wrapper;
 
             return null;
-        }
-
-        public string GetIdByObject(object element)
-        {
-            return _list.FirstOrDefault(kv => kv.Value.EqualsTo(element)).Key;
         }
 
         public IEnumerable<string> GetIdsByName(string name)
