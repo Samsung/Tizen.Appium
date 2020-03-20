@@ -36,7 +36,7 @@ namespace Tizen.Appium
             else
             {
                 _list.TryUpdate(wrapper.Id, wrapper, _list[wrapper.Id]);
-                Log.Debug("[Updated] " + wrapper.Id + " object already exists. It wiill be upsted to element=" + element.GetType() + ", _elements.Count=" + _list.Count);
+                Log.Debug("[Updated] " + wrapper.Id + " object already exists. It wiill be updated to element=" + element.GetType() + ", _elements.Count=" + _list.Count);
             }
         }
 
