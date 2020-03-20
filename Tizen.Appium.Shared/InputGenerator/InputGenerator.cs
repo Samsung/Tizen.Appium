@@ -150,7 +150,7 @@ namespace Tizen.Appium
         public bool Drag(int xDown, int yDown, int xUp, int yUp)
         {
 #if WATCH
-            steps = 100;
+            _steps = 100;
 #endif
             var data = new Bundle();
 
