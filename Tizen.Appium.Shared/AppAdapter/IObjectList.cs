@@ -6,8 +6,6 @@ namespace Tizen.Appium
     {
         void Add(object element);
 
-        void Remove(object element);
-
         void RemoveById(string id);
 
         IObjectWrapper Get(string id);
