@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Tizen;
 using Tizen.Appium.Forms;
@@ -7,6 +10,12 @@ namespace Tizen.Appium
 {
     public class FormsAdapter : BaseAdapter
     {
+        public static IDictionary<string, TypeConverter> TypeConverters
+        {
+            get;
+            private set;
+        }
+
         protected override IObjectList CreateObjectList()
         {
             return new FormsElementList();
@@ -14,6 +23,12 @@ namespace Tizen.Appium
 
         protected override void AdaptApp()
         {
+            var asm = typeof(Xamarin.Forms.View).Assembly;
+            var typeinfo = typeof(Xamarin.Forms.TypeConverter).GetTypeInfo();
+            TypeConverters = (from klass in asm.DefinedTypes
+                                where typeinfo.IsAssignableFrom(klass) && !klass.IsInterface && !klass.IsAbstract
+                                select new KeyValuePair<string, TypeConverter>(klass.Name, Activator.CreateInstance(klass) as TypeConverter))
+                                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             Xamarin.Forms.Forms.ViewInitialized += (s, e) =>
             {
