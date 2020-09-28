@@ -64,8 +64,7 @@ namespace Tizen.Appium
 
                 try
                 {
-                    var valueType = property.GetValue(Control).GetType();
-                    var convertedValue = Convert.ChangeType(value, valueType);
+                    var convertedValue = ConvertValue(property.PropertyType, value);
                     property.SetValue(Control, convertedValue);
                 }
                 catch (Exception e)
@@ -76,6 +75,11 @@ namespace Tizen.Appium
 
                 return true;
             });
+        }
+
+        protected virtual object ConvertValue(Type type, object value)
+        {
+            return Convert.ChangeType(value, type);
         }
 
         public virtual bool ContainsText(string text)

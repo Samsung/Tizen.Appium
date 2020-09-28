@@ -1,4 +1,6 @@
 using System;
+using System.Reflection;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Tizen;
 using ElmSharp;
@@ -95,6 +97,20 @@ namespace Tizen.Appium.Forms
                     Deleted?.Invoke(this, EventArgs.Empty);
                 };
             }
+        }
+
+        protected override object ConvertValue(Type type, object value)
+        {
+            if (!type.IsPrimitive && type != typeof(string))
+            {
+                var converter = FormsAdapter.TypeConverters.FirstOrDefault(kvp => kvp.Key.Contains(type.Name)).Value;
+                if (converter != null)
+                {
+                    return converter.ConvertFromInvariantString(value.ToString());
+                }
+            }
+
+            return base.ConvertValue(type, value);
         }
     }
 }
